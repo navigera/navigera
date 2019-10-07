@@ -60,8 +60,6 @@ typings/
 # next.js build output
 .next
 
-local.properties
-
 .DS_Store
 
 # Xcode
@@ -108,9 +106,7 @@ buck-out
 # Android
 .idea
 .gradle
-local.properties
 *.iml
-/android/
 
 # Node
 node_modules
