@@ -107,6 +107,8 @@ buck-out
 .idea
 .gradle
 *.iml
+/android/app/build/
+android/app/build/
 
 # Node
 node_modules
