@@ -1,4 +1,0 @@
-#Mon Oct 07 13:08:26 CEST 2019
-base.0=/Users/osand4/Documents/GitHub/MAU/navigera/android/app/build/intermediates/transforms/dexMerger/debug/0
-renamed.0=classes.dex
-path.0=classes.dex
