@@ -1,0 +1,40 @@
+{
+    "project_info": {
+      "project_number": "486221425055",
+      "firebase_url": "https://ikea-mau.firebaseio.com",
+      "project_id": "ikea-mau",
+      "storage_bucket": "ikea-mau.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:486221425055:android:666e8a9cfd2bfda76c75aa",
+          "android_client_info": {
+            "package_name": "com.ikea.navigera"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "486221425055-dfn3qk65b7g0h79mend219fgmeqpucvd.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "KEY"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "486221425055-dfn3qk65b7g0h79mend219fgmeqpucvd.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
