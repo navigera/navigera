@@ -109,6 +109,7 @@ buck-out
 *.iml
 /android/app/build/
 android/app/build/
+google-services.json
 
 # Node
 node_modules
@@ -126,6 +127,7 @@ package-lock.json
 
 /coverage
 /third-party
+
 
 # Root dir shouldn't have Xcode project
 /*.xcodeproj
