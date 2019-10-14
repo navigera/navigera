@@ -109,6 +109,8 @@ buck-out
 *.iml
 /android/app/build/
 android/app/build/
+local.properties
+google-services.json
 
 # Node
 node_modules
