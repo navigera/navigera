@@ -3,9 +3,9 @@ import {Text, Image, StyleSheet, View } from 'react-native';
 import Popover from 'react-native-popover-view';
 
 export default class ItemDescription2 extends Component {
-  state = {
-    isVisible: false
-  }
+   state = {
+     isVisible: false
+   }
  
   showPopover() {
     this.setState({isVisible: true});
@@ -15,10 +15,15 @@ export default class ItemDescription2 extends Component {
     this.setState({isVisible: false});
   }
 
+  numberWithSpaces(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
   render(){
     const { item } = this.props;
 
     return (
+      
       <View >
         <Popover
           isVisible={this.state.isVisible}
@@ -27,18 +32,14 @@ export default class ItemDescription2 extends Component {
           
           <View style = {styles.modal}>
             <Image style={styles.image}source={require('../res/Billy.png')}/>
-            <Text style={styles.h2}>{item.name}</Text> 
+            <Text style={styles.h2 } onPress={() => { this.closePopover()}}> {item.name}</Text> 
 
             <Text style={styles.h3}>
-              {item.type}, 
-              {item.color}, 
-              {item.width}x
-              {item.depth}x
-              {item.height}cm
+              {item.type}, {item.color}, {item.width}x{item.depth}x{item.height}cm
             </Text>
 
-            <Text style={styles.h1}>{item.price} kr</Text>
-            <Text style={styles.h5}>{item.priceNoVat} kr exkl. moms</Text>
+            <Text style={styles.h1}>{this.numberWithSpaces(item.price)} kr</Text>
+            <Text style={styles.h5}>{this.numberWithSpaces(item.priceNoVat)} kr exkl. moms</Text>
             <Text/>
             <Text style={styles.h4}>{item.description}</Text>
 
@@ -47,10 +48,6 @@ export default class ItemDescription2 extends Component {
       </View>
       );
     }
-
-  
-
-
 }
 
 const styles = StyleSheet.create({

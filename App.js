@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ListItem from "./components/ListItem";
 
 
 const products=[{
 	_id:1,
 	name:"BILLY / OXBERG ",
-	price:"1 495",
-	priceNoVat:"1 196",
+	price:1495,
+	priceNoVat:1196,
 	color:"vit",
 	type:"Bokhylla",
 	quantity:0,
