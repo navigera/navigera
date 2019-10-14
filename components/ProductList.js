@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { Text, View, Image, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import ProductListItem from "./ProductListItem.js"
 
 export default class ProductList extends Component {
@@ -7,11 +7,13 @@ export default class ProductList extends Component {
   render(){
     return(
 
-      <View style={styles.container}>
-        <ProductListItem></ProductListItem>
-        <ProductListItem></ProductListItem>
-        <ProductListItem></ProductListItem>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.container, styles.padding}>
+          <ProductListItem></ProductListItem>
+          <ProductListItem></ProductListItem>
+          <ProductListItem></ProductListItem>
+        </ScrollView>
+      </SafeAreaView>
 
     );
   }
@@ -53,6 +55,9 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     backgroundColor: 'purple',
+  },
+
+  padding:{
     padding: 20,
   },
 

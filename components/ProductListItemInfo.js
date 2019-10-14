@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 
-export default class ProductList extends Component {
+export default class ProductListItemInfo extends Component {
 
   render(){
     return(
 
       <View style={styles.container}>
-        <Text>tjena</Text>
+        <Text>Billy bokhylla</Text>
       </View>
 
     );
   }
+
 }
 
 const styles = StyleSheet.create({
 
   container:{
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: 'green',
   },
 });
