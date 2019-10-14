@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import ListItem from "./components/ListItem" 
+import { StyleSheet, View } from 'react-native';
+import ListItem from "./components/ListItem";
+
 
 const products=[{
 	_id:1,
 	name:"BILLY / OXBERG ",
-	price:"1 495",
-	priceNoVat:"1 196",
+	price:1495,
+	priceNoVat:1196,
 	color:"vit",
 	type:"Bokhylla",
 	quantity:0,
@@ -17,8 +18,7 @@ export default class App extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-
-        <ListItem item={products[0]}></ListItem>
+					<ListItem item={products[0]}></ListItem>
 			</View>
 		);
 	}
@@ -26,7 +26,6 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
 	container:{
-		margin:40,
-		//backgroundColor:'#0058a3'
+		
 	}
 });

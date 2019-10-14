@@ -1,74 +1,44 @@
-
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import {Text, StyleSheet, View } from 'react-native';
 
+import ItemDescription from "./ItemDescription";
 
-export default class ListItem extends Component {
+export default class ListItem2 extends Component {
+    
   render() {
     const { item } = this.props;
-
     return (
-
-
-        <View style={styles.container,{flex:1}}>
-
-
-          <Image style={styles.image}source={require('../res/Billy.png')}/>
-
-          <Text style={styles.h2}>{item.name}  </Text>
-          <Text style={styles.h3}>{item.type}, {item.color}, {item.width}x{item.depth}x{item.height} cm</Text>
-          <Text style={styles.h1}>{item.price} kr</Text>
-          <Text style={styles.h5}>{item.priceNoVat} kr exkl. moms</Text>
-          <Text/>
-          <Text style={styles.h4}>{item.description}</Text>
+      <View style={styles.container,{flex:1}}>
+        <ItemDescription style={styles.modal}ref={modal =>{this.modal = modal}} item={item}></ItemDescription>
+        
+        <View style={styles.textBox}>
+          <Text style={styles.text}
+            onPress={() => {this.modal.showPopover()}}>
+            {item.name} 
+          </Text>
         </View>
-
-
+      </View>
     );
   }
-
 }
 
-
 const styles = StyleSheet.create({
-	button : {
-    color:"white"
+  
 
+  container: {
+    margin: 20,
   },
-  h1:{
-    fontSize:40,
-    fontFamily: "Roboto",
-    fontWeight:"bold",
+  text: {
+    fontSize: 20,
+    marginLeft:'10%',
+    textAlign: 'center',
   },
-  h2:{
-    fontSize:32,
-    fontFamily: "Roboto",
-    fontWeight:"bold",
-  },
-  h3:{
-    fontSize:20,
-    fontFamily: "Roboto",
-    fontWeight:"normal",
-  },
-  h4:{
-    fontSize:18,
-    fontFamily: "Roboto",
-    fontWeight:"normal",
-  },
-  h5:{
-    fontSize:18,
-    color:"#666",
-    fontFamily: "Roboto",
-    fontWeight:"normal",
-  },
+  textBox: {
+    flexWrap:'wrap',
+    height:30, 
+    alignContent:"center",
+    borderWidth:1,
 
-  container:{
-    //margin:40,
-    marginTop:10
-  },
-
-  image:{
-    width: 300,
-    height: 300
+    margin: 5,
   }
 });
