@@ -21,8 +21,8 @@ class CameraScreen extends React.Component {
 	render() {
 		var temp;
 		const { height, width } = Dimensions.get("window");
-		const maskRowHeight = Math.round((height*0.75) / 30);
-		const maskColWidth = width / 2;
+		const maskRowHeight = height * 0.05;
+		const maskColWidth = width * 0.2;
 		
 		return (
 		
@@ -33,6 +33,7 @@ class CameraScreen extends React.Component {
 					}}
 					captureAudio={false}
 					style={styles.preview}
+					cropScanArea={[0.8, 0.25]}
 					type={RNCamera.Constants.Type.back}
 					androidCameraPermissionOptions={{
 						title: "Permission to use camera",

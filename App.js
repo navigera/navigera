@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import ListItem from "./components/ListItem";
+import CameraScreen from './Camera';
 
 
 const products=[{
@@ -17,9 +18,7 @@ const products=[{
 export default class App extends React.Component {
 	render() {
 		return (
-			<View style={styles.container}>
-					<ListItem item={products[0]}></ListItem>
-			</View>
+			<CameraScreen />
 		);
 	}
 }
