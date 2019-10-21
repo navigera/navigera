@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import ListItem from "./components/ListItem"
+import TestPopUpProduct from "./components/TestPopUpProduct"
 import ProductList from "./components/ProductList"
-import axios from 'axios';
 import CameraScreen from './Camera';
 
 export default class App extends React.Component {
@@ -15,7 +14,6 @@ export default class App extends React.Component {
 
 		//todo: generate better unique keys
 		this.currentKey = 0;
-
 		this.getProduct = this.getProduct.bind(this);
 		this.handleRemoveProduct =  this.handleRemoveProduct.bind(this);
 	}
@@ -30,20 +28,26 @@ export default class App extends React.Component {
 		return (
 			//<CameraScreen />
 			<View style={styles.container}>
-        <ProductList products={this.state.products} removeCallback={this.handleRemoveProduct}></ProductList>
+		 	<ProductList products={this.state.products} removeCallback={this.handleRemoveProduct}></ProductList>
+			{/*<TestPopUpProduct item={this.state.products[1]}></TestPopUpProduct>*/}
 			</View>
 		);
 	}
 
 	getProduct(id){
-		axios.get("https://us-central1-ikea-mau.cloudfunctions.net/api/getProduct/" + id)
-			.then(res => {
-				var p = res.data;
-				p.key = this.currentKey;
+		fetch("https://us-central1-ikea-mau.cloudfunctions.net/api/getProduct/" + id)
+			.then((response) => response.json())
+			.then((responseJson) => {
+			//	console.log(responseJson);
+				responseJson.key = this.currentKey;
 				this.currentKey++;
 				var list = this.state.products;
-				list.push(p);
+				list.push(responseJson);
 				this.setState({products: list});
+			  return responseJson;
+			})
+			.catch((error) => {
+			  console.error(error);
 			});
 	}
 
