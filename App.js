@@ -62,11 +62,7 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
 	container:{
-<<<<<<< HEAD
-
-=======
 		flex: 1,
 		//backgroundColor:'#0058a3'
->>>>>>> list
 	}
 });
