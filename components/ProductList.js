@@ -9,9 +9,9 @@ export default class ProductList extends Component {
 
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.container, styles.padding}>
-          <ProductListItem></ProductListItem>
-          <ProductListItem></ProductListItem>
-          <ProductListItem></ProductListItem>
+          {this.props.products.map(p => {
+            return <ProductListItem product={p} removeCallback={this.props.removeCallback} key={p.key}/>
+          })}
         </ScrollView>
       </SafeAreaView>
 

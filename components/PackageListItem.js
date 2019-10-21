@@ -7,7 +7,7 @@ export default class ProductList extends Component {
     return(
 
       <View style={styles.container}>
-        <Text>tjena</Text>
+        <Text>{this.props.name}</Text>
       </View>
 
     );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { Text, View, Image, StyleSheet, TouchableHighlight } from 'react-native';
 import ProductListItemInfo from "./ProductListItemInfo.js"
 import PackageListItem from "./PackageListItem.js"
 
@@ -11,30 +11,35 @@ export default class ProductList extends Component {
         expanded: false
     };
 
-    this.handleClick = this.handleClick.bind();
+    this.handlePress = this.handlePress.bind(this);
+    this.handleHold = this.handleHold.bind(this);
   }
 
-  handleClick = (event) => {
+  handlePress(event){
     this.setState({
       expanded: !this.state.expanded
     });
   }
 
-
+  handleHold(event){
+    this.props.removeCallback(this.props.product.key)
+  }
 
   render(){
     return(
-
-      <View style={styles.container}>
-      <Text onPress={this.handleClick}>{this.state.expanded ? "expanded" : "not expanded"}</Text>
-        <ProductListItemInfo></ProductListItemInfo>
-        {this.state.expanded == true &&
-          <View style={styles.flex}>
-            <PackageListItem></PackageListItem>
-            <PackageListItem></PackageListItem>
-          </View>
-        }
-      </View>
+      <TouchableHighlight onPress={this.handlePress} onLongPress={this.handleHold}>
+        <View style={styles.container}>
+          <ProductListItemInfo color={this.props.product.product_info.color} price={this.props.product.availability.price}></ProductListItemInfo>
+          {this.state.expanded == true &&
+            <View style={styles.flex}>
+              {this.props.product.packages.map(p => {
+                //todo: generate unique keys
+                return <PackageListItem key={p.id} name={p.id + " " + p.count}></PackageListItem>
+              })}
+            </View>
+          }
+        </View>
+      </TouchableHighlight>
 
     );
   }

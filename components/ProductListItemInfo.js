@@ -7,7 +7,8 @@ export default class ProductListItemInfo extends Component {
     return(
 
       <View style={styles.container}>
-        <Text>Billy bokhylla</Text>
+        <Text>{"färg: " + this.props.color}</Text>
+        <Text>{"pris: " + this.props.price}</Text>
       </View>
 
     );
