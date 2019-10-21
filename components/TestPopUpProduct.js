@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
 import {Text, StyleSheet, View } from 'react-native';
 
-import ItemDescription from "./ItemDescription";
+import PopUpProduct from "./PopUpProduct";
 
-export default class ListItem2 extends Component {
+export default class TestPopUpProduct extends Component {
     
   render() {
     const { item } = this.props;
+    if ( item!=null){
     return (
       <View style={styles.container,{flex:1}}>
-        <ItemDescription style={styles.modal}ref={modal =>{this.modal = modal}} item={item}></ItemDescription>
-        
+        <PopUpProduct style={styles.modal}ref={modal => {this.modal = modal}} item={item}></PopUpProduct>
         <View style={styles.textBox}>
           <Text style={styles.text}
-            onPress={() => {this.modal.showPopover()}}>
-            {item.name} 
+          onPress={() => {this.modal.showPopover()}}>
+
+            {item.familyName} 
           </Text>
         </View>
       </View>
-    );
+    );}
+
+    else { return(
+      <View>
+        <Text>NOPE</Text>
+      </View>
+    );}
   }
 }
 
