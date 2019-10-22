@@ -1,32 +1,38 @@
 import React from "react";
 import {
-	Alert,
 	StyleSheet,
-	Platform,
-	Image,
 	Text,
 	View,
-	ScrollView,
-	Button,
 	Dimensions,
 	TouchableOpacity,
+	Vibration
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import CONSTANTS from "./components/Constants.js";
+import PopUpProduct from "./components/PopUpProduct";
+import { GetProduct } from "./utilities.js";
+import { variableDeclaration } from "@babel/types";
+
 class CameraScreen extends React.Component {
 	state = {
-		recognizedSerialNumber: ""
+		modalVisible: false,
+		item: null
 	};
+
+	modalClosed = () => {
+		this.camera.resumePreview();
+	}
 
 	render() {
 		var temp;
 		const { height, width } = Dimensions.get("window");
 		const maskRowHeight = height * 0.05;
 		const maskColWidth = width * 0.2;
-		
+
 		return (
-		
+
 			<View style={styles.container}>
+				<PopUpProduct style={styles.modal} callback={this.modalClosed} ref={modal => { this.modal = modal }} item={this.state.item}></PopUpProduct>
 				<RNCamera
 					ref={ref => {
 						this.camera = ref;
@@ -47,7 +53,7 @@ class CameraScreen extends React.Component {
 						buttonPositive: "Ok",
 						buttonNegative: "Cancel"
 					}}
-					onTextRecognized={data => {
+					onTextRecognized={async (data) => {
 						temp = data.textBlocks;
 
 						if (typeof temp !== "undefined") {
@@ -58,7 +64,14 @@ class CameraScreen extends React.Component {
 								) {
 									var possibleSerial = temp[i].value;
 									if (CONSTANTS.REGEX.test(possibleSerial)) {
-										Alert.alert(possibleSerial);
+
+										let product = await GetProduct(possibleSerial);
+										if (product) {
+											this.camera.pausePreview();
+											this.setState({ item: product });
+											Vibration.vibrate(200);
+											this.modal.showPopover();
+										}
 										//Obviously will not alert, but rather send value elsewhere.
 									}
 								}
@@ -66,25 +79,18 @@ class CameraScreen extends React.Component {
 						}
 					}}
 				>
-				
-					<View style = {styles.maskOuter}> 
-						<View style={[{ flex: maskRowHeight },styles.maskRow,styles.maskFrame]}/>
+
+					<View style={styles.maskOuter}>
+						<View style={[{ flex: maskRowHeight }, styles.maskRow, styles.maskFrame]} />
 						<View style={[{ flex: 6 }, styles.maskCenter]}>
-							<View style={[{ width: maskColWidth },styles.maskFrame]}/>
+							<View style={[{ width: maskColWidth }, styles.maskFrame]} />
 							<View style={styles.maskInner} />
-							<View style={[{ width: maskColWidth },styles.maskFrame]}/>
+							<View style={[{ width: maskColWidth }, styles.maskFrame]} />
 						</View>
-						<View style={[{ flex: maskRowHeight },styles.maskRow,styles.maskFrame]}/>
-									<TouchableOpacity style={styles.topRight} onPress={()=> {
-							console.log('Go Back');
-							}
-						  }>
-						  <Text style = {[{color: "white" , fontSize: 24}]}>X</Text>
-						</TouchableOpacity>
+						<View style={[{ flex: maskRowHeight }, styles.maskRow, styles.maskFrame]} />
 					</View>
 				</RNCamera>
-				
-			</View>
+			</View >
 		);
 	}
 }
@@ -131,5 +137,5 @@ const styles = StyleSheet.create({
 		width: "100%"
 	},
 	maskCenter: { flexDirection: "row" },
-	topRight: {alignSelf: 'flex-end', padding: 20, marginTop: 0, position: 'absolute', },
+	topRight: { alignSelf: 'flex-end', padding: 20, marginTop: 0, position: 'absolute', }
 });
