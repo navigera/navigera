@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import ProductList from "./components/ProductList"
 import CameraScreen from './Camera';
-import ProductDescription from './components/ProductDescription'
+import ProductDescription from './components/ProductDescription';
+import { setCustomText } from 'react-native-global-props';
+
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -11,6 +13,8 @@ export default class App extends React.Component {
 		this.state = {
 			products: [],
 		};
+
+		setCustomText(customTextProps);
 
 		//todo: generate better unique keys
 		this.currentKey = 0;
@@ -28,6 +32,7 @@ export default class App extends React.Component {
 		return (
 
 			<View style={styles.container}>
+
 				<CameraScreen />
 				{/*<ProductList products={this.state.products} removeCallback={this.handleRemoveProduct}></ProductList>*/}
 				{/*<TestPopUpProduct item={this.state.products[0]}></TestPopUpProduct> */}
@@ -71,5 +76,15 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		//backgroundColor:'#0058a3'
-	}
+	},
+	scroller: {
+        flex: 1,
+    }
 });
+
+const customTextProps = {
+	style: {
+	  fontFamily: 'Noto IKEA Arabic' // light gray
+	}
+  };
+   
