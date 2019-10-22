@@ -65,10 +65,12 @@ const styles = StyleSheet.create({
 
   },
   h1: {
-    fontSize: 18
+    fontSize: 18,
+    fontWeight: "bold"
   },
   h2: {
     fontSize: 16,
+    fontWeight: "bold"
   },
   h3: {
     fontSize: 14,
