@@ -8,14 +8,15 @@ export default class TestPopUpProduct extends Component {
   render() {
     const { item } = this.props;
     if ( item!=null){
+      console.log(item.product.product_info.family)
     return (
       <View style={styles.container,{flex:1}}>
-        <PopUpProduct style={styles.modal}ref={modal => {this.modal = modal}} item={item}></PopUpProduct>
+        <PopUpProduct style={styles.modal}ref={modal => {this.modal = modal}} item={item.product}></PopUpProduct>
         <View style={styles.textBox}>
           <Text style={styles.text}
           onPress={() => {this.modal.showPopover()}}>
 
-            {item.familyName} 
+            {item.product.product_info.family} 
           </Text>
         </View>
       </View>
@@ -23,7 +24,7 @@ export default class TestPopUpProduct extends Component {
 
     else { return(
       <View>
-        <Text>NOPE</Text>
+        <Text>Failed to fetch, Bad connection(?)</Text>
       </View>
     );}
   }

@@ -8,9 +8,11 @@ export default class ProductList extends Component {
   constructor(props){
     super(props);
     this.state = {
-        expanded: false
+        expanded: false,
+        currentKey : 0,
+        packages: [],
     };
-
+    
     this.handlePress = this.handlePress.bind(this);
     this.handleHold = this.handleHold.bind(this);
   }
@@ -25,16 +27,42 @@ export default class ProductList extends Component {
     this.props.removeCallback(this.props.product.key)
   }
 
+  componentDidMount(){
+    this.props.product.packages.forEach(p => {
+      console.log(p);
+      this.fetchPackage(p);
+    });
+
+
+  }
+  fetchPackage(p){
+    fetch("https://europe-west2-ikea-mau-eu.cloudfunctions.net/api/getProduct/" + p.id)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      responseJson.key = this.currentKey;
+      this.currentKey++;
+      var list = this.state.packages;
+      p.data = responseJson;
+      list.push(p);
+      this.setState({packages: list});
+      return responseJson;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
   render(){
     return(
-      <TouchableHighlight onPress={this.handlePress} onLongPress={this.handleHold}>
+      <TouchableHighlight underlayColor ={"#fafafa"} onPress={this.handlePress} onLongPress={this.handleHold}>
         <View style={styles.container}>
-          <ProductListItemInfo color={this.props.product.product_info.color} price={this.props.product.availability.price}></ProductListItemInfo>
+          <ProductListItemInfo item={this.props.product} amount={1}></ProductListItemInfo>
           {this.state.expanded == true &&
             <View style={styles.flex}>
-              {this.props.product.packages.map(p => {
+              {this.state.packages.map(p => {
+                console.log(p);
                 //todo: generate unique keys
-                return <PackageListItem key={p.id} name={p.id + " " + p.count}></PackageListItem>
+                return <PackageListItem item = {p.data} key={p.id} amount={p.count}></PackageListItem>
               })}
             </View>
           }
@@ -45,14 +73,12 @@ export default class ProductList extends Component {
   }
 }
 
-const Packages = () => [
-];
 
 const styles = StyleSheet.create({
 
   container:{
     flex: 1,
-    backgroundColor: 'yellow',
+   // backgroundColor: 'yellow',
     marginBottom: 5,
     marginTop: 5,
   },
