@@ -10,7 +10,7 @@ export default class ProductList extends Component {
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.container, styles.padding}>
           {this.props.products.map(p => {
-            return <ProductListItem product={p} removeCallback={this.props.removeCallback} key={p.key}/>
+            return <ProductListItem product={p.product} removeCallback={this.props.removeCallback} key={p.key}/>
           })}
         </ScrollView>
       </SafeAreaView>
@@ -25,36 +25,9 @@ const styles = StyleSheet.create({
     color:"white"
 
   },
-  h1:{
-    fontSize:40,
-    fontFamily: "Roboto",
-    fontWeight:"bold",
-  },
-  h2:{
-    fontSize:32,
-    fontFamily: "Roboto",
-    fontWeight:"bold",
-  },
-  h3:{
-    fontSize:20,
-    fontFamily: "Roboto",
-    fontWeight:"normal",
-  },
-  h4:{
-    fontSize:18,
-    fontFamily: "Roboto",
-    fontWeight:"normal",
-  },
-  h5:{
-    fontSize:18,
-    color:"#666",
-    fontFamily: "Roboto",
-    fontWeight:"normal",
-  },
 
   container:{
     flex: 1,
-    backgroundColor: 'purple',
   },
 
   padding:{

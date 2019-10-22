@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
-import {Text, Image, StyleSheet, View } from 'react-native';
+import {ScrollView,Text, Image, StyleSheet, View } from 'react-native';
 import InputSpinner from './InputSpinner';
 import PrimaryButton from './PrimaryButton';
-import Popover from 'react-native-popover-view';  
 
-export default class PopUpProduct extends Component {
-   state = {
+export default class ProductDescription extends Component {
+  state = {
      isVisible: false
    }
  
-  showPopover() {
-    this.setState({isVisible: true});
+  onPress(){
+    console.log("Press");
   }
- 
-  closePopover() {
-    this.setState({isVisible: false});
-  }
-
   numberWithSpaces(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
@@ -27,80 +21,78 @@ export default class PopUpProduct extends Component {
   }
 
   capitalizeFirst(str){
-    return str[0].toUpperCase()+str.slice(1);
+    return str[0].toUpperCase() + str.slice(1);
   }
   
-
-onPress(){
-  console.log("Do Something");
-  this.closePopover();
-}
   render(){
     const { item } = this.props;
+    
+    if(item!=null ){return (
 
-    return (
-      
-      <View >
-        <Popover
-          isVisible={this.state.isVisible}
-          fromView={this.touchable}
-          onRequestClose={() => this.closePopover()}>
-          
+      <ScrollView>          
           <View style = {styles.modal}>
-           
-            <View style = {styles.imageBox}>
-              <Image style={styles.image}source={require('../res/Billy.png')}/>
-           </View>
-            <Text style={styles.h1}>{item.product_info.family.toUpperCase()}</Text> 
+            <Image style={styles.image}source={require('../res/Billy.png')}/>
+            <Text style={styles.h2}>{item.product.product_info.family.toUpperCase()}</Text> 
 
             <Text style={styles.h3}>
-              {this.capitalizeFirst(item.product_info.category)}, {item.product_info.color}
+              {this.capitalizeFirst(item.product.product_info.category)}, {item.product.product_info.color}
             </Text>
 
-            <Text style={styles.h1}>{this.numberWithSpaces(item.availability.price)} kr</Text>
+            <Text style={styles.h1}>{this.numberWithSpaces(item.product.availability.price)} kr</Text>
 
-            <View style={styles.productNumbers}>
+             <View style={styles.productNumbers}>
+              
               <View style={styles.productIDBox}>
-                <Text style={styles.productIDText}>{item.product_info.id}</Text>
+                <Text style={styles.productIDText}>{item.product.product_info.id}</Text>
               </View>
 
               <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.isle)}</Text>
+                <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.isle)}</Text>
               </View>
               <Text>Isle</Text>
-              
               <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.shelf)}</Text>
+                <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.shelf)}</Text>
               </View>
               <Text>Shelf</Text>
-            
             </View>
+            
             <Text/>
 
             <View style={styles.productNumbers}>
-              <Text style = {styles.h6}> Amount </Text>
+              <Text style = {styles.h6}> Antal </Text>
               <InputSpinner></InputSpinner>
             </View>
 
-          
-            <PrimaryButton style = {styles.productNumbers } onPress={() => this.closePopover()} img ="" text={"Lägg till i listan"}></PrimaryButton>
+            <PrimaryButton style = {styles.productNumbers } onPress={this.onPress} img ="" text={"Lägg till i listan"}></PrimaryButton>
+
           </View>
-        </Popover> 
-      </View>
+      </ScrollView>
       );
+    }
+    else{
+      return(
+        <View>
+          <Text>Nope</Text>
+        </View>
+      );
+    }
     }
 }
 
 const styles = StyleSheet.create({
     h1:{
-      fontSize:25,
+      fontSize:40,
+      fontWeight:"bold",
+    },
+  
+    h2:{
+      fontSize:32,
       fontWeight:"bold",
     },
   
     h3:{
-      fontSize:18,
+      fontSize:20,
       fontWeight:"normal",
-      color:"gray"
     },
   
     h4:{
@@ -113,13 +105,16 @@ const styles = StyleSheet.create({
       color:"#666",
       fontWeight:"normal",
     },
-    imageBox: {
-      alignItems:"center",
-      width:"100%",
+    
+    h6:{
+      fontWeight: "bold",
+      fontSize:20
+
     },
+  
     image:{
-      width: 200,
-      height: 200
+      width: 300,
+      height: 300
     },
     modal: {
       margin:20

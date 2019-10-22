@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import TestPopUpProduct from "./components/TestPopUpProduct"
 import ProductList from "./components/ProductList"
 import CameraScreen from './Camera';
+import ProductDescription from './components/ProductDescription'
 
 export default class App extends React.Component {
 	constructor(props){
@@ -29,13 +30,15 @@ export default class App extends React.Component {
 			//<CameraScreen />
 			<View style={styles.container}>
 		 	<ProductList products={this.state.products} removeCallback={this.handleRemoveProduct}></ProductList>
-			{/*<TestPopUpProduct item={this.state.products[1]}></TestPopUpProduct>*/}
+			{/*<TestPopUpProduct item={this.state.products[0]}></TestPopUpProduct> */}
+			{/*<ProductDescription item={this.state.products[0]}></ProductDescription>*/}
+			
 			</View>
 		);
 	}
 
 	getProduct(id){
-		fetch("https://us-central1-ikea-mau.cloudfunctions.net/api/getProduct/" + id)
+		fetch("https://europe-west2-ikea-mau-eu.cloudfunctions.net/api/getProduct/" + id)
 			.then((response) => response.json())
 			.then((responseJson) => {
 			//	console.log(responseJson);
