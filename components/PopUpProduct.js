@@ -33,10 +33,45 @@ export default class PopUpProduct extends Component {
     return str[0].toUpperCase() + str.slice(1);
   }
 
-
   onPress() {
     console.log("Do Something");
     this.closePopover();
+  }
+
+  getProductIDBox(item){
+   return( 
+   <View style={styles.productIDBox}>
+    <Text style={styles.productIDText}>{item.product_info.id}</Text>
+  </View>);
+  }
+  
+  getProductInformation(item) {
+
+    if (!item.combo_product) {
+      return (
+        <View style={styles.productNumbers}>
+         
+         {this.getProductIDBox(item)}
+         
+          <View style={styles.shelfBox}>
+            <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
+          </View>
+          <Text>Aisle</Text>
+
+          <View style={styles.shelfBox}>
+            <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.shelf)}</Text>
+          </View>
+          <Text>Shelf</Text>
+        </View>);
+
+    }
+    else {
+      return (
+        <View style={styles.productNumbers}>
+        {this.getProductIDBox(item)}
+        </View>
+      );
+    }
   }
 
   getProductInfo(item) {
@@ -46,7 +81,7 @@ export default class PopUpProduct extends Component {
       return (
         <View style={styles.content}>
           <View style={styles.imageBox}>
-            <Image style={styles.image} source={require('../res/Billy.png')} />
+            <Image style={styles.image} source={{uri:(item.product_info.image_url)}} />
           </View>
           <Text style={styles.h1}>{item.product_info.family.toUpperCase()}</Text>
 
@@ -56,22 +91,9 @@ export default class PopUpProduct extends Component {
 
           <Text style={styles.h1}>{this.numberWithSpaces(item.availability.price)} kr</Text>
 
-          <View style={styles.productNumbers}>
-            <View style={styles.productIDBox}>
-              <Text style={styles.productIDText}>{item.product_info.id}</Text>
-            </View>
+          
+          {this.getProductInformation(item)}
 
-            <View style={styles.shelfBox}>
-              <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
-            </View>
-            <Text>Aisle</Text>
-
-            <View style={styles.shelfBox}>
-              <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.shelf)}</Text>
-            </View>
-            <Text>Shelf</Text>
-
-          </View>
           <Text />
 
           <View style={styles.productNumbers}>
