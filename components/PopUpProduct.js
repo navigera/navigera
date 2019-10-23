@@ -33,21 +33,26 @@ export default class PopUpProduct extends Component {
     return str[0].toUpperCase() + str.slice(1);
   }
 
-
   onPress() {
     console.log("Do Something");
     this.closePopover();
   }
 
-  getProductPlacement(item) {
+  getProductIDBox(item){
+   return( 
+   <View style={styles.productIDBox}>
+    <Text style={styles.productIDText}>{item.product_info.id}</Text>
+  </View>);
+  }
+  
+  getProductInformation(item) {
 
     if (!item.combo_product) {
       return (
         <View style={styles.productNumbers}>
-          <View style={styles.productIDBox}>
-            <Text style={styles.productIDText}>{item.product_info.id}</Text>
-          </View>
-          
+         
+         {this.getProductIDBox(item)}
+         
           <View style={styles.shelfBox}>
             <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
           </View>
@@ -63,11 +68,9 @@ export default class PopUpProduct extends Component {
     else {
       return (
         <View style={styles.productNumbers}>
-          <View style={styles.productIDBox}>
-            <Text style={styles.productIDText}>{item.product_info.id}</Text>
-          </View>
-        </View>);
-
+        {this.getProductIDBox(item)}
+        </View>
+      );
     }
   }
 
@@ -89,7 +92,7 @@ export default class PopUpProduct extends Component {
           <Text style={styles.h1}>{this.numberWithSpaces(item.availability.price)} kr</Text>
 
           
-          {this.getProductPlacement(item)}
+          {this.getProductInformation(item)}
 
           <Text />
 
