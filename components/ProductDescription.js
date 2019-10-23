@@ -32,9 +32,9 @@ export default class ProductDescription extends Component {
       </View>
   
       <View style={styles.shelfBox}>
-        <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.isle)}</Text>
+        <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.aisle)}</Text>
       </View>
-      <Text>Isle</Text>
+      <Text>Aisle</Text>
       <View style={styles.shelfBox}>
         <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.shelf)}</Text>
       </View>

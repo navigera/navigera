@@ -62,9 +62,9 @@ export default class PopUpProduct extends Component {
             </View>
 
             <View style={styles.shelfBox}>
-              <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.isle)}</Text>
+              <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
             </View>
-            <Text>Isle</Text>
+            <Text>Aisle</Text>
 
             <View style={styles.shelfBox}>
               <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.shelf)}</Text>
