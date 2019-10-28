@@ -12,7 +12,7 @@ export default class ProductList extends Component {
         currentKey : 0,
         packages: [],
     };
-    
+
     this.handlePress = this.handlePress.bind(this);
     this.handleHold = this.handleHold.bind(this);
   }
@@ -29,7 +29,6 @@ export default class ProductList extends Component {
 
   componentDidMount(){
     this.props.product.packages.forEach(p => {
-      console.log(p);
       this.fetchPackage(p);
     });
 

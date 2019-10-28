@@ -3,49 +3,41 @@ import {TouchableHighlight,Text,StyleSheet, View } from 'react-native';
 
 
 export default class InputSpinner extends Component {
-  
+
     constructor(){
         super();
         this.state ={
-            value:1,
             clickable: false
         }
     }
 
     subtract(){
-        if(this.state.value>1){
-            this.setState({value: this.state.value-1});
+        if(this.props.amount > 1){
+            this.props.handleSpinnerChange(this.props.amount - 1);
         }
-        if(this.state.value<=2){
+        else if(this.props.amount <= 2){
             this.setState({clickable:false})
         }
-    console.log(this.state.value)
-    }
-    
-    add(){
-        this.setState({value: this.state.value+1});
-        this.setState({clickable:true});
-        console.log(this.state.value);
     }
 
-    getData(){
-        return this.state.value;
+    add(){
+        this.props.handleSpinnerChange(this.props.amount + 1);
     }
 
   render(){
-    
+
     return (
-      
+
       <View style={styles.Spinner}>
         <View style={{flex:1}}>
-          <TouchableHighlight underlayColor ={this.state.clickable ? 'lightgray' :'white'} 
+          <TouchableHighlight underlayColor ={this.state.clickable ? 'lightgray' :'white'}
             style={styles.button} onPress = {() =>{this.subtract()}}>
               <Text style={this.state.clickable ? styles.text : styles.text_subtract}>-</Text>
           </TouchableHighlight>
         </View>
-      
-        <Text style={styles.text}>{this.state.value}</Text>
-      
+
+        <Text style={styles.text}>{this.props.amount}</Text>
+
         <View style={{flex:1}}>
           <TouchableHighlight  underlayColor ={'lightgray'} style={styles.button} onPress = {() =>{this.add()}}>
             <Text style={styles.text}>+</Text>

@@ -5,9 +5,36 @@ import PrimaryButton from './PrimaryButton';
 import Popover from 'react-native-popover-view';
 
 export default class PopUpProduct extends Component {
+  constructor(props){
+    super(props);
+
+    /*this.props.navigation.addListener('willBlur', () => {
+      this.props.navigation.state.params.modalClosedCallback();
+    });*/
+
+    this.handlePress = this.handlePress.bind(this);
+    this.handleSpinnerChange = this.handleSpinnerChange.bind(this);
+  }
+
   state = {
+    amount: 1,
     isVisible: false,
     id: ""
+  }
+
+
+  handlePress(){
+    console.log("modal handle press");
+    this.props.navigation.state.params.addItemCallback(this.props.navigation.state.params.item, this.state.amount);
+    this.props.navigation.goBack();
+    this.props.navigation.state.params.modalClosedCallback();
+    console.log("end of modal handle press");
+  }
+
+  handleSpinnerChange(value){
+    this.setState({
+      amount: value,
+    });
   }
 
   showPopover() {
@@ -33,10 +60,45 @@ export default class PopUpProduct extends Component {
     return str[0].toUpperCase() + str.slice(1);
   }
 
-
   onPress() {
     console.log("Do Something");
     this.closePopover();
+  }
+
+  getProductIDBox(item){
+   return(
+   <View style={styles.productIDBox}>
+    <Text style={styles.productIDText}>{item.product_info.id}</Text>
+  </View>);
+  }
+
+  getProductInformation(item) {
+
+    if (!item.combo_product) {
+      return (
+        <View style={styles.productNumbers}>
+
+         {this.getProductIDBox(item)}
+
+          <View style={styles.shelfBox}>
+            <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
+          </View>
+          <Text>Aisle</Text>
+
+          <View style={styles.shelfBox}>
+            <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.shelf)}</Text>
+          </View>
+          <Text>Shelf</Text>
+        </View>);
+
+    }
+    else {
+      return (
+        <View style={styles.productNumbers}>
+        {this.getProductIDBox(item)}
+        </View>
+      );
+    }
   }
 
   getProductInfo(item) {
@@ -46,7 +108,7 @@ export default class PopUpProduct extends Component {
       return (
         <View style={styles.content}>
           <View style={styles.imageBox}>
-            <Image style={styles.image} source={require('../res/Billy.png')} />
+            <Image style={styles.image} source={{uri:(item.product_info.image_url)}} />
           </View>
           <Text style={styles.h1}>{item.product_info.family.toUpperCase()}</Text>
 
@@ -56,27 +118,14 @@ export default class PopUpProduct extends Component {
 
           <Text style={styles.h1}>{this.numberWithSpaces(item.availability.price)} kr</Text>
 
-          <View style={styles.productNumbers}>
-            <View style={styles.productIDBox}>
-              <Text style={styles.productIDText}>{item.product_info.id}</Text>
-            </View>
 
-            <View style={styles.shelfBox}>
-              <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
-            </View>
-            <Text>Aisle</Text>
+          {this.getProductInformation(item)}
 
-            <View style={styles.shelfBox}>
-              <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.shelf)}</Text>
-            </View>
-            <Text>Shelf</Text>
-
-          </View>
           <Text />
 
           <View style={styles.productNumbers}>
             <Text style={styles.h6}> Amount </Text>
-            <InputSpinner></InputSpinner>
+            <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
           </View>
         </View>);
     } else {
@@ -87,29 +136,33 @@ export default class PopUpProduct extends Component {
   }
 
   render() {
-    const { item } = this.props;
+    if(this.props.navigation.state.params !== undefined){
+      const { item } = this.props.navigation.state.params;
 
-    return (
+      return (
 
-      <View >
-        <Popover
-          isVisible={this.state.isVisible}
-          fromView={this.touchable}
-          onRequestClose={() => this.closePopover()}>
-
+        <View style={styles.container}>
           {this.getProductInfo(item)}
 
           <View style={styles.modal}>
-            <PrimaryButton style={styles.productNumbers} onPress={() => this.closePopover()} img="" text={"Lägg till i listan"}></PrimaryButton>
+            <PrimaryButton style={styles.productNumbers} onPress={this.handlePress} img="" text={"Lägg till i listan"}></PrimaryButton>
           </View>
-        </Popover>
-      </View>
-    );
-
+        </View>
+      );
+    }
+    else {
+      return (
+        <View/>
+      );
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    margin: '5%',
+    backgroundColor: 'white',
+  },
   h1: {
     fontSize: 25,
     fontWeight: "bold",
@@ -143,7 +196,7 @@ const styles = StyleSheet.create({
     margin: 20
   },
   content: {
-    padding: 20
+    padding: 20,
   },
   productNumbers: {
     width: 280,

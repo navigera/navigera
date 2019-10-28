@@ -14,6 +14,12 @@ import { GetProduct } from "./utilities.js";
 import { variableDeclaration } from "@babel/types";
 
 class CameraScreen extends React.Component {
+	constructor(props){
+		super(props);
+
+		this.navigate = this.navigate.bind(this);
+	}
+
 	state = {
 		modalVisible: false,
 		item: null
@@ -23,16 +29,25 @@ class CameraScreen extends React.Component {
 		this.camera.resumePreview();
 	}
 
+	navigate(){
+		console.log(this.props.navigation);
+		this.props.navigation.navigate('Modal', {
+			item: this.state.item,
+			modalClosedCallback: this.modalClosed,
+			addItemCallback: this.props.screenProps.addItemCallback,
+		});
+	}
+
 	render() {
 		var temp;
 		const { height, width } = Dimensions.get("window");
 		const maskRowHeight = height * 0.05;
 		const maskColWidth = width * 0.2;
+		var fetching = false;
 
 		return (
 
 			<View style={styles.container}>
-				<PopUpProduct style={styles.modal} callback={this.modalClosed} ref={modal => { this.modal = modal }} item={this.state.item}></PopUpProduct>
 				<RNCamera
 					ref={ref => {
 						this.camera = ref;
@@ -64,13 +79,13 @@ class CameraScreen extends React.Component {
 								) {
 									var possibleSerial = temp[i].value;
 									if (CONSTANTS.REGEX.test(possibleSerial)) {
-
+										fetching = true;
 										let product = await GetProduct(possibleSerial);
 										if (product) {
 											this.camera.pausePreview();
 											this.setState({ item: product });
 											Vibration.vibrate(200);
-											this.modal.showPopover();
+											this.navigate();
 										}
 										//Obviously will not alert, but rather send value elsewhere.
 									}
