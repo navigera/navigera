@@ -19,7 +19,6 @@ export default class ProductList extends Component {
         fetch("https://europe-west2-ikea-mau-eu.cloudfunctions.net/api/getProduct/" + id)
             .then((response) => response.json())
             .then((responseJson) => {
-                //    console.log(responseJson);
                 responseJson.key = this.currentKey;
                 this.currentKey++;
                 var list = this.state.products;

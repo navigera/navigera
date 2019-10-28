@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import ProductList from "./components/ProductList";
 import CameraScreen from './Camera';
-import CameraPage from './components/CameraPage';
 import SearchPage from './components/SearchPage';
 import MapPage from './components/MapPage';
 import PopUpProduct from './components/PopUpProduct'

@@ -16,9 +16,8 @@ export default class ProductList extends Component {
   render(){
     const { item } = this.props;
     const { amount } = this.props;
-    console.log(item);
     return(
-      
+
       <View style={styles.container}>
         <Image style={styles.image}source={require('../res/radiobutton.png')}/>
         <View style={styles.descriptionBox}>
@@ -33,7 +32,7 @@ export default class ProductList extends Component {
                 <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.isle)}</Text>
               </View>
               <Text style={styles.h3}>Isle</Text>
-              
+
               <View style={styles.shelfBox}>
                 <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.shelf)}</Text>
               </View>
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10
 
   },
-  productIDBox: { 
+  productIDBox: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor:"black",
@@ -121,7 +120,6 @@ const styles = StyleSheet.create({
     backgroundColor:"#cc0008",
     width:20,
     height:20,
-    
+
   }
 });
-

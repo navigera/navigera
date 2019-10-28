@@ -30,7 +30,6 @@ class CameraScreen extends React.Component {
 	}
 
 	navigate(){
-		console.log(this.props.navigation);
 		this.props.navigation.navigate('Modal', {
 			item: this.state.item,
 			modalClosedCallback: this.modalClosed,

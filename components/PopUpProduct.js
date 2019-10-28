@@ -8,9 +8,9 @@ export default class PopUpProduct extends Component {
   constructor(props){
     super(props);
 
-    /*this.props.navigation.addListener('willBlur', () => {
+    this.props.navigation.addListener('willBlur', () => {
       this.props.navigation.state.params.modalClosedCallback();
-    });*/
+    });
 
     this.handlePress = this.handlePress.bind(this);
     this.handleSpinnerChange = this.handleSpinnerChange.bind(this);
@@ -18,33 +18,19 @@ export default class PopUpProduct extends Component {
 
   state = {
     amount: 1,
-    isVisible: false,
     id: ""
   }
 
 
   handlePress(){
-    console.log("modal handle press");
     this.props.navigation.state.params.addItemCallback(this.props.navigation.state.params.item, this.state.amount);
     this.props.navigation.goBack();
-    this.props.navigation.state.params.modalClosedCallback();
-    console.log("end of modal handle press");
   }
 
   handleSpinnerChange(value){
     this.setState({
       amount: value,
     });
-  }
-
-  showPopover() {
-    this.setState({ isVisible: true });
-  }
-
-  closePopover() {
-    const { callback } = this.props;
-    this.setState({ isVisible: false });
-    callback();
   }
 
   numberWithSpaces(x) {
@@ -58,11 +44,6 @@ export default class PopUpProduct extends Component {
 
   capitalizeFirst(str) {
     return str[0].toUpperCase() + str.slice(1);
-  }
-
-  onPress() {
-    console.log("Do Something");
-    this.closePopover();
   }
 
   getProductIDBox(item){
@@ -129,8 +110,6 @@ export default class PopUpProduct extends Component {
           </View>
         </View>);
     } else {
-      //Loading screen or smth idek, it didnt find shit
-      console.log('dang it is null');
       return (<Text>no tengo produCTO</Text>);
     }
   }

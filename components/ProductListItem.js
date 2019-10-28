@@ -59,7 +59,6 @@ export default class ProductList extends Component {
           {this.state.expanded == true &&
             <View style={styles.flex}>
               {this.state.packages.map(p => {
-                console.log(p);
                 //todo: generate unique keys
                 return <PackageListItem item = {p.data} key={p.id} amount={p.count}></PackageListItem>
               })}
