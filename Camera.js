@@ -38,7 +38,6 @@ class CameraScreen extends React.Component {
 		const { height, width } = Dimensions.get("window");
 		const maskRowHeight = height * 0.05;
 		const maskColWidth = width * 0.2;
-		var fetching = false;
 
 		return (
 
@@ -74,7 +73,6 @@ class CameraScreen extends React.Component {
 								) {
 									var possibleSerial = temp[i].value;
 									if (CONSTANTS.REGEX.test(possibleSerial)) {
-										fetching = true;
 										let product = await GetProduct(possibleSerial);
 										if (product) {
 											this.camera.pausePreview();
