@@ -5,19 +5,32 @@ import PrimaryButton from './PrimaryButton';
 import Popover from 'react-native-popover-view';
 
 export default class PopUpProduct extends Component {
+  constructor(props){
+    super(props);
+
+    this.props.navigation.addListener('willBlur', () => {
+      this.props.navigation.state.params.modalClosedCallback();
+    });
+
+    this.handlePress = this.handlePress.bind(this);
+    this.handleSpinnerChange = this.handleSpinnerChange.bind(this);
+  }
+
   state = {
-    isVisible: false,
+    amount: 1,
     id: ""
   }
 
-  showPopover() {
-    this.setState({ isVisible: true });
+
+  handlePress(){
+    this.props.navigation.state.params.addItemCallback(this.props.navigation.state.params.item, this.state.amount);
+    this.props.navigation.goBack();
   }
 
-  closePopover() {
-    const { callback } = this.props;
-    this.setState({ isVisible: false });
-    callback();
+  handleSpinnerChange(value){
+    this.setState({
+      amount: value,
+    });
   }
 
   numberWithSpaces(x) {
@@ -33,26 +46,21 @@ export default class PopUpProduct extends Component {
     return str[0].toUpperCase() + str.slice(1);
   }
 
-  onPress() {
-    console.log("Do Something");
-    this.closePopover();
-  }
-
   getProductIDBox(item){
-   return( 
+   return(
    <View style={styles.productIDBox}>
     <Text style={styles.productIDText}>{item.product_info.id}</Text>
   </View>);
   }
-  
+
   getProductInformation(item) {
 
     if (!item.combo_product) {
       return (
         <View style={styles.productNumbers}>
-         
+
          {this.getProductIDBox(item)}
-         
+
           <View style={styles.shelfBox}>
             <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
           </View>
@@ -91,47 +99,49 @@ export default class PopUpProduct extends Component {
 
           <Text style={styles.h1}>{this.numberWithSpaces(item.availability.price)} kr</Text>
 
-          
+
           {this.getProductInformation(item)}
 
           <Text />
 
           <View style={styles.productNumbers}>
             <Text style={styles.h6}> Amount </Text>
-            <InputSpinner></InputSpinner>
+            <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
           </View>
         </View>);
     } else {
-      //Loading screen or smth idek, it didnt find shit
-      console.log('dang it is null');
       return (<Text>no tengo produCTO</Text>);
     }
   }
 
   render() {
-    const { item } = this.props;
+    if(this.props.navigation.state.params !== undefined){
+      const { item } = this.props.navigation.state.params;
 
-    return (
+      return (
 
-      <View >
-        <Popover
-          isVisible={this.state.isVisible}
-          fromView={this.touchable}
-          onRequestClose={() => this.closePopover()}>
-
+        <View style={styles.container}>
           {this.getProductInfo(item)}
 
           <View style={styles.modal}>
-            <PrimaryButton style={styles.productNumbers} onPress={() => this.closePopover()} img="" text={"Lägg till i listan"}></PrimaryButton>
+            <PrimaryButton style={styles.productNumbers} onPress={this.handlePress} img="" text={"Lägg till i listan"}></PrimaryButton>
           </View>
-        </Popover>
-      </View>
-    );
-
+        </View>
+      );
+    }
+    else {
+      return (
+        <View/>
+      );
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    margin: '5%',
+    backgroundColor: 'white',
+  },
   h1: {
     fontSize: 25,
     fontWeight: "bold",
@@ -165,7 +175,7 @@ const styles = StyleSheet.create({
     margin: 20
   },
   content: {
-    padding: 20
+    padding: 20,
   },
   productNumbers: {
     width: 280,

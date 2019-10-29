@@ -12,7 +12,7 @@ export default class ProductList extends Component {
         currentKey : 0,
         packages: [],
     };
-    
+
     this.handlePress = this.handlePress.bind(this);
     this.handleHold = this.handleHold.bind(this);
   }
@@ -29,7 +29,6 @@ export default class ProductList extends Component {
 
   componentDidMount(){
     this.props.product.packages.forEach(p => {
-      console.log(p);
       this.fetchPackage(p);
     });
 
@@ -60,7 +59,6 @@ export default class ProductList extends Component {
           {this.state.expanded == true &&
             <View style={styles.flex}>
               {this.state.packages.map(p => {
-                console.log(p);
                 //todo: generate unique keys
                 return <PackageListItem item = {p.data} key={p.id} amount={p.count}></PackageListItem>
               })}

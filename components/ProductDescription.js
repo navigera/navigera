@@ -26,11 +26,11 @@ export default class ProductDescription extends Component {
 
   getProductNumbers(){
     return (<View style={styles.productNumbers}>
-  
+
       <View style={styles.productIDBox}>
         <Text style={styles.productIDText}>{item.product.product_info.id}</Text>
       </View>
-  
+
       <View style={styles.shelfBox}>
         <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.aisle)}</Text>
       </View>
