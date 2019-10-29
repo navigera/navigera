@@ -4,7 +4,7 @@ import { Text, StyleSheet, View, TextInput } from 'react-native';
 export default class SearchBox extends React.Component {
 
 	render() {
-		const { searchBoxFocused, searchTextChanged, defaultValue } = this.props;
+		const { searchBoxFocused, searchTextChanged } = this.props;
 
 		return (
 			<View style={styles.container}>
