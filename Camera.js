@@ -1,20 +1,16 @@
 import React from "react";
 import {
 	StyleSheet,
-	Text,
 	View,
 	Dimensions,
-	TouchableOpacity,
 	Vibration
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import CONSTANTS from "./components/Constants.js";
-import PopUpProduct from "./components/PopUpProduct";
 import { GetProduct } from "./utilities.js";
-import { variableDeclaration } from "@babel/types";
 
 class CameraScreen extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
 
 		this.navigate = this.navigate.bind(this);
@@ -29,7 +25,7 @@ class CameraScreen extends React.Component {
 		this.camera.resumePreview();
 	}
 
-	navigate(){
+	navigate() {
 		this.props.navigation.navigate('Modal', {
 			item: this.state.item,
 			modalClosedCallback: this.modalClosed,
