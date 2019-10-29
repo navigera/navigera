@@ -1,90 +1,150 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import ProductList from "./components/ProductList"
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import ProductList from "./components/ProductList";
 import CameraScreen from './Camera';
-import ProductDescription from './components/ProductDescription';
-import { setCustomText } from 'react-native-global-props';
+import SearchPage from './components/SearchPage';
+import MapPage from './components/MapPage';
+import PopUpProduct from './components/PopUpProduct'
+import { createMaterialTopTabNavigator} from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import { Icon } from "@up-shared/components";
 
 
 export default class App extends React.Component {
-	constructor(props) {
+	constructor(props){
 		super(props);
 
-		this.state = {
-			products: [],
-		};
-
-		setCustomText(customTextProps);
-
-		//todo: generate better unique keys
 		this.currentKey = 0;
-		this.getProduct = this.getProduct.bind(this);
-		this.handleRemoveProduct = this.handleRemoveProduct.bind(this);
+
+		this.addItemCallback = this.addItemCallback.bind(this);
+		this.removeItemCallback = this.removeItemCallback.bind(this);
 	}
 
-	componentDidMount() {
-		this.getProduct("690.178.28");
-		this.getProduct("002.638.50");
-		this.getProduct("690.178.28");
-	}
+	state = {
+		products: [],
+	};
 
 	render() {
 		return (
-
-			<View style={styles.container}>
-
-				<CameraScreen />
-				{/*<ProductList products={this.state.products} removeCallback={this.handleRemoveProduct}></ProductList>*/}
-				{/*<TestPopUpProduct item={this.state.products[0]}></TestPopUpProduct> */}
-				{/*<ProductDescription item={this.state.products[0]}></ProductDescription>*/}
-
-			</View>
+			<SafeAreaView style={styles.container}>
+				<ModalContainer screenProps={{
+					products: this.state.products,
+					addItemCallback: this.addItemCallback,
+					removeItemCallback: this.removeItemCallback,
+					test: 'tjena',
+				}}/>
+			</SafeAreaView>
 		);
 	}
 
-	getProduct(id) {
-		fetch("https://europe-west2-ikea-mau-eu.cloudfunctions.net/api/getProduct/" + id)
-			.then((response) => response.json())
-			.then((responseJson) => {
-				//	console.log(responseJson);
-				responseJson.key = this.currentKey;
-				this.currentKey++;
-				var list = this.state.products;
-				list.push(responseJson);
-				this.setState({ products: list });
-				return responseJson;
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}
-
-	handleRemoveProduct(key) {
+	removeItemCallback(key){
 		var list = this.state.products;
-		for (var i = 0; i < list.length; i++) {
-			if (list[i].key == key) {
+		for(var i = 0; i < list.length; i++){
+			if(list[i].key == key){
 				list.splice(i, 1);
 				break;
 			}
 		}
+		this.setState({products: list});
+	}
+
+	addItemCallback(item, num){
+		//todo: add num items instead of 1
+		var list = this.state.products;
+		item.key = this.currentKey;
+		this.currentKey++;
+		list.push(item);
 		this.setState({ products: list });
 	}
-
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		//backgroundColor:'#0058a3'
+const AppTabNavigator = createMaterialTopTabNavigator({
+		Camera : {screen: CameraScreen,
+			navigationOptions: {
+				tabBarLabel:'Camera',
+				tabBarIcon: ({tintColor})=>(
+					<Icon name="scan-barcode-24" size={40} color={tintColor}/>
+				)
+			}
+		},
+		Search : {screen: SearchPage,
+			navigationOptions: {
+				tabBarLabel:'Search',
+				tabBarIcon: ({tintColor})=>(
+					<Icon name="search-24" size={40} color={tintColor}/>
+				)
+			}
+		},
+		List : {screen: ProductList,
+			navigationOptions: {
+				tabBarLabel:'List',
+				tabBarIcon: ({tintColor})=>(
+					<Icon name="list-view-24" size={40} color={tintColor}/>
+				)
+			}
+		},
+		Map : {screen: MapPage,
+			navigationOptions: {
+				tabBarLabel:'Map',
+				tabBarIcon: ({tintColor})=>(
+					<Icon name="store-24" size={40} color={tintColor}/>
+				)
+			}
+		},
 	},
-	scroller: {
-        flex: 1,
-    }
-});
-
-const customTextProps = {
-	style: {
-	  fontFamily: 'Noto IKEA Arabic' // light gray
+	{
+		initialRouteName:'Camera',
+		tabBarPosition: 'bottom',
+		swipeEnabled: true,
+		lazy: true,
+		tabBarOptions: {
+			activeTintColor: 'blue',
+			inactiveTintColor: 'black',
+			style: {
+				backgroundColor: 'white',
+				height: 70,
+			},
+			iconStyle: {
+				width: 40,
+				margin: 5,
+			},
+			indicatorStyle: {
+				height: 0.
+			},
+			showIcon: true,
+			showLabel: false,
+		},
 	}
-  };
-   
+);
+
+const RootStack = createStackNavigator(
+	{
+		Main: {
+			screen: AppTabNavigator,
+		},
+		Modal: {
+			screen: PopUpProduct,
+		}
+	},
+	{
+		mode: 'modal',
+		headerMode: 'none',
+		transparentCard: true,
+		cardStyle: {
+			opacity: 1,
+		}
+	}
+);
+
+const AppContainer = createAppContainer(AppTabNavigator);
+const ModalContainer = createAppContainer(RootStack);
+
+
+
+const styles = StyleSheet.create({
+	container:{
+		flex: 1,
+		backgroundColor: 'white',
+	},
+});
