@@ -19,10 +19,12 @@ export default class ProductList extends Component {
     return(
 
       <View style={styles.container}>
-        <Image style={styles.image}source={require('../res/radiobutton.png')}/>
+          {/*<Image style={styles.image} source={{uri:(item.product_info.image_url)}} />*/}
         <View style={styles.descriptionBox}>
-          <Text style={styles.h3}>{this.capitalizeFirst(item.product.product_info.category)}</Text>
-
+          <View style={styles.amount}>
+            <Text style={styles.h3}>{this.capitalizeFirst(item.product.product_info.category)}</Text>
+            <Text style={styles.amountText}>x {amount}</Text>
+          </View>
             <View style={styles.productNumbers}>
               <View style={styles.productIDBox}>
                 <Text style={styles.productIDText}>{item.product.product_info.id}</Text>
@@ -37,11 +39,10 @@ export default class ProductList extends Component {
                 <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.shelf)}</Text>
               </View>
               <Text style={styles.h3}>Shelf</Text>
+              
         </View>
 
-        <View style={styles.amount}>
-          <Text style={styles.amountText}>x {amount}</Text>
-        </View>
+        
       </View>
       </View>
 
@@ -67,15 +68,13 @@ const styles = StyleSheet.create({
     alignSelf:"center"
   },
   amount: {
-    flex:1,
-    justifyContent:"center",
-    alignItems:"flex-end"
+    flexDirection:"row",
   },
   amountText: {
     fontSize: 14,
     width:"30%",
     color:"gray",
-    textAlign: "left",
+    textAlign: "center",
 
   },
   h1: {
