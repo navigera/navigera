@@ -102,7 +102,6 @@ export default class PopUpProduct extends Component {
 
           {this.getProductInformation(item)}
 
-          <Text />
 
           <View style={styles.productNumbers}>
             <Text style={styles.h6}> Amount </Text>
@@ -139,7 +138,7 @@ export default class PopUpProduct extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: '5%',
+    margin: 10,
     backgroundColor: 'white',
   },
   h1: {

@@ -15,7 +15,7 @@ export default class ProductListItemInfo extends Component {
     return(
       
       <View style={styles.container}>
-        <Image style={styles.image}source={require('../res/Billy.png')}/>
+        <Image style={styles.image} source={{uri:(item.product_info.image_url)}} />
         <View style={styles.descriptionBox}>
           <Text style={styles.h1}>{item.product_info.family.toUpperCase()}</Text> 
           <Text style={styles.h3}>{this.capitalizeFirst(item.product_info.category)}, {item.product_info.color}</Text>
