@@ -38,7 +38,7 @@ class CameraScreen extends React.Component {
 		return (
 
 			<View style={styles.container}>
-				<PopUpProduct style={styles.modal} addItemCallback={addItemCallback} callback={this.modalClosed} ref={modal => { this.modal = modal }} item={this.state.item}></PopUpProduct>
+				<PopUpProduct style={styles.modal} addItemCallback={addItemCallback} modalCloseCallback={this.modalClosed} ref={modal => { this.modal = modal }} item={this.state.item}></PopUpProduct>
 				<RNCamera
 					ref={ref => {
 						this.camera = ref;

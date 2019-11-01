@@ -7,11 +7,14 @@ import MapPage from './components/MapPage';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
 import { Icon } from "@up-shared/components";
+import { setCustomText } from 'react-native-global-props';
 
 
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
+
+		setCustomText(customTextProps);
 
 		this.currentKey = 0;
 
@@ -129,3 +132,9 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 	},
 });
+
+const customTextProps = {
+	style: {
+		fontFamily: 'Noto IKEA Arabic' // light gray
+	}
+};

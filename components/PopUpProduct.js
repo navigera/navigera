@@ -22,9 +22,9 @@ export default class PopUpProduct extends Component {
   }
 
   closePopover() {
-    const { callback } = this.props;
+    const { modalCloseCallback } = this.props;
     this.setState({ isVisible: false });
-    callback();
+    modalCloseCallback();
   }
 
   numberWithSpaces(x) {
@@ -129,26 +129,33 @@ export default class PopUpProduct extends Component {
     this.state.item = item;
 
     return (
+      <Popover
+        isVisible={this.state.isVisible}
+        fromView={this.touchable}
+        onRequestClose={() => this.closePopover()}>
 
-      <View >
-        <Popover
-          isVisible={this.state.isVisible}
-          fromView={this.touchable}
-          onRequestClose={() => this.closePopover()}>
+        <View style={styles.container}>
 
           {this.getProductInfo(item)}
 
-          <View style={styles.modal}>
-            <PrimaryButton style={styles.productNumbers} onPress={this.handlePress} img="" text={"Lägg till i listan"}></PrimaryButton>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={this.handlePress} img="" text={"Lägg till i listan"}></PrimaryButton>
           </View>
-        </Popover>
-      </View>
+        </View>
+      </Popover>
     );
 
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 25,
+    backgroundColor: 'white',
+  },
+  buttonContainer: {
+    marginTop: 10,
+  },
   h1: {
     fontSize: 25,
     fontWeight: "bold",
@@ -181,9 +188,6 @@ const styles = StyleSheet.create({
   modal: {
     margin: 20
   },
-  content: {
-    padding: 20
-  },
   productNumbers: {
     width: 280,
     flexWrap: "wrap",
@@ -191,8 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 10,
-    paddingBottom: 10
-
+    paddingBottom: 10,
   },
   productIDBox: {
     justifyContent: "center",
