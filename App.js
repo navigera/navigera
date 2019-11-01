@@ -4,16 +4,17 @@ import ProductList from "./components/ProductList";
 import CameraScreen from './Camera';
 import SearchPage from './components/SearchPage';
 import MapPage from './components/MapPage';
-import PopUpProduct from './components/PopUpProduct'
-import { createMaterialTopTabNavigator} from 'react-navigation-tabs';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
 import { Icon } from "@up-shared/components";
+import { setCustomText } from 'react-native-global-props';
 
 
 export default class App extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
+
+		setCustomText(customTextProps);
 
 		this.currentKey = 0;
 
@@ -28,28 +29,28 @@ export default class App extends React.Component {
 	render() {
 		return (
 			<SafeAreaView style={styles.container}>
-				<ModalContainer screenProps={{
+				<AppContainer screenProps={{
 					products: this.state.products,
+					modalVisible: this.state.modalVisible,
 					addItemCallback: this.addItemCallback,
 					removeItemCallback: this.removeItemCallback,
-					test: 'tjena',
-				}}/>
+				}} />
 			</SafeAreaView>
 		);
 	}
 
-	removeItemCallback(key){
+	removeItemCallback(key) {
 		var list = this.state.products;
-		for(var i = 0; i < list.length; i++){
-			if(list[i].key == key){
+		for (var i = 0; i < list.length; i++) {
+			if (list[i].key == key) {
 				list.splice(i, 1);
 				break;
 			}
 		}
-		this.setState({products: list});
+		this.setState({ products: list });
 	}
 
-	addItemCallback(item, num){
+	addItemCallback(item, num) {
 		//todo: add num items instead of 1
 		var list = this.state.products;
 		item.key = this.currentKey;
@@ -60,41 +61,45 @@ export default class App extends React.Component {
 }
 
 const AppTabNavigator = createMaterialTopTabNavigator({
-		Camera : {screen: CameraScreen,
-			navigationOptions: {
-				tabBarLabel:'Camera',
-				tabBarIcon: ({tintColor})=>(
-					<Icon name="scan-barcode-24" size={40} color={tintColor}/>
-				)
-			}
-		},
-		Search : {screen: SearchPage,
-			navigationOptions: {
-				tabBarLabel:'Search',
-				tabBarIcon: ({tintColor})=>(
-					<Icon name="search-24" size={40} color={tintColor}/>
-				)
-			}
-		},
-		List : {screen: ProductList,
-			navigationOptions: {
-				tabBarLabel:'List',
-				tabBarIcon: ({tintColor})=>(
-					<Icon name="list-view-24" size={40} color={tintColor}/>
-				)
-			}
-		},
-		Map : {screen: MapPage,
-			navigationOptions: {
-				tabBarLabel:'Map',
-				tabBarIcon: ({tintColor})=>(
-					<Icon name="store-24" size={40} color={tintColor}/>
-				)
-			}
-		},
+	Camera: {
+		screen: CameraScreen,
+		navigationOptions: {
+			tabBarLabel: 'Camera',
+			tabBarIcon: ({ tintColor }) => (
+				<Icon name="scan-barcode-24" size={30} color={tintColor} />
+			)
+		}
 	},
+	Search: {
+		screen: SearchPage,
+		navigationOptions: {
+			tabBarLabel: 'Search',
+			tabBarIcon: ({ tintColor }) => (
+				<Icon name="search-24" size={30} color={tintColor} />
+			)
+		}
+	},
+	List: {
+		screen: ProductList,
+		navigationOptions: {
+			tabBarLabel: 'List',
+			tabBarIcon: ({ tintColor }) => (
+				<Icon name="list-view-24" size={30} color={tintColor} />
+			)
+		}
+	},
+	Map: {
+		screen: MapPage,
+		navigationOptions: {
+			tabBarLabel: 'Map',
+			tabBarIcon: ({ tintColor }) => (
+				<Icon name="store-24" size={30} color={tintColor} />
+			)
+		}
+	},
+},
 	{
-		initialRouteName:'Camera',
+		initialRouteName: 'Camera',
 		tabBarPosition: 'bottom',
 		swipeEnabled: true,
 		lazy: true,
@@ -103,11 +108,11 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 			inactiveTintColor: 'black',
 			style: {
 				backgroundColor: 'white',
-				height: 70,
+				height: 50,
 			},
 			iconStyle: {
-				width: 40,
-				margin: 5,
+				width: 30,
+				margin: 0,
 			},
 			indicatorStyle: {
 				height: 0.
@@ -118,33 +123,18 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 	}
 );
 
-const RootStack = createStackNavigator(
-	{
-		Main: {
-			screen: AppTabNavigator,
-		},
-		Modal: {
-			screen: PopUpProduct,
-		}
-	},
-	{
-		mode: 'modal',
-		headerMode: 'none',
-		transparentCard: true,
-		cardStyle: {
-			opacity: 1,
-		}
-	}
-);
-
 const AppContainer = createAppContainer(AppTabNavigator);
-const ModalContainer = createAppContainer(RootStack);
-
 
 
 const styles = StyleSheet.create({
-	container:{
+	container: {
 		flex: 1,
 		backgroundColor: 'white',
 	},
 });
+
+const customTextProps = {
+	style: {
+		fontFamily: 'Noto IKEA Arabic' // light gray
+	}
+};
