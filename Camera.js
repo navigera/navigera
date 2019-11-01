@@ -149,5 +149,5 @@ const styles = StyleSheet.create({
 		width: "100%"
 	},
 	maskCenter: { flexDirection: "row" },
-	topRight: { alignSelf: 'flex-end', padding: 20, marginTop: 0, position: 'absolute', }
+	topRight: { alignSelf: 'flex-end', padding: 20, marginTop: 0, position: 'absolute', },
 });
