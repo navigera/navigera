@@ -7,13 +7,15 @@ import {
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import CONSTANTS from "./components/Constants.js";
+import PopUpProduct from "./components/PopUpProduct";
 import { GetProduct } from "./utilities.js";
 
 class CameraScreen extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.navigate = this.navigate.bind(this);
+		this.addItem = this.addItem.bind(this);
+		this.modalClosed = this.modalClosed.bind(this);
 	}
 
 	state = {
@@ -21,16 +23,15 @@ class CameraScreen extends React.Component {
 		item: null
 	};
 
-	modalClosed = () => {
+	modalClosed() {
+		this.setState({ modalVisible: false });
 		this.camera.resumePreview();
 	}
 
-	navigate() {
-		this.props.navigation.navigate('Modal', {
-			item: this.state.item,
-			modalClosedCallback: this.modalClosed,
-			addItemCallback: this.props.screenProps.addItemCallback,
-		});
+	addItem(item, amount) {
+		console.log('Camera', 'addItem');
+		const { addItemCallback } = this.props.screenProps;
+		addItemCallback(item, amount);
 	}
 
 	render() {
@@ -42,13 +43,14 @@ class CameraScreen extends React.Component {
 		return (
 
 			<View style={styles.container}>
+				<PopUpProduct style={styles.modal} addItemCallback={this.addItem} callback={this.modalClosed} ref={modal => { this.modal = modal }} item={this.state.item}></PopUpProduct>
 				<RNCamera
 					ref={ref => {
 						this.camera = ref;
 					}}
 					captureAudio={false}
 					style={styles.preview}
-					cropScanArea={[1, 1]}
+					cropScanArea={[0.8, 0.25]}
 					type={RNCamera.Constants.Type.back}
 					androidCameraPermissionOptions={{
 						title: "Permission to use camera",
@@ -63,24 +65,31 @@ class CameraScreen extends React.Component {
 						buttonNegative: "Cancel"
 					}}
 					onTextRecognized={async (data) => {
-						temp = data.textBlocks;
+						if (!this.state.modalVisible) {
+							temp = data.textBlocks;
 
-						if (typeof temp !== "undefined") {
-							for (let i = 0; i < temp.length; i++) {
-								if (
-									temp[i].value.length ==
-									CONSTANTS.SERIAL_LENGTH
-								) {
-									var possibleSerial = temp[i].value;
-									if (CONSTANTS.REGEX.test(possibleSerial)) {
-										let product = await GetProduct(possibleSerial);
-										if (product) {
-											this.camera.pausePreview();
-											this.setState({ item: product });
-											Vibration.vibrate(200);
-											this.navigate();
+							if (typeof temp !== "undefined") {
+								for (let i = 0; i < temp.length; i++) {
+									if (
+										temp[i].value.length ==
+										CONSTANTS.SERIAL_LENGTH
+									) {
+										var possibleSerial = temp[i].value;
+										if (CONSTANTS.REGEX.test(possibleSerial)) {
+
+											let product = await GetProduct(possibleSerial);
+											if (product) {
+												this.camera.pausePreview();
+												this.setState({ item: product });
+												if (!this.state.modalVisible) {
+													Vibration.vibrate(200);
+												}
+												this.modal.showPopover();
+												this.setState({ modalVisible: true });
+												console.log('camera opened popup');
+											}
+											//Obviously will not alert, but rather send value elsewhere.
 										}
-										//Obviously will not alert, but rather send value elsewhere.
 									}
 								}
 							}
