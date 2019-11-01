@@ -58,7 +58,7 @@ export default class ProductList extends Component {
             <View style={styles.flex}>
               {this.state.packages.map(p => {
                 //todo: generate unique keys
-                return <PackageListItem item = {p.data} key={p.id} amount={p.count}></PackageListItem>
+                return <PackageListItem item = {p.data} key={p.id} amount={p.count * this.props.product.amount}></PackageListItem>
               })}
             </View>
           }
