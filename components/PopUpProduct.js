@@ -5,32 +5,26 @@ import PrimaryButton from './PrimaryButton';
 import Popover from 'react-native-popover-view';
 
 export default class PopUpProduct extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-
-    this.props.navigation.addListener('willBlur', () => {
-      this.props.navigation.state.params.modalClosedCallback();
-    });
 
     this.handlePress = this.handlePress.bind(this);
     this.handleSpinnerChange = this.handleSpinnerChange.bind(this);
   }
-
   state = {
+    isVisible: false,
     amount: 1,
-    id: ""
+    item: null,
   }
 
-
-  handlePress(){
-    this.props.navigation.state.params.addItemCallback(this.props.navigation.state.params.item, this.state.amount);
-    this.props.navigation.goBack();
+  showPopover() {
+    this.setState({ isVisible: true });
   }
 
-  handleSpinnerChange(value){
-    this.setState({
-      amount: value,
-    });
+  closePopover() {
+    const { modalCloseCallback } = this.props;
+    this.setState({ isVisible: false });
+    modalCloseCallback();
   }
 
   numberWithSpaces(x) {
@@ -46,11 +40,25 @@ export default class PopUpProduct extends Component {
     return str[0].toUpperCase() + str.slice(1);
   }
 
-  getProductIDBox(item){
-   return(
-   <View style={styles.productIDBox}>
-    <Text style={styles.productIDText}>{item.product_info.id}</Text>
-  </View>);
+  handlePress() {
+    const { addItemCallback } = this.props;
+    console.log('popup item', this.state.item);
+    addItemCallback(this.state.item, this.state.amount);
+    console.log('PopUp', 'addItem');
+    this.closePopover();
+  }
+
+  getProductIDBox(item) {
+    return (
+      <View style={styles.productIDBox}>
+        <Text style={styles.productIDText}>{item.product_info.id}</Text>
+      </View>);
+  }
+
+  handleSpinnerChange(value) {
+    this.setState({
+      amount: value,
+    });
   }
 
   getProductInformation(item) {
@@ -59,7 +67,7 @@ export default class PopUpProduct extends Component {
       return (
         <View style={styles.productNumbers}>
 
-         {this.getProductIDBox(item)}
+          {this.getProductIDBox(item)}
 
           <View style={styles.shelfBox}>
             <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
@@ -76,7 +84,7 @@ export default class PopUpProduct extends Component {
     else {
       return (
         <View style={styles.productNumbers}>
-        {this.getProductIDBox(item)}
+          {this.getProductIDBox(item)}
         </View>
       );
     }
@@ -89,7 +97,7 @@ export default class PopUpProduct extends Component {
       return (
         <View style={styles.content}>
           <View style={styles.imageBox}>
-            <Image style={styles.image} source={{uri:(item.product_info.image_url)}} />
+            <Image style={styles.image} source={{ uri: (item.product_info.image_url) }} />
           </View>
           <Text style={styles.h1}>{item.product_info.family.toUpperCase()}</Text>
 
@@ -102,6 +110,7 @@ export default class PopUpProduct extends Component {
 
           {this.getProductInformation(item)}
 
+          <Text />
 
           <View style={styles.productNumbers}>
             <Text style={styles.h6}> Amount </Text>
@@ -109,37 +118,43 @@ export default class PopUpProduct extends Component {
           </View>
         </View>);
     } else {
+      //Loading screen or smth idek, it didnt find shit
+      console.log('dang it is null');
       return (<Text>no tengo produCTO</Text>);
     }
   }
 
   render() {
-    if(this.props.navigation.state.params !== undefined){
-      const { item } = this.props.navigation.state.params;
+    const { item } = this.props;
+    this.state.item = item;
 
-      return (
+    return (
+      <Popover
+        isVisible={this.state.isVisible}
+        fromView={this.touchable}
+        onRequestClose={() => this.closePopover()}>
 
         <View style={styles.container}>
+
           {this.getProductInfo(item)}
 
-          <View style={styles.modal}>
-            <PrimaryButton style={styles.productNumbers} onPress={this.handlePress} img="" text={"Lägg till i listan"}></PrimaryButton>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={this.handlePress} img="" text={"Lägg till i listan"}></PrimaryButton>
           </View>
         </View>
-      );
-    }
-    else {
-      return (
-        <View/>
-      );
-    }
+      </Popover>
+    );
+
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    padding: 25,
     backgroundColor: 'white',
+  },
+  buttonContainer: {
+    marginTop: 10,
   },
   h1: {
     fontSize: 25,
@@ -173,9 +188,6 @@ const styles = StyleSheet.create({
   modal: {
     margin: 20
   },
-  content: {
-    padding: 20,
-  },
   productNumbers: {
     width: 280,
     flexWrap: "wrap",
@@ -183,8 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 10,
-    paddingBottom: 10
-
+    paddingBottom: 10,
   },
   productIDBox: {
     justifyContent: "center",
