@@ -6,18 +6,13 @@ export default class InputSpinner extends Component {
 
     constructor(){
         super();
-        this.state ={
-            clickable: false
-        }
     }
 
     subtract(){
         if(this.props.amount > 1){
             this.props.handleSpinnerChange(this.props.amount - 1);
         }
-        else if(this.props.amount <= 2){
-            this.setState({clickable:false})
-        }
+      
     }
 
     add(){
@@ -30,9 +25,9 @@ export default class InputSpinner extends Component {
 
       <View style={styles.Spinner}>
         <View style={{flex:1}}>
-          <TouchableHighlight underlayColor ={this.state.clickable ? 'lightgray' :'white'}
+          <TouchableHighlight underlayColor = {this.props.amount > 1 ? 'lightgray' :'white'}
             style={styles.button} onPress = {() =>{this.subtract()}}>
-              <Text style={this.state.clickable ? styles.text : styles.text_subtract}>-</Text>
+              <Text style={this.props.amount > 1 ? styles.text : styles.text_subtract}>-</Text>
           </TouchableHighlight>
         </View>
 
@@ -50,26 +45,26 @@ export default class InputSpinner extends Component {
 
 const styles = StyleSheet.create({
     Spinner:{
-        width:100,
-		    height:30,
-        borderColor:"gray",
-        borderWidth:1,
-        flexWrap:"wrap",
-        flexDirection:"row",
-        alignContent:"center",
-        alignItems:"center"
+      width:100,
+      height:30,
+      borderColor:"gray",
+      borderWidth:1,
+      flexWrap:"wrap",
+      flexDirection:"row",
+      alignContent:"center",
+      alignItems:"center"
 
     },
     button:{
-        justifyContent:"center",
+      justifyContent:"center",
     },
     text:{
-    textAlign:"center",
-    fontSize:20
+     textAlign:"center",
+     fontSize:20
     },
     text_subtract:{
-        textAlign:"center",
-        fontSize: 20,
-        opacity:0.5
+      textAlign:"center",
+      fontSize: 20,
+      opacity:0.5
     }
   });

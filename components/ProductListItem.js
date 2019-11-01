@@ -24,7 +24,7 @@ export default class ProductList extends Component {
   }
 
   handleHold(event){
-    this.props.removeCallback(this.props.product.key)
+    this.props.removeCallback(this.props.product.product_info.id, 1);
   }
 
   componentDidMount(){
@@ -38,8 +38,6 @@ export default class ProductList extends Component {
     fetch("https://europe-west2-ikea-mau-eu.cloudfunctions.net/api/getProduct/" + p.id)
     .then((response) => response.json())
     .then((responseJson) => {
-      responseJson.key = this.currentKey;
-      this.currentKey++;
       var list = this.state.packages;
       p.data = responseJson;
       list.push(p);
@@ -53,14 +51,16 @@ export default class ProductList extends Component {
 
   render(){
     return(
-      <TouchableHighlight underlayColor ={"#fafafa"} onPress={this.handlePress} onLongPress={this.handleHold}>
+      <TouchableHighlight underlayColor ={"#fafafa"} onLongPress={this.handleHold}>
         <View style={styles.container}>
-          <ProductListItemInfo item={this.props.product} amount={1}></ProductListItemInfo>
+
+          <ProductListItemInfo  expanded={this.state.expanded} handlePress={this.handlePress} product={this.props.product}></ProductListItemInfo>
+
           {this.state.expanded == true &&
             <View style={styles.flex}>
               {this.state.packages.map(p => {
                 //todo: generate unique keys
-                return <PackageListItem item = {p.data} key={p.id} amount={p.count}></PackageListItem>
+                return <PackageListItem item = {p.data} key={p.id} amount={p.count * this.props.product.amount}></PackageListItem>
               })}
             </View>
           }
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
 
   container:{
     flex: 1,
-   // backgroundColor: 'yellow',
     marginBottom: 5,
     marginTop: 5,
   },

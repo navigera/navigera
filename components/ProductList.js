@@ -50,7 +50,7 @@ export default class ProductList extends Component {
       </View>
         <ScrollView style={styles.container, styles.padding}>
           {this.props.screenProps.products.map(p => {
-            return <ProductListItem product={p} removeCallback={this.props.screenProps.removeItemCallback} key={p.key}/>
+            return <ProductListItem product={p} removeCallback={this.props.screenProps.removeItemCallback} key={p.product_info.id}/>
           })}
         </ScrollView>
         <ProductListFooter price={totalPrice} quantity={quantity}/>
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
 
   container:{
     flex: 1,
+    backgroundColor:"#f4f4f4"
   },
 
   padding:{
