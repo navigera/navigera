@@ -45,7 +45,7 @@ class CameraScreen extends React.Component {
 					}}
 					captureAudio={false}
 					style={styles.preview}
-					cropScanArea={[0.8, 0.25]}
+					cropScanArea={[1, 1]}
 					type={RNCamera.Constants.Type.back}
 					androidCameraPermissionOptions={{
 						title: "Permission to use camera",
