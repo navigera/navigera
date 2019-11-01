@@ -10,20 +10,19 @@ export default class ProductListItemInfo extends Component {
   }
 
   render(){
-    const { item } = this.props;
-    const{amount} = this.props
+    const { product } = this.props;
     return(
-      
+
       <View style={styles.container}>
-        <Image style={styles.image} source={{uri:(item.product_info.image_url)}} />
+        <Image style={styles.image} source={{uri:(product.product_info.image_url)}} />
         <View style={styles.descriptionBox}>
-          <Text style={styles.h1}>{item.product_info.family.toUpperCase()}</Text> 
-          <Text style={styles.h3}>{this.capitalizeFirst(item.product_info.category)}, {item.product_info.color}</Text>
-          <Text style={styles.h2}>{this.numberWithSpaces(item.availability.price)} kr</Text>
+          <Text style={styles.h1}>{product.product_info.family.toUpperCase()}</Text>
+          <Text style={styles.h3}>{this.capitalizeFirst(product.product_info.category)}, {product.product_info.color}</Text>
+          <Text style={styles.h2}>{this.numberWithSpaces(product.availability.price)} kr</Text>
         </View>
 
         <View style={styles.amount}>
-          <Text style={styles.amountText}>x {amount}</Text>
+          <Text style={styles.amountText}>x {product.amount}</Text>
         </View>
       </View>
 
