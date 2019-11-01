@@ -38,7 +38,7 @@ class CameraScreen extends React.Component {
 		return (
 
 			<View style={styles.container}>
-				<PopUpProduct style={styles.modal} addItemCallback={addItemCallback} modalCloseCallback={this.modalClosed} ref={modal => { this.modal = modal }} item={this.state.item}></PopUpProduct>
+				<PopUpProduct style={styles.modal} addItemCallback={addItemCallback} modalCloseCallback={this.modalClosed} ref={modal => { this.modal = modal }}></PopUpProduct>
 				<RNCamera
 					ref={ref => {
 						this.camera = ref;
@@ -79,7 +79,7 @@ class CameraScreen extends React.Component {
 												if (!this.state.modalVisible) {
 													Vibration.vibrate(200);
 												}
-												this.modal.showPopover();
+												this.modal.showPopover(product);
 												this.setState({ modalVisible: true });
 												console.log('camera opened popup');
 											}

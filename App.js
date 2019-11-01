@@ -16,8 +16,6 @@ export default class App extends React.Component {
 
 		setCustomText(customTextProps);
 
-		this.currentKey = 0;
-
 		this.addItemCallback = this.addItemCallback.bind(this);
 		this.removeItemCallback = this.removeItemCallback.bind(this);
 	}
@@ -34,28 +32,47 @@ export default class App extends React.Component {
 					modalVisible: this.state.modalVisible,
 					addItemCallback: this.addItemCallback,
 					removeItemCallback: this.removeItemCallback,
-				}} />
+				}}/>
 			</SafeAreaView>
 		);
 	}
 
-	removeItemCallback(key) {
+	removeItemCallback(id, num){
 		var list = this.state.products;
-		for (var i = 0; i < list.length; i++) {
-			if (list[i].key == key) {
-				list.splice(i, 1);
-				break;
+		for(var i = 0; i < list.length; i++){
+			if(list[i].product_info.id == id){
+				if(list[i].amount > num){
+					list[i].amount -= num;
+					break;
+				} else {
+					list.splice(i, 1);
+					break;
+				}
 			}
 		}
 		this.setState({ products: list });
 	}
 
-	addItemCallback(item, num) {
-		//todo: add num items instead of 1
+	addItemCallback(item, num){
+		var exists = false;
 		var list = this.state.products;
-		item.key = this.currentKey;
-		this.currentKey++;
-		list.push(item);
+		for(var i = 0; i < list.length; i++){
+			if(list[i].product_info.id == item.product_info.id){
+				exists = true;
+				if(list[i].amount){
+					//item exists with an amount
+					list[i].amount += num;
+				} else {
+					//item exists with no amount
+					list[i].amount = num + 1;
+				}
+			}
+		}
+		if(!exists){
+			//item does not exist
+			item.amount = num;
+			list.push(item);
+		}
 		this.setState({ products: list });
 	}
 }
