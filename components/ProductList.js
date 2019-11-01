@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { Text, View, Image, StyleSheet, SafeAreaView, ScrollView, TouchableHighlight } from 'react-native';
 import ProductListItem from "./ProductListItem.js"
+import ProductListFooter from "./ProductListFooter.js"
 
 export default class ProductList extends Component {
   constructor(props){
@@ -32,14 +33,27 @@ export default class ProductList extends Component {
     }
 
   render(){
-    return(
+    const products = this.props.screenProps.products;
+    let quantity = products.length;
+    let totalPrice = 0;
+    products.map((item) => {
+      totalPrice += item.product.availability.price
+    });
 
+    return(
       <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}> My items </Text>
+        <TouchableHighlight style={styles.button}>
+            <Text style={styles.buttonInterior}>...</Text>
+        </TouchableHighlight>
+      </View>
         <ScrollView style={styles.container, styles.padding}>
           {this.props.screenProps.products.map(p => {
             return <ProductListItem product={p} removeCallback={this.props.screenProps.removeItemCallback} key={p.key}/>
           })}
         </ScrollView>
+        <ProductListFooter price={totalPrice} quantity={quantity}/>
       </SafeAreaView>
     );
   }
@@ -48,7 +62,6 @@ export default class ProductList extends Component {
 const styles = StyleSheet.create({
 	button: {
     color:"white"
-
   },
 
   container:{
@@ -62,5 +75,36 @@ const styles = StyleSheet.create({
   image:{
     width: 300,
     height: 300
-  }
+  },
+  header: {
+    flexDirection: 'row',
+    backgroundColor: '#0058a3',
+    height: 70,
+    justifyContent: 'space-between',
+  },
+  headerText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 25,
+    paddingTop: 20,
+    paddingLeft: 15,
+  },
+  button: {
+      backgroundColor: '#0058a3',
+      height: 25,
+      width: 50,
+      paddingBottom: 20,
+      paddingTop: 10,
+      paddingRight: 80,
+      margin: 25,
+      alignItems: 'center',
+      justifyContent: 'center',
+  },
+  buttonInterior: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 45,
+
+
+  },
 });
