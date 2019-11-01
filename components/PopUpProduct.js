@@ -4,6 +4,7 @@ import InputSpinner from './InputSpinner';
 import PrimaryButton from './PrimaryButton';
 import Popover from 'react-native-popover-view';
 import { Icon } from "@up-shared/components";
+import { globalStyles } from '../utilities.js';
 
 
 export default class PopUpProduct extends Component {
@@ -12,6 +13,7 @@ export default class PopUpProduct extends Component {
 
     this.handlePress = this.handlePress.bind(this);
     this.handleSpinnerChange = this.handleSpinnerChange.bind(this);
+    this.closePopover = this.closePopover.bind(this);
   }
   state = {
     isVisible: false,
@@ -20,7 +22,7 @@ export default class PopUpProduct extends Component {
   }
 
   showPopover(item) {
-    this.setState({ isVisible: true, amount: 1, item: item});
+    this.setState({ isVisible: true, amount: 1, item: item });
   }
 
   closePopover() {
@@ -53,7 +55,7 @@ export default class PopUpProduct extends Component {
   getProductIDBox(item) {
     return (
       <View style={styles.productIDBox}>
-        <Text style={styles.productIDText}>{item.product_info.id}</Text>
+        <Text style={[styles.productIDText, globalStyles.bold]}>{item.product_info.id}</Text>
       </View>);
   }
 
@@ -64,7 +66,6 @@ export default class PopUpProduct extends Component {
   }
 
   getProductInformation(item) {
-
     if (!item.combo_product) {
       return (
         <View style={styles.productNumbers}>
@@ -72,12 +73,12 @@ export default class PopUpProduct extends Component {
           {this.getProductIDBox(item)}
 
           <View style={styles.shelfBox}>
-            <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.aisle)}</Text>
+            <Text style={[styles.productIDText, globalStyles.bold]}>{this.formatSingleUnit(item.availability.aisle)}</Text>
           </View>
           <Text>Aisle</Text>
 
           <View style={styles.shelfBox}>
-            <Text style={styles.productIDText}>{this.formatSingleUnit(item.availability.shelf)}</Text>
+            <Text style={[styles.productIDText, globalStyles.bold]}>{this.formatSingleUnit(item.availability.shelf)}</Text>
           </View>
           <Text>Shelf</Text>
         </View>);
@@ -93,66 +94,59 @@ export default class PopUpProduct extends Component {
   }
 
   getProductInfo(item) {
-    if (item) {
-      //Show product info
+    return (
+      <View style={styles.content}>
 
-      return (
-        <View style={styles.content}>
+        <TouchableHighlight style={styles.iconContainer} onPress={this.closePopover} underlayColor={"white"} >
+          <Icon name="cross" size={30} color="black" />
+        </TouchableHighlight>
 
-          <TouchableHighlight style = {styles.iconContainer}
-            onPress={()=>{this.closePopover()}}
-            underlayColor = {"lightgray"} >
-            <Icon  raised name="cross-24" size={30} color="black"/>
-          </TouchableHighlight>
+        <View style={styles.imageBox}>
+          <Image style={styles.image} source={{ uri: (item.product_info.image_url) }} />
+        </View>
+        <Text style={[styles.h1, globalStyles.bold]}>{item.product_info.family.toUpperCase()}</Text>
 
-          <View style={styles.imageBox}>
-            <Image style={styles.image} source={{ uri: (item.product_info.image_url) }} />
-          </View>
-          <Text style={styles.h1}>{item.product_info.family.toUpperCase()}</Text>
+        <Text style={styles.h3}>
+          {this.capitalizeFirst(item.product_info.category)}, {item.product_info.color}
+        </Text>
 
-          <Text style={styles.h3}>
-            {this.capitalizeFirst(item.product_info.category)}, {item.product_info.color}
-          </Text>
-
-          <Text style={styles.h1}>{this.numberWithSpaces(item.availability.price)} kr</Text>
+        <Text style={[styles.h1, globalStyles.bold]}>{this.numberWithSpaces(item.availability.price)} kr</Text>
 
 
-          {this.getProductInformation(item)}
+        {this.getProductInformation(item)}
 
-          <Text />
+        <Text />
 
-          <View style={styles.productNumbers}>
-            <Text style={styles.h6}> Amount </Text>
-            <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
-          </View>
-        </View>);
-    } else {
-      //Loading screen or smth idek, it didnt find shit
-      console.log('dang it is null');
-      return (<Text>no tengo produCTO</Text>);
-    }
+        <View style={styles.productNumbers}>
+          <Text style={styles.h6}> Amount </Text>
+          <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
+        </View>
+      </View>);
   }
 
   render() {
     const { item } = this.state;
 
-    return (
-      <Popover
-        isVisible={this.state.isVisible}
-        fromView={this.touchable}
-        onRequestClose={() => this.closePopover()}>
-
-        <View style={styles.container}>
-
-          {this.getProductInfo(item)}
-
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={this.handlePress} img="" text={"Lägg till i listan"}></PrimaryButton>
+    if(item){
+      return (
+        <Popover
+          isVisible={this.state.isVisible}
+          fromView={this.touchable}
+          onRequestClose={() => this.closePopover()}>
+  
+          <View style={styles.container}>
+  
+            {this.getProductInfo(item)}
+  
+            <View style={styles.buttonContainer}>
+              <PrimaryButton onPress={this.handlePress} icon="buy-online-add" img="" text={"Add to shopping list"}></PrimaryButton>
+            </View>
           </View>
-        </View>
-      </Popover>
-    );
-
+        </Popover>
+      );
+    }else{
+      return <View></View>
+    }
   }
 }
 
@@ -166,7 +160,6 @@ const styles = StyleSheet.create({
   },
   h1: {
     fontSize: 25,
-    fontWeight: "bold",
   },
 
   h3: {
@@ -185,11 +178,11 @@ const styles = StyleSheet.create({
     color: "#666",
     fontWeight: "normal",
   },
-  iconContainer:{
-    height:15,
-    width:30,
-    justifyContent:"space-around",
-    alignSelf:"flex-end",
+  iconContainer: {
+    height: 15,
+    width: 30,
+    justifyContent: "space-around",
+    alignSelf: "flex-end",
   },
   imageBox: {
     alignItems: "center",
@@ -221,7 +214,6 @@ const styles = StyleSheet.create({
   productIDText: {
     textAlign: "center",
     color: "white",
-    fontWeight: "bold"
   },
   shelfBox: {
     justifyContent: "center",

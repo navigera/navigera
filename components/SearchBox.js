@@ -8,7 +8,7 @@ export default class SearchBox extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				<TextInput onFocus={searchBoxFocused} onChangeText={text => searchTextChanged(text)}/>
+				<TextInput onFocus={searchBoxFocused} value="Search" onChangeText={text => searchTextChanged(text)}/>
 			</View>
 		);
 	}
@@ -16,6 +16,12 @@ export default class SearchBox extends React.Component {
 
 const styles = StyleSheet.create({
 	container:{
-        flexDirection:"column",
+		flexDirection:"column",
+		backgroundColor: "#f5f5f5",
+		opacity: .7,
+		borderRadius: 50,
+		borderColor: "gray",
+		margin: 20,
+		padding: 10,
 	}, 
 });
