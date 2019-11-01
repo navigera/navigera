@@ -2,53 +2,32 @@ import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet, SafeAreaView, ScrollView, TouchableHighlight } from 'react-native';
 import ProductListItem from "./ProductListItem.js"
 import ProductListFooter from "./ProductListFooter.js"
+import { globalStyles } from '../utilities.js';
+import { Icon } from "@up-shared/components";
 
 export default class ProductList extends Component {
   constructor(props){
     super(props);
-
-    this.getProduct = this.getProduct.bind(this);
   }
-
-  componentDidMount(){
-		/*this.getProduct("690.178.28");
-		this.getProduct("002.638.50");
-		this.getProduct("690.178.28");*/
-	}
-
-  getProduct(id) {
-        fetch("https://europe-west2-ikea-mau-eu.cloudfunctions.net/api/getProduct/" + id)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                responseJson.key = this.currentKey;
-                this.currentKey++;
-                var list = this.state.products;
-                list.push(responseJson);
-                this.setState({ products: list });
-                return responseJson;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
 
   render(){
     const products = this.props.screenProps.products;
-    let quantity = products.length;
+    let quantity = 0;
     let totalPrice = 0;
     products.map((item) => {
-      totalPrice += item.product.availability.price
+      quantity += item.amount;
+      totalPrice += item.availability.price * item.amount;
     });
 
     return(
       <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}> My items </Text>
+        <Text style={[styles.headerText, globalStyles.bold]}> My items </Text>
         <TouchableHighlight style={styles.button}>
-            <Text style={styles.buttonInterior}>...</Text>
+            <Icon name="three-dots" size={30} color="white"></Icon>
         </TouchableHighlight>
       </View>
-        <ScrollView style={styles.container, styles.padding}>
+        <ScrollView style={[styles.container, styles.padding]}>
           {this.props.screenProps.products.map(p => {
             return <ProductListItem product={p} removeCallback={this.props.screenProps.removeItemCallback} key={p.product_info.id}/>
           })}
@@ -85,7 +64,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: 'white',
-    fontWeight: 'bold',
     fontSize: 25,
     paddingTop: 20,
     paddingLeft: 15,

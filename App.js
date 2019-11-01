@@ -83,37 +83,37 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 		navigationOptions: {
 			tabBarLabel: 'Camera',
 			tabBarIcon: ({ tintColor }) => (
-				<Icon name="scan-barcode-24" size={30} color={tintColor} />
+				<Icon name="scan" size={30} color={tintColor} />
 			)
 		}
 	},
-	Search: {
-		screen: SearchPage,
-		navigationOptions: {
-			tabBarLabel: 'Search',
-			tabBarIcon: ({ tintColor }) => (
-				<Icon name="search-24" size={30} color={tintColor} />
-			)
-		}
-	},
+	// Search: {
+	// 	screen: SearchPage,
+	// 	navigationOptions: {
+	// 		tabBarLabel: 'Search',
+	// 		tabBarIcon: ({ tintColor }) => (
+	// 			<Icon name="search-24" size={30} color={tintColor} />
+	// 		)
+	// 	}
+	// },
 	List: {
 		screen: ProductList,
 		navigationOptions: {
 			tabBarLabel: 'List',
 			tabBarIcon: ({ tintColor }) => (
-				<Icon name="list-view-24" size={30} color={tintColor} />
+				<Icon name="list" size={30} color={tintColor} />
 			)
 		}
 	},
-	Map: {
-		screen: MapPage,
-		navigationOptions: {
-			tabBarLabel: 'Map',
-			tabBarIcon: ({ tintColor }) => (
-				<Icon name="store-24" size={30} color={tintColor} />
-			)
-		}
-	},
+	// Map: {
+	// 	screen: MapPage,
+	// 	navigationOptions: {
+	// 		tabBarLabel: 'Map',
+	// 		tabBarIcon: ({ tintColor }) => (
+	// 			<Icon name="store-24" size={30} color={tintColor} />
+	// 		)
+	// 	}
+	// },
 },
 	{
 		initialRouteName: 'Camera',
@@ -142,6 +142,11 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 
 const AppContainer = createAppContainer(AppTabNavigator);
 
+const customTextProps = {
+	style: {
+		fontFamily: 'NotoIKEAArabic-Regular' // light gray
+	}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -149,9 +154,3 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 	},
 });
-
-const customTextProps = {
-	style: {
-		fontFamily: 'Noto IKEA Arabic' // light gray
-	}
-};

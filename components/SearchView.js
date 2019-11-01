@@ -50,5 +50,6 @@ export default class SearchView extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "column",
+        backgroundColor: "transparent",
     },
 });

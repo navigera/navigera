@@ -29,5 +29,7 @@ export default class SearchResult extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "column",
+        height: 0,
+        backgroundColor: 'transparent',
     },
 });

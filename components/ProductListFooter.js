@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-
+import { globalStyles } from '../utilities';
 
 export default class ProductListFooter extends Component {
 
   numberWithSpaces(x) {
    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
+
+  getProductsText(quantity){
+    let text = "product";
+    if(quantity != 1){
+      text += 's';
+    }
+    return text;
   }
 
   render() {
@@ -15,14 +23,14 @@ export default class ProductListFooter extends Component {
         <View style={styles.container}>
           <View style={styles.textContainer}>
             <Text style={styles.textQuantity}>
-              <Text> Du har </Text>
-              <Text style={{fontWeight:'bold'}}>{quantity} produkter</Text>
-              <Text> i din lista </Text>
+              <Text> You've got </Text>
+              <Text style={globalStyles.bold}>{quantity} {this.getProductsText(quantity)}</Text>
+              <Text> in your shopping list. </Text>
             </Text>
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.textPrice}> Summa </Text>
-            <Text style={styles.textPrice}> {this.numberWithSpaces(price)} kr </Text>
+            <Text style={[styles.textPrice, globalStyles.bold]}> Total </Text>
+            <Text style={[styles.textPrice, globalStyles.bold]}> {this.numberWithSpaces(price)} kr </Text>
           </View>
         </View>
     );
@@ -43,10 +51,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   textPrice: {
-    fontSize: 17,
-    fontWeight: "bold",
+    fontSize: 24,
     color: 'black',
     margin: 15,
+    marginVertical: 25,
   },
   textQuantity: {
     fontSize: 17,

@@ -27,3 +27,12 @@ export async function GetSearchResult(query) {
         return response;
     }
 }
+
+export const globalStyles = {
+    bold: {
+        fontFamily: 'NotoIKEAArabic-Bold' // light gray
+    },
+    regular: {
+        fontFamily: 'NotoIKEAArabic-Regular' // light gray
+    }
+}

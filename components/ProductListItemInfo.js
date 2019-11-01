@@ -12,29 +12,16 @@ export default class ProductListItemInfo extends Component {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
 
-
-handlePress() {
+  handlePress() {
     this.props.handlePress();
   }
 
-  getChevron(expanded) {
-    if (!expanded) {
-      return (<Icon name="chevron-down-24" size={30} color="black" />);
-    } else {
-      return (
-        <View style={{ transform: [{ scaleY: -1 }] }}>
-          <Icon name="chevron-down-24" size={30} color="black" />
-        </View>
-      );
-    }
-  }
-
-  render(){
+  render() {
     const { product, expanded } = this.props;
-    return(
+    return (
 
       <View style={styles.container}>
-        <Image style={styles.image} source={{uri:(product.product_info.image_url)}} />
+        <Image style={styles.image} source={{ uri: (product.product_info.image_url) }} />
         <View style={styles.descriptionBox}>
           <Text style={styles.h1}>{product.product_info.family.toUpperCase()}</Text>
           <Text style={styles.h3}>{this.capitalizeFirst(product.product_info.category)}, {product.product_info.color}</Text>
@@ -42,11 +29,11 @@ handlePress() {
         </View>
 
         <View style={styles.amount}>
-        <TouchableHighlight
+          <TouchableHighlight
             style={styles.iconContainer}
-            onPress={() => {this.handlePress();}}
+            onPress={() => { this.handlePress(); }}
             underlayColor={"white"}>
-            {this.getChevron(expanded)}
+            <Icon name={"chevron-" + (expanded ? 'up' : 'down')} size={30} color="black" />
           </TouchableHighlight>
           <Text style={styles.amountText}>x {product.amount}</Text>
 
