@@ -37,7 +37,7 @@ export default class ProductList extends Component {
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.container, styles.padding}>
           {this.props.screenProps.products.map(p => {
-            return <ProductListItem product={p} removeCallback={this.props.screenProps.removeItemCallback} key={p.key}/>
+            return <ProductListItem product={p} removeCallback={this.props.screenProps.removeItemCallback} key={p.product_info.id}/>
           })}
         </ScrollView>
       </SafeAreaView>

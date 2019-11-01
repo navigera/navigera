@@ -17,8 +17,8 @@ export default class PopUpProduct extends Component {
     item: null,
   }
 
-  showPopover() {
-    this.setState({ isVisible: true });
+  showPopover(item) {
+    this.setState({ isVisible: true, amount: 1, item: item});
   }
 
   closePopover() {
@@ -125,8 +125,7 @@ export default class PopUpProduct extends Component {
   }
 
   render() {
-    const { item } = this.props;
-    this.state.item = item;
+    const { item } = this.state;
 
     return (
       <Popover
