@@ -48,8 +48,6 @@ export default class App extends React.Component {
 	}
 
 	addItemCallback(item, num) {
-		console.log('App', 'addItem');
-		console.log('item', item);
 		//todo: add num items instead of 1
 		var list = this.state.products;
 		item.key = this.currentKey;
@@ -65,7 +63,7 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 		navigationOptions: {
 			tabBarLabel: 'Camera',
 			tabBarIcon: ({ tintColor }) => (
-				<Icon name="scan-barcode-24" size={40} color={tintColor} />
+				<Icon name="scan-barcode-24" size={30} color={tintColor} />
 			)
 		}
 	},
@@ -74,7 +72,7 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 		navigationOptions: {
 			tabBarLabel: 'Search',
 			tabBarIcon: ({ tintColor }) => (
-				<Icon name="search-24" size={40} color={tintColor} />
+				<Icon name="search-24" size={30} color={tintColor} />
 			)
 		}
 	},
@@ -83,7 +81,7 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 		navigationOptions: {
 			tabBarLabel: 'List',
 			tabBarIcon: ({ tintColor }) => (
-				<Icon name="list-view-24" size={40} color={tintColor} />
+				<Icon name="list-view-24" size={30} color={tintColor} />
 			)
 		}
 	},
@@ -92,7 +90,7 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 		navigationOptions: {
 			tabBarLabel: 'Map',
 			tabBarIcon: ({ tintColor }) => (
-				<Icon name="store-24" size={40} color={tintColor} />
+				<Icon name="store-24" size={30} color={tintColor} />
 			)
 		}
 	},
@@ -107,11 +105,11 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 			inactiveTintColor: 'black',
 			style: {
 				backgroundColor: 'white',
-				height: 70,
+				height: 50,
 			},
 			iconStyle: {
-				width: 40,
-				margin: 5,
+				width: 30,
+				margin: 0,
 			},
 			indicatorStyle: {
 				height: 0.

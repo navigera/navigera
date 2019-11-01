@@ -14,7 +14,6 @@ class CameraScreen extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.addItem = this.addItem.bind(this);
 		this.modalClosed = this.modalClosed.bind(this);
 	}
 
@@ -28,22 +27,18 @@ class CameraScreen extends React.Component {
 		this.camera.resumePreview();
 	}
 
-	addItem(item, amount) {
-		console.log('Camera', 'addItem');
-		const { addItemCallback } = this.props.screenProps;
-		addItemCallback(item, amount);
-	}
 
 	render() {
 		var temp;
 		const { height, width } = Dimensions.get("window");
 		const maskRowHeight = height * 0.05;
 		const maskColWidth = width * 0.2;
+		const { addItemCallback } = this.props.screenProps;
 
 		return (
 
 			<View style={styles.container}>
-				<PopUpProduct style={styles.modal} addItemCallback={this.addItem} callback={this.modalClosed} ref={modal => { this.modal = modal }} item={this.state.item}></PopUpProduct>
+				<PopUpProduct style={styles.modal} addItemCallback={addItemCallback} callback={this.modalClosed} ref={modal => { this.modal = modal }} item={this.state.item}></PopUpProduct>
 				<RNCamera
 					ref={ref => {
 						this.camera = ref;
