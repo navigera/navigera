@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Text, Image, StyleSheet, View } from 'react-native';
+import { TouchableHighlight, Text, Image, StyleSheet, View } from 'react-native';
 import InputSpinner from './InputSpinner';
 import PrimaryButton from './PrimaryButton';
 import Popover from 'react-native-popover-view';
+import { Icon } from "@up-shared/components";
+
 
 export default class PopUpProduct extends Component {
   constructor(props) {
@@ -96,6 +98,13 @@ export default class PopUpProduct extends Component {
 
       return (
         <View style={styles.content}>
+
+          <TouchableHighlight style = {styles.iconContainer}
+            onPress={()=>{this.closePopover()}}
+            underlayColor = {"lightgray"} >
+            <Icon  raised name="cross-24" size={30} color="black"/>
+          </TouchableHighlight>
+
           <View style={styles.imageBox}>
             <Image style={styles.image} source={{ uri: (item.product_info.image_url) }} />
           </View>
@@ -175,6 +184,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#666",
     fontWeight: "normal",
+  },
+  iconContainer:{
+    height:15,
+    width:30,
+    justifyContent:"space-around",
+    alignSelf:"flex-end",
   },
   imageBox: {
     alignItems: "center",

@@ -51,9 +51,11 @@ export default class ProductList extends Component {
 
   render(){
     return(
-      <TouchableHighlight underlayColor ={"#fafafa"} onPress={this.handlePress} onLongPress={this.handleHold}>
+      <TouchableHighlight underlayColor ={"#fafafa"} onLongPress={this.handleHold}>
         <View style={styles.container}>
-          <ProductListItemInfo product={this.props.product}></ProductListItemInfo>
+
+          <ProductListItemInfo  expanded={this.state.expanded} handlePress={this.handlePress} product={this.props.product}></ProductListItemInfo>
+
           {this.state.expanded == true &&
             <View style={styles.flex}>
               {this.state.packages.map(p => {
@@ -74,7 +76,6 @@ const styles = StyleSheet.create({
 
   container:{
     flex: 1,
-   // backgroundColor: 'yellow',
     marginBottom: 5,
     marginTop: 5,
   },
