@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Image, StyleSheet } from "react-native";
 import { Icon } from "@up-shared/components";
 import { TouchableHighlight } from "react-native";
+import DescriptionBox from "./DescriptionBox.js";
 
 export default class SearchItem extends Component {
   constructor(props){
@@ -9,15 +10,7 @@ export default class SearchItem extends Component {
     this.handlePress = this.handlePress.bind(this);
   }
 
-  capitalizeFirst(str) {
-    return str[0].toUpperCase() + str.slice(1);
-  }
-  
-  numberWithSpaces(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  }
-
-  handlePress() {
+   handlePress() {
     const {handlePress} = this.props;
     handlePress(this.props.product);
   }
@@ -27,11 +20,7 @@ export default class SearchItem extends Component {
     return (
       <View style={styles.container}>
         <Image style={styles.image} source={{ uri: (product.product_info.image_url) }} />
-        <View style={styles.descriptionBox}>
-          <Text style={styles.h1}>{product.product_info.family.toUpperCase()}</Text>
-          <Text style={styles.h3}>{this.capitalizeFirst(product.product_info.category)}, {product.product_info.color}</Text>
-          <Text style={styles.h2}>{this.numberWithSpaces(product.availability.price)} kr</Text>
-        </View>
+        <DescriptionBox product={product}></DescriptionBox>
 
         <View style={styles.buttonContainer}>
           <TouchableHighlight style={styles.iconContainer} onPress={this.handlePress} underlayColor={"white"}>
@@ -78,17 +67,5 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignSelf: "flex-end"
-  },
-  h1: {
-    fontSize: 18,
-    fontWeight: "bold"
-  },
-  h2: {
-    fontSize: 16,
-    fontWeight: "bold"
-  },
-  h3: {
-    fontSize: 14,
-    color: "gray"
   },
 });
