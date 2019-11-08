@@ -9,12 +9,14 @@ import { RNCamera } from "react-native-camera";
 import CONSTANTS from "./components/Constants.js";
 import PopUpProduct from "./components/PopUpProduct";
 import { GetProduct } from "./utilities.js";
+import SearchPage from "./components/SearchPage";
 
 class CameraScreen extends React.Component {
 	constructor(props) {
 		super(props);
-
+		
 		this.modalClosed = this.modalClosed.bind(this);
+		this.searchFocused = this.searchFocused.bind(this);
 	}
 
 	state = {
@@ -27,6 +29,11 @@ class CameraScreen extends React.Component {
 		this.camera.resumePreview();
 	}
 
+	searchFocused() {
+		this.camera.pausePreview();
+		this.setState({ modalVisible: true });
+
+	}
 
 	render() {
 		var temp;
@@ -93,6 +100,7 @@ class CameraScreen extends React.Component {
 				>
 
 					<View style={styles.maskOuter}>
+						<SearchPage addItemCallback={addItemCallback} pausePreview = {this.searchFocused} modalCloseCallback = {this.modalClosed}> </SearchPage>
 						<View style={[{ flex: maskRowHeight }, styles.maskRow, styles.maskFrame]} />
 						<View style={[{ flex: 6 }, styles.maskCenter]}>
 							<View style={[{ width: maskColWidth }, styles.maskFrame]} />
