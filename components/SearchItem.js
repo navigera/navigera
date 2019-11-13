@@ -5,30 +5,28 @@ import { TouchableHighlight } from "react-native";
 import DescriptionBox from "./DescriptionBox.js";
 
 export default class SearchItem extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.handlePress = this.handlePress.bind(this);
   }
 
-   handlePress() {
-    const {handlePress} = this.props;
+  handlePress() {
+    const { handlePress } = this.props;
     handlePress(this.props.product);
   }
 
   render() {
-    const {product} = this.props;   
+    const { product } = this.props;
     return (
-      <View style={styles.container}>
-        <Image style={styles.image} source={{ uri: (product.product_info.image_url) }} />
-        <DescriptionBox product={product}></DescriptionBox>
-
-        <View style={styles.buttonContainer}>
-          <TouchableHighlight style={styles.iconContainer} onPress={this.handlePress} underlayColor={"white"}>
-            <Icon name={"plus"} size={30} color="black" />
-          </TouchableHighlight>
+      <TouchableHighlight onPress={this.handlePress} underlayColor ={"#fafafa"}>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={{ uri: product.product_info.image_url }}
+          />
+          <DescriptionBox product={product}></DescriptionBox>
         </View>
-
-      </View>
+      </TouchableHighlight>
     );
   }
 }
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
     borderStyle: "dotted",
     borderBottomColor: "gray",
     borderRadius: 5,
-    margin:3,
+    margin: 3
   },
   descriptionBox: {
     flexDirection: "column"
@@ -67,5 +65,5 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignSelf: "flex-end"
-  },
+  }
 });

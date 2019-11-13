@@ -1,13 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, Text } from 'react-native';
 import ProductList from "./components/ProductList";
 import CameraScreen from './Camera';
-import SearchPage from './components/SearchPage';
 import MapPage from './components/MapPage';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { Icon } from "@up-shared/components";
 import { setCustomText } from 'react-native-global-props';
+import SearchPage from './components/SearchPage';
 
 
 export default class App extends React.Component {
@@ -27,7 +28,7 @@ export default class App extends React.Component {
 	render() {
 		return (
 			<SafeAreaView style={styles.container}>
-				<AppContainer screenProps={{
+				<ModalContainer screenProps={{
 					products: this.state.products,
 					modalVisible: this.state.modalVisible,
 					addItemCallback: this.addItemCallback,
@@ -87,15 +88,6 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 			)
 		}
 	},
-	// Search: {
-	// 	screen: SearchPage,
-	// 	navigationOptions: {
-	// 		tabBarLabel: 'Search',
-	// 		tabBarIcon: ({ tintColor }) => (
-	// 			<Icon name="search-24" size={30} color={tintColor} />
-	// 		)
-	// 	}
-	// },
 	List: {
 		screen: ProductList,
 		navigationOptions: {
@@ -140,7 +132,27 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 	}
 );
 
+const RootStack = createStackNavigator(
+    {
+        Main: {
+            screen: AppTabNavigator,
+        },
+        Modal: {
+            screen: SearchPage,
+        }
+    },
+    {
+        mode: 'modal',
+        headerMode: 'none',
+        transparentCard: true,
+        cardStyle: {
+            opacity: 1,
+        }
+    }
+);
+
 const AppContainer = createAppContainer(AppTabNavigator);
+const ModalContainer = createAppContainer(RootStack);
 
 const customTextProps = {
 	style: {
