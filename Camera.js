@@ -17,7 +17,7 @@ class CameraScreen extends React.Component {
     super(props);
 
     this.modalClosed = this.modalClosed.bind(this);
-	this.openModal = this.openModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
 
   state = {
@@ -40,11 +40,92 @@ class CameraScreen extends React.Component {
     });
   }
 
+  renderCamera() {
+	var temp;
+	
+    return (
+      <RNCamera
+        ref={ref => {
+          this.camera = ref;
+        }}
+        captureAudio={false}
+        style={styles.preview}
+        cropScanArea={[1, 1]}
+        type={RNCamera.Constants.Type.back}
+        androidCameraPermissionOptions={{
+          title: "Permission to use camera",
+          message: "We need your permission to use your camera",
+          buttonPositive: "Ok",
+          buttonNegative: "Cancel"
+        }}
+        androidRecordAudioPermissionOptions={{
+          title: "Permission to use audio recording",
+          message: "We need your permission to use your audio",
+          buttonPositive: "Ok",
+          buttonNegative: "Cancel"
+        }}
+        onTextRecognized={async data => {
+          if (!this.state.modalVisible) {
+            temp = data.textBlocks;
+
+            if (typeof temp !== "undefined") {
+              for (let i = 0; i < temp.length; i++) {
+                if (temp[i].value.length == CONSTANTS.SERIAL_LENGTH) {
+                  var possibleSerial = temp[i].value;
+                  if (CONSTANTS.REGEX.test(possibleSerial)) {
+                    let product = await GetProduct(possibleSerial);
+                    if (product) {
+                      this.camera.pausePreview();
+                      this.setState({ item: product });
+                      if (!this.state.modalVisible) {
+                        Vibration.vibrate(200);
+                      }
+                      this.modal.showPopover(product);
+                      this.setState({ modalVisible: true });
+                      console.log("camera opened popup");
+                    }
+                    //Obviously will not alert, but rather send value elsewhere.
+                  }
+                }
+              }
+            }
+          }
+        }}
+      >
+		  {this.renderMaskAndButton()}
+	  </RNCamera>
+    );
+  }
+
+  renderMaskAndButton() {
+	const { height, width } = Dimensions.get("window");
+	const maskRowHeight = height * 0.05;
+	const maskColWidth = width * 0.2;
+
+    return (
+      <View style={styles.maskOuter}>
+        <TouchableHighlight
+          style={styles.textContainer}
+          onPress={this.openModal}
+        >
+          <Text style={styles.textBox}>Search</Text>
+        </TouchableHighlight>
+        <View
+          style={[{ flex: maskRowHeight }, styles.maskRow, styles.maskFrame]}
+        />
+        <View style={[{ flex: 6 }, styles.maskCenter]}>
+          <View style={[{ width: maskColWidth }, styles.maskFrame]} />
+          <View style={styles.maskInner} />
+          <View style={[{ width: maskColWidth }, styles.maskFrame]} />
+        </View>
+        <View
+          style={[{ flex: maskRowHeight }, styles.maskRow, styles.maskFrame]}
+        />
+      </View>
+    );
+  }
+
   render() {
-    var temp;
-    const { height, width } = Dimensions.get("window");
-    const maskRowHeight = height * 0.05;
-    const maskColWidth = width * 0.2;
     const { addItemCallback } = this.props.screenProps;
 
     return (
@@ -57,82 +138,7 @@ class CameraScreen extends React.Component {
             this.modal = modal;
           }}
         ></PopUpProduct>
-        <RNCamera
-          ref={ref => {
-            this.camera = ref;
-          }}
-          captureAudio={false}
-          style={styles.preview}
-          cropScanArea={[1, 1]}
-          type={RNCamera.Constants.Type.back}
-          androidCameraPermissionOptions={{
-            title: "Permission to use camera",
-            message: "We need your permission to use your camera",
-            buttonPositive: "Ok",
-            buttonNegative: "Cancel"
-          }}
-          androidRecordAudioPermissionOptions={{
-            title: "Permission to use audio recording",
-            message: "We need your permission to use your audio",
-            buttonPositive: "Ok",
-            buttonNegative: "Cancel"
-          }}
-          onTextRecognized={async data => {
-            if (!this.state.modalVisible) {
-              temp = data.textBlocks;
-
-              if (typeof temp !== "undefined") {
-                for (let i = 0; i < temp.length; i++) {
-                  if (temp[i].value.length == CONSTANTS.SERIAL_LENGTH) {
-                    var possibleSerial = temp[i].value;
-                    if (CONSTANTS.REGEX.test(possibleSerial)) {
-                      let product = await GetProduct(possibleSerial);
-                      if (product) {
-                        this.camera.pausePreview();
-                        this.setState({ item: product });
-                        if (!this.state.modalVisible) {
-                          Vibration.vibrate(200);
-                        }
-                        this.modal.showPopover(product);
-                        this.setState({ modalVisible: true });
-                        console.log("camera opened popup");
-                      }
-                      //Obviously will not alert, but rather send value elsewhere.
-                    }
-                  }
-                }
-              }
-            }
-          }}
-        >
-          <View style={styles.maskOuter}>
-            <TouchableHighlight
-              style={styles.textContainer}
-              onPress={this.openModal}
-            >
-              <Text style={styles.textBox}>Search</Text>
-            </TouchableHighlight>
-            <View
-              style={[
-                { flex: maskRowHeight },
-                styles.maskRow,
-                styles.maskFrame
-              ]}
-            />
-            <View style={[{ flex: 6 }, styles.maskCenter]}>
-              <View style={[{ width: maskColWidth }, styles.maskFrame]} />
-              <View style={styles.maskInner} />
-              <View style={[{ width: maskColWidth }, styles.maskFrame]} />
-            </View>
-            <View
-              style={[
-                { flex: maskRowHeight },
-                styles.maskRow,
-                styles.maskFrame
-              ]}
-            />
-          </View>
-        </RNCamera>
+        {this.renderCamera()}
       </View>
     );
   }
