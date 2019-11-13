@@ -11,7 +11,6 @@ import { RNCamera } from "react-native-camera";
 import CONSTANTS from "./components/Constants.js";
 import PopUpProduct from "./components/PopUpProduct";
 import { GetProduct } from "./utilities.js";
-import SearchPage from "./components/SearchPage";
 
 class CameraScreen extends React.Component {
   constructor(props) {
@@ -107,7 +106,6 @@ class CameraScreen extends React.Component {
           }}
         >
           <View style={styles.maskOuter}>
-            {/*<SearchPage addItemCallback={addItemCallback} pausePreview = {this.searchFocused} modalCloseCallback = {this.modalClosed}> </SearchPage>*/}
             <TouchableHighlight
               style={styles.textContainer}
               onPress={this.openModal}
