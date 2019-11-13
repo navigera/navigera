@@ -18,6 +18,9 @@ export async function GetProduct(id) {
 }
 
 export async function GetSearchResult(query) {
+    if(!query || query.length < 1){
+        return null;
+    }
     console.log('Searching for ', query);
     let response = await (await fetch("https://europe-west2-ikea-mau-eu.cloudfunctions.net/api/search/" + query)).json();
     console.log('Search complete, found ' + response.length + ' results');

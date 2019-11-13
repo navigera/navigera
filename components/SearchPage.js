@@ -52,19 +52,16 @@ export default class SearchPage extends Component {
     return true;
   }
 
-
   async searchTextChanged(text) {
-    if (text) {
-      let result = await GetSearchResult(text);
-      if (result != null) {
-        let list = [];
-        result.map(p => {
-          list.push(p);
-          this.setState({
-            products: list
-          });
+    let result = await GetSearchResult(text);
+    if (result) {
+      let list = [];
+      result.map(p => {
+        list.push(p);
+        this.setState({
+          products: list
         });
-      }
+      });
     }
   }
 
@@ -74,29 +71,28 @@ export default class SearchPage extends Component {
   }
 
   getSearchView() {
-      const { addItemCallback } = this.props.screenProps;
+    const { addItemCallback } = this.props.screenProps;
 
-      return (
-        <View style={styles.focusedContainer}>
-          <PopUpProduct
-            style={styles.modal}
-            addItemCallback={addItemCallback}
-            modalCloseCallback={this.modalClosed}
-            ref={modal => {
-              this.modal = modal;
-            }}
-          ></PopUpProduct>
-          <SearchBox
-            ref={searchBox => (this.searchBox = searchBox)}
-            isFocused={this.state.isFocused}
-            searchTextChanged={this.searchTextChanged}
-          ></SearchBox>
+    return (
+      <View style={styles.focusedContainer}>
+        <PopUpProduct
+          style={styles.modal}
+          addItemCallback={addItemCallback}
+          modalCloseCallback={this.modalClosed}
+          ref={modal => {
+            this.modal = modal;
+          }}
+        ></PopUpProduct>
+        <SearchBox
+          ref={searchBox => (this.searchBox = searchBox)}
+          isFocused={this.state.isFocused}
+          searchTextChanged={this.searchTextChanged}
+        ></SearchBox>
 
-          {this.getProducts()}
-        </View>
-      );
-    }
-  
+        {this.getProducts()}
+      </View>
+    );
+  }
 
   getProducts() {
     if (this.state.products.length > 0) {
@@ -117,8 +113,7 @@ export default class SearchPage extends Component {
   }
 
   render() {
-    return <View style={{ width: "100%" }}>
-    {this.getSearchView()}</View>;
+    return <View style={{ width: "100%" }}>{this.getSearchView()}</View>;
   }
 }
 
