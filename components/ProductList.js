@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, SafeAreaView, ScrollView, TouchableHighlight } from 'react-native';
+import { Text, View, Image, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import ProductListItem from "./ProductListItem.js"
 import ProductListFooter from "./ProductListFooter.js"
 import { globalStyles } from '../utilities.js';
@@ -23,9 +23,9 @@ export default class ProductList extends Component {
       <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={[styles.headerText, globalStyles.bold]}> My items </Text>
-        <TouchableHighlight style={styles.button}>
-            <Icon name="three-dots" size={30} color="white"></Icon>
-        </TouchableHighlight>
+        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate("SettingsMain")}>
+            <Icon name="settings" size={33} color="white"></Icon>
+        </TouchableOpacity>
       </View>
         <ScrollView style={[styles.container, styles.padding]}>
           {this.props.screenProps.products.map(p => {
@@ -69,21 +69,12 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   button: {
-      backgroundColor: '#0058a3',
-      height: 25,
-      width: 50,
-      paddingBottom: 20,
-      paddingTop: 10,
-      paddingRight: 80,
-      margin: 25,
-      alignItems: 'center',
-      justifyContent: 'center',
-  },
-  buttonInterior: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 45,
-
-
+    backgroundColor: '#0058a3',
+    marginRight: 15,
+    marginTop: 20,
+    width: 50,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

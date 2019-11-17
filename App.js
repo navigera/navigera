@@ -9,6 +9,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Icon } from "@up-shared/components";
 import { setCustomText } from 'react-native-global-props';
 import SearchPage from './components/SearchPage';
+import SettingsPage from './components/SettingsPage';
+import SetRoutePage from './components/SetRoutePage';
+import SetWarehousePage from './components/SetWarehousePage';
 
 
 export default class App extends React.Component {
@@ -132,14 +135,61 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 	}
 );
 
+const SlideTransition = (index, position, width) => {
+	const sceneRange = [index - 1, index, index + 1];
+	const outputWidth  = [width, 0, 0];
+	const transition = position.interpolate({
+		inputRange: sceneRange,
+		outputRange: outputWidth,
+	});
+
+	return {
+		transform: [{ translateX: transition}]
+	}
+}
+
+const NavigationConfig = () => {
+	return {
+		screenInterpolator: (sceneProps) => {
+			const position = sceneProps.position;
+			const scene = sceneProps.scene;
+			const index = scene.index;
+			const width = sceneProps.layout.initWidth;
+
+			return SlideTransition(index, position, width);
+		}
+	}
+}
+
+const SettingsStack = createStackNavigator(
+	{
+		Main: {
+			screen: AppTabNavigator,
+		},
+		SettingsMain: {
+			screen: SettingsPage,
+		},
+		SettingWarehouse: {
+			screen: SetWarehousePage,
+		},
+		SettingRoute: {
+			screen: SetRoutePage,
+		},
+	},
+	{
+		headerMode: 'none',
+		transitionConfig: NavigationConfig,
+	}	
+);
+
 const RootStack = createStackNavigator(
     {
         Main: {
-            screen: AppTabNavigator,
+            screen: SettingsStack,
         },
         Modal: {
             screen: SearchPage,
-        }
+		},
     },
     {
         mode: 'modal',
@@ -151,8 +201,10 @@ const RootStack = createStackNavigator(
     }
 );
 
+
 const AppContainer = createAppContainer(AppTabNavigator);
 const ModalContainer = createAppContainer(RootStack);
+const MainContainer = createAppContainer(SettingsStack);
 
 const customTextProps = {
 	style: {

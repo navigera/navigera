@@ -8,7 +8,7 @@ export default class MapPage extends Component {
     return (
         <View style={styles.container}>
           <View style={styles.contentContainer}>
-            <Icon name="store-24" size={150} color="black"/>
+            <Icon name="store" size={150} color="black"/>
           </View>
         </View>
     );
