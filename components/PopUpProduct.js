@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, Text, Image, StyleSheet, View } from 'react-native';
 import InputSpinner from './InputSpinner';
-import PrimaryButton from './PrimaryButton';
 import Popover from 'react-native-popover-view';
-import ShelfLocationBox from "./ShelfLocationBox";
 import { Icon } from "@up-shared/components";
-import { numberWithSpaces, formatSingleUnit, capitalizeFirst, globalStyles } from '../utilities.js';
+import PrimaryButton from "./PrimaryButton";
+import ShelfLocationBox from "./ShelfLocationBox";
+import { numberWithSpaces, capitalizeFirst, globalStyles } from '../utilities.js';
 
 
 
@@ -21,10 +21,23 @@ export default class PopUpProduct extends Component {
     isVisible: false,
     amount: 1,
     item: null,
+    addItemPopup:false
   }
 
-  showPopover(item) {
-    this.setState({ isVisible: true, amount: 1, item: item });
+  showPopover(item, addItemPopup) {
+    if(addItemPopup){
+    this.setState({ 
+      isVisible: true, 
+      amount: 1, 
+      item: item,
+      addItemPopup: true });
+    }
+    else{
+      this.setState({ isVisible: true, 
+        item: item,
+        amount: item.amount,
+        addItemPopup: false });
+    }
   }
 
   closePopover() {
@@ -34,11 +47,26 @@ export default class PopUpProduct extends Component {
   }
   
   handlePress() {
-    const { addItemCallback } = this.props;
-    addItemCallback(this.state.item, this.state.amount);
+      const { btnCallback } = this.props;
+      
+      if(this.state.addItemPopup){
+        btnCallback(this.state.item, this.state.amount);
+      }
+      else{
+        btnCallback(this.state.item.product_info.id, this.state.amount);
+      }
     this.closePopover();
   }
-
+  
+  handleSpinnerChange(value) {
+    if(!this.state.addItemPopup){
+      const product = this.state.item;
+      product.amount = value;
+    }
+    this.setState({
+      amount: value,
+    });
+  }
   getProductIDBox(item) {
     return (
       <View style={styles.productIDBox}>
@@ -46,19 +74,13 @@ export default class PopUpProduct extends Component {
       </View>);
   }
 
-  handleSpinnerChange(value) {
-    this.setState({
-      amount: value,
-    });
-  }
+  
 
   getProductInformation(item) {
     if (!item.combo_product) {
       return (
         <View style={styles.productNumbers}>
-
           {this.getProductIDBox(item)}
-
           <ShelfLocationBox locationNumber={item.availability.aisle} locationText={"Aisle"}></ShelfLocationBox>
           <ShelfLocationBox locationNumber={item.availability.shelf} locationText={"Shelf"}></ShelfLocationBox>
         </View>);
@@ -104,8 +126,26 @@ export default class PopUpProduct extends Component {
       </View>);
   }
 
+  getButton(){
+    if(this.state.addItemPopup){
+      return(
+        <View style={styles.buttonContainer}>
+        <PrimaryButton onPress={this.handlePress} icon="buy-online-add" img="" text={"Add to shopping list"}></PrimaryButton>
+      </View>
+      );
+    }
+    else{
+      return(
+        <View style={styles.buttonContainer}>
+        <PrimaryButton onPress={this.handlePress} icon="" img="" text={"Remove all"}></PrimaryButton>
+      </View>
+      );
+    }
+  }
+
   render() {
     const { item } = this.state;
+    
 
     if(item){
       return (
@@ -118,9 +158,7 @@ export default class PopUpProduct extends Component {
   
             {this.getProductInfo(item)}
   
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={this.handlePress} icon="buy-online-add" img="" text={"Add to shopping list"}></PrimaryButton>
-            </View>
+            {this.getButton()}
           </View>
         </Popover>
       );

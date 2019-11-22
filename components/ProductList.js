@@ -11,7 +11,7 @@ import ProductListItem from "./ProductListItem.js";
 import ProductListFooter from "./ProductListFooter.js";
 import { globalStyles } from "../utilities.js";
 import { Icon } from "@up-shared/components";
-import PopupModifyItem from "./PopupModifyItem";
+import PopUpProduct from "./PopUpProduct";
 
 export default class ProductList extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ export default class ProductList extends Component {
 
   handleHold(product) {
       this.setState({ modalVisible: true });
-      this.modal.showPopover(product);
+      this.modal.showPopover(product,false);
   }
 
   modalClosed() {
@@ -45,14 +45,14 @@ export default class ProductList extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-         <PopupModifyItem
+         <PopUpProduct
           style={styles.modal}
           modalCloseCallback={this.modalClosed}
-          removeCallback={this.props.screenProps.removeItemCallback}
+          btnCallback={this.props.screenProps.removeItemCallback}
           ref={modal => {
             this.modal = modal;
           }}
-        ></PopupModifyItem>
+        ></PopUpProduct>
         <View style={styles.header}>
           <Text style={[styles.headerText, globalStyles.bold]}> My items </Text>
           <TouchableHighlight style={styles.button}>
@@ -65,7 +65,7 @@ export default class ProductList extends Component {
               <ProductListItem
                 product={p}
                 longPressCallback={this.handleHold}
-                removeCallback={this.props.screenProps.removeItemCallback}
+                btnCallback={this.props.screenProps.removeItemCallback}
                 key={p.product_info.id}
               />
             );

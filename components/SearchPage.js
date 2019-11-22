@@ -45,7 +45,6 @@ export default class SearchPage extends Component {
     const { params } = this.props.navigation.state;
     params.modalClosedCallback();
     this.props.navigation.goBack();
-
     return true;
   }
 
@@ -63,7 +62,7 @@ export default class SearchPage extends Component {
   }
 
   handlePress(product) {
-    this.modal.showPopover(product);
+    this.modal.showPopover(product,true);
     this.setState({ modalVisible: true });
   }
 
@@ -74,7 +73,7 @@ export default class SearchPage extends Component {
       <View style={styles.focusedContainer}>
         <PopUpProduct
           style={styles.modal}
-          addItemCallback={addItemCallback}
+          btnCallback={addItemCallback}
           modalCloseCallback={this.modalClosed}
           ref={modal => {
             this.modal = modal;
