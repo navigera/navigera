@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@react-native-community/cli-platform-android": "^2.9.0",
+    "algoliasearch": "^3.35.1",
     "moment": "^2.24.0",
-    "npm": "^6.11.3",
+    "npm": "^6.13.0",
     "react": "16.9.0",
+    "react-instantsearch-dom": "^6.0.0",
     "react-native": "0.61.1",
     "react-native-camera": "git+https://git@github.com/navigera/react-native-camera.git",
     "react-native-gesture-handler": "^1.4.1",

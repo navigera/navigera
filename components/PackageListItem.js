@@ -31,9 +31,9 @@ export default class ProductList extends Component {
               </View>
 
               <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.isle)}</Text>
+                <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.aisle)}</Text>
               </View>
-              <Text style={styles.h3}>Isle</Text>
+              <Text style={styles.h3}>Aisle</Text>
 
               <View style={styles.shelfBox}>
                 <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.shelf)}</Text>
