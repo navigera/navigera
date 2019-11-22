@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import {
   BackHandler,
-  ToastAndroid,
-  Text,
-  TouchableHighlight,
   ScrollView,
   View,
   StyleSheet
