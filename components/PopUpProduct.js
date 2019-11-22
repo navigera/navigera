@@ -127,20 +127,18 @@ export default class PopUpProduct extends Component {
   }
 
   getButton(){
-    if(this.state.addItemPopup){
-      return(
-        <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={this.handlePress} icon="buy-online-add" img="" text={"Add to shopping list"}></PrimaryButton>
-      </View>
-      );
+    let btnText = "Add to shopping list";
+    let btnIcon = "buy-online-add";   
+
+    if(!this.state.addItemPopup){
+      btnText = "Remove all";
+      btnIcon = ""; 
     }
-    else{
-      return(
-        <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={this.handlePress} icon="" img="" text={"Remove all"}></PrimaryButton>
+    return(
+      <View style={styles.buttonContainer}>
+        <PrimaryButton onPress={this.handlePress} icon={btnIcon} img="" text={btnText}></PrimaryButton>
       </View>
-      );
-    }
+    );
   }
 
   render() {

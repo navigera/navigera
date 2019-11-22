@@ -33,6 +33,30 @@ export default class ProductList extends Component {
   modalClosed() {
     this.setState({ modalVisible: false });
   }
+  
+  getPopUpProduct(){
+    return(
+      <PopUpProduct
+          style={styles.modal}
+          modalCloseCallback={this.modalClosed}
+          btnCallback={this.props.screenProps.removeItemCallback}
+          ref={modal => {
+            this.modal = modal;
+          }}
+        ></PopUpProduct>
+    );
+  }
+
+  getHeader(){
+    return(
+      <View style={styles.header}>
+        <Text style={[styles.headerText, globalStyles.bold]}> My items </Text>
+        <TouchableHighlight style={styles.button}>
+          <Icon name="three-dots" size={30} color="white"></Icon>
+        </TouchableHighlight>
+      </View>
+    );
+  }
 
   render() {
     const products = this.props.screenProps.products;
@@ -45,20 +69,9 @@ export default class ProductList extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-         <PopUpProduct
-          style={styles.modal}
-          modalCloseCallback={this.modalClosed}
-          btnCallback={this.props.screenProps.removeItemCallback}
-          ref={modal => {
-            this.modal = modal;
-          }}
-        ></PopUpProduct>
-        <View style={styles.header}>
-          <Text style={[styles.headerText, globalStyles.bold]}> My items </Text>
-          <TouchableHighlight style={styles.button}>
-            <Icon name="three-dots" size={30} color="white"></Icon>
-          </TouchableHighlight>
-        </View>
+        {this.getPopUpProduct()}
+        {this.getHeader()}
+
         <ScrollView style={[styles.container, styles.padding]}>
           {this.props.screenProps.products.map(p => {
             return (
