@@ -12,7 +12,7 @@ export default class ProductList extends Component {
         currentKey : 0,
         packages: [],
     };
-
+    
     this.handlePress = this.handlePress.bind(this);
     this.handleHold = this.handleHold.bind(this);
   }
@@ -24,7 +24,8 @@ export default class ProductList extends Component {
   }
 
   handleHold(event){
-    this.props.removeCallback(this.props.product.product_info.id, 1);
+    const {longPressCallback} = this.props;
+    longPressCallback(this.props.product);
   }
 
   componentDidMount(){
@@ -50,6 +51,7 @@ export default class ProductList extends Component {
   }
 
   render(){
+    const {longPressCallback} = this.props;
     return(
       <TouchableHighlight underlayColor ={"#fafafa"} onLongPress={this.handleHold}>
         <View style={styles.container}>

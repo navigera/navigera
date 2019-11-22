@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, Text, Image, StyleSheet, View } from 'react-native';
 import InputSpinner from './InputSpinner';
-import PrimaryButton from './PrimaryButton';
 import Popover from 'react-native-popover-view';
-import ShelfLocationBox from "./ShelfLocationBox";
 import { Icon } from "@up-shared/components";
-import { numberWithSpaces, formatSingleUnit, capitalizeFirst, globalStyles } from '../utilities.js';
+import PrimaryButton from "./PrimaryButton";
+import ShelfLocationBox from "./ShelfLocationBox";
+import { numberWithSpaces, capitalizeFirst, globalStyles } from '../utilities.js';
 
 
 
-export default class PopUpProduct extends Component {
+export default class PopupModifyItem extends Component {
   constructor(props) {
     super(props);
 
-    this.handlePress = this.handlePress.bind(this);
     this.handleSpinnerChange = this.handleSpinnerChange.bind(this);
     this.closePopover = this.closePopover.bind(this);
+    this.handlePress = this.handlePress.bind(this);
   }
+
   state = {
     isVisible: false,
     amount: 1,
@@ -24,7 +25,9 @@ export default class PopUpProduct extends Component {
   }
 
   showPopover(item) {
-    this.setState({ isVisible: true, amount: 1, item: item });
+    this.setState({ isVisible: true, amount: 1, 
+    item: item,
+    amount: item.amount });
   }
 
   closePopover() {
@@ -34,9 +37,18 @@ export default class PopUpProduct extends Component {
   }
   
   handlePress() {
-    const { addItemCallback } = this.props;
-    addItemCallback(this.state.item, this.state.amount);
+    const { removeCallback } = this.props;
+    removeCallback(this.state.item.product_info.id, this.state.amount);
+
     this.closePopover();
+  }
+
+  handleSpinnerChange(value) {
+    const product = this.state.item;
+    product.amount = value;
+    this.setState({
+      amount: value,
+    });
   }
 
   getProductIDBox(item) {
@@ -46,19 +58,12 @@ export default class PopUpProduct extends Component {
       </View>);
   }
 
-  handleSpinnerChange(value) {
-    this.setState({
-      amount: value,
-    });
-  }
-
   getProductInformation(item) {
     if (!item.combo_product) {
       return (
         <View style={styles.productNumbers}>
 
           {this.getProductIDBox(item)}
-
           <ShelfLocationBox locationNumber={item.availability.aisle} locationText={"Aisle"}></ShelfLocationBox>
           <ShelfLocationBox locationNumber={item.availability.shelf} locationText={"Shelf"}></ShelfLocationBox>
         </View>);
@@ -117,9 +122,8 @@ export default class PopUpProduct extends Component {
           <View style={styles.container}>
   
             {this.getProductInfo(item)}
-  
             <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={this.handlePress} icon="buy-online-add" img="" text={"Add to shopping list"}></PrimaryButton>
+              <PrimaryButton onPress={this.handlePress} icon="" img="" text={"Remove all"}></PrimaryButton>
             </View>
           </View>
         </Popover>
@@ -194,5 +198,5 @@ const styles = StyleSheet.create({
   productIDText: {
     textAlign: "center",
     color: "white",
-  }
+  },
 });
