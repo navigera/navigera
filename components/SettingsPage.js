@@ -42,7 +42,7 @@ export default class SettingsPage extends Component {
                 
                 <Text style={[styles.titleText, globalStyles.bold]}>Application</Text>
 
-                <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingWarehouse")}>
+                <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingWarehouse", {warehouse: this.props.screenProps.chosenWarehouse, update: this.props.screenProps.updateWarehouse})}>
                     <View style={styles.optionContainer}>
                         <Text style={[styles.optionText, globalStyles.regular]}>Change warehouse</Text>
                         <Icon name="arrow-right" size={20} color="#5a5e66"></Icon>

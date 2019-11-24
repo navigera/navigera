@@ -119,6 +119,10 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def googleMapApiKey = properties.getProperty('google.map.key')
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -134,6 +138,9 @@ android {
         versionCode 1
         versionName "1.0"
 		missingDimensionStrategy 'react-native-camera', 'mlkit'
+        manifestPlaceholders = [
+                (google.map.key): 'random'
+        ]
     }
     splits {
         abi {

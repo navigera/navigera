@@ -22,10 +22,19 @@ export default class App extends React.Component {
 
 		this.addItemCallback = this.addItemCallback.bind(this);
 		this.removeItemCallback = this.removeItemCallback.bind(this);
+		this.updateWarehouse = this.updateWarehouse.bind(this);
 	}
 
 	state = {
 		products: [],
+		chosenWarehouse: {
+			Id: 17,
+			Name: "Helsingborg",
+			No: "468",
+			Latitude: 56.092426,
+			Longitude: 12.760899,
+			isActive: false,
+		},
 	};
 
 	render() {
@@ -36,6 +45,8 @@ export default class App extends React.Component {
 					modalVisible: this.state.modalVisible,
 					addItemCallback: this.addItemCallback,
 					removeItemCallback: this.removeItemCallback,
+					chosenWarehouse: this.state.chosenWarehouse,
+					updateWarehouse: this.updateWarehouse,
 				}}/>
 			</SafeAreaView>
 		);
@@ -78,6 +89,10 @@ export default class App extends React.Component {
 			list.push(item);
 		}
 		this.setState({ products: list });
+	}
+
+	updateWarehouse(warehouse) {
+		this.setState({chosenWarehouse: warehouse});
 	}
 }
 
