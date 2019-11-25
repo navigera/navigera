@@ -14,11 +14,13 @@ export default class ProductList extends Component {
   }
 
   render(){
-    const { item } = this.props;
-    const { amount } = this.props;
+    const { item, amount, lastItem } = this.props;
+
+    console.log('lastitem:', lastItem);
+
     return(
 
-      <View style={styles.container}>
+      <View style={lastItem ? styles.containerLastItem : styles.container}>
           {/*<Image style={styles.image} source={{uri:(item.product_info.image_url)}} />*/}
         <View style={styles.descriptionBox}>
           <View style={styles.amount}>
@@ -57,6 +59,14 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     backgroundColor: 'white',
     padding:10,
+  },
+  containerLastItem:{
+    flex: 1,
+    flexDirection:"row",
+    backgroundColor: 'white',
+    padding:10,
+    borderBottomEndRadius: 15,
+    borderBottomLeftRadius: 15
   },
   descriptionBox:{
     flexDirection:"column",

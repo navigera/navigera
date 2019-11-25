@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     borderStyle: "dotted",
     borderBottomColor: "gray",
     borderBottomWidth: 1,
-    borderTopEndRadius: 5,
-    borderTopLeftRadius: 5
+    borderTopEndRadius: 15,
+    borderTopLeftRadius: 15
   },
   descriptionBox: {
     flexDirection: "column"

@@ -46,9 +46,7 @@ export default class PopUpProduct extends Component {
 
   handlePress() {
     const { addItemCallback } = this.props;
-    console.log('popup item', this.state.item);
     addItemCallback(this.state.item, this.state.amount);
-    console.log('PopUp', 'addItem');
     this.closePopover();
   }
 

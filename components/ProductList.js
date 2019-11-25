@@ -22,7 +22,7 @@ export default class ProductList extends Component {
     return(
       <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={[styles.headerText, globalStyles.bold]}> My items </Text>
+        <Text style={[styles.headerText, globalStyles.bold]}>Shopping list </Text>
         <TouchableHighlight style={styles.button}>
             <Icon name="three-dots" size={30} color="white"></Icon>
         </TouchableHighlight>
