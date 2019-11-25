@@ -42,3 +42,15 @@ export const globalStyles = {
     fontFamily: "NotoIKEAArabic-Regular" // light gray
   }
 };
+
+export function numberWithSpaces(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+export function formatSingleUnit(x) {
+  return x > 10 ? x : "0" + x;
+}
+
+export function capitalizeFirst(str) {
+  return str[0].toUpperCase() + str.slice(1);
+}

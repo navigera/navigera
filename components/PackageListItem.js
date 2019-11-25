@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
+import { formatSingleUnit, capitalizeFirst } from '../utilities.js';
 
 export default class ProductList extends Component {
-  capitalizeFirst(str){
-    return str[0].toUpperCase() + str.slice(1);
-  }
-   numberWithSpaces(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  }
-  formatSingleUnit(x){
-    return ((x>10) ? x : "0" + x);
 
-  }
 
   render(){
     const { item, amount, lastItem } = this.props;
@@ -24,7 +16,7 @@ export default class ProductList extends Component {
           {/*<Image style={styles.image} source={{uri:(item.product_info.image_url)}} />*/}
         <View style={styles.descriptionBox}>
           <View style={styles.amount}>
-            <Text style={styles.h3}>{this.capitalizeFirst(item.product.product_info.category)}</Text>
+            <Text style={styles.h3}>{capitalizeFirst(item.product.product_info.category)}</Text>
             <Text style={styles.amountText}>x {amount}</Text>
           </View>
             <View style={styles.productNumbers}>
@@ -33,12 +25,12 @@ export default class ProductList extends Component {
               </View>
 
               <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.aisle)}</Text>
+                <Text style={styles.productIDText}>{formatSingleUnit(item.product.availability.aisle)}</Text>
               </View>
               <Text style={styles.h3}>Aisle</Text>
 
               <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>{this.formatSingleUnit(item.product.availability.shelf)}</Text>
+                <Text style={styles.productIDText}>{formatSingleUnit(item.product.availability.shelf)}</Text>
               </View>
               <Text style={styles.h3}>Shelf</Text>
               
