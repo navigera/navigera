@@ -36,7 +36,7 @@ class CameraScreen extends React.Component {
     this.props.navigation.navigate("Modal", {
       item: this.state.item,
       modalClosedCallback: this.modalClosed,
-      addItemCallback: this.props.screenProps.addItemCallback
+      btnCallback: this.props.screenProps.addItemCallback
     });
   }
 
@@ -80,7 +80,7 @@ class CameraScreen extends React.Component {
                       if (!this.state.modalVisible) {
                         Vibration.vibrate(200);
                       }
-                      this.modal.showPopover(product);
+                      this.modal.showPopover(product,true);
                       this.setState({ modalVisible: true });
                       console.log("camera opened popup");
                     }
