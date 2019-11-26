@@ -9,6 +9,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Icon } from "@up-shared/components";
 import { setCustomText } from 'react-native-global-props';
 import SearchPage from './components/SearchPage';
+import LandingPage from './components/LandingPage';
+import WarehouseLocationPage from './components/WarehouseLocationPage';
 
 
 export default class App extends React.Component {
@@ -97,21 +99,13 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 			)
 		}
 	},
-	// Map: {
-	// 	screen: MapPage,
-	// 	navigationOptions: {
-	// 		tabBarLabel: 'Map',
-	// 		tabBarIcon: ({ tintColor }) => (
-	// 			<Icon name="store-24" size={30} color={tintColor} />
-	// 		)
-	// 	}
-	// },
+
 },
 	{
 		initialRouteName: 'Camera',
 		tabBarPosition: 'bottom',
 		swipeEnabled: true,
-		lazy: true,
+		lazy:false,
 		tabBarOptions: {
 			activeTintColor: 'blue',
 			inactiveTintColor: 'black',
@@ -132,14 +126,49 @@ const AppTabNavigator = createMaterialTopTabNavigator({
 	}
 );
 
+const LandingTabNavigator = createMaterialTopTabNavigator({
+	LandingPage: {
+		screen: LandingPage,
+		navigationOptions: {
+			tabBarLabel: 'LandingPage',
+		}
+	},
+	LocationPage: {
+		screen: WarehouseLocationPage,
+		navigationOptions: {
+			tabBarLabel: 'LocationPage',
+		}
+	}
+},
+{
+	initialRouteName: 'LandingPage',
+	tabBarPosition: 'bottom',
+	swipeEnabled: true,
+	removeClippedSubviews:true,
+	tabBarOptions: {
+		style: {
+			backgroundColor: '#0058a3',
+		},
+		showIcon: false,
+		showLabel: false,
+		indicatorStyle: {
+			height: 0.
+		},
+	},
+});
+
 const RootStack = createStackNavigator(
     {
+		Start:{
+			screen: LandingTabNavigator,
+		},
         Main: {
             screen: AppTabNavigator,
         },
         Modal: {
             screen: SearchPage,
-        }
+		},
+		
     },
     {
         mode: 'modal',

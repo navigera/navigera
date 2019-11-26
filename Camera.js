@@ -11,6 +11,7 @@ import { RNCamera } from "react-native-camera";
 import CONSTANTS from "./components/Constants.js";
 import PopUpProduct from "./components/PopUpProduct";
 import { GetProduct } from "./utilities.js";
+import { withNavigationFocus } from 'react-navigation';
 
 class CameraScreen extends React.Component {
   constructor(props) {
@@ -25,6 +26,14 @@ class CameraScreen extends React.Component {
     item: null
   };
 
+  componentDidUpdate(props) {
+
+    if (!this.props.isFocused) {
+      this.camera.pausePreview();
+    }else{
+      this.camera.resumePreview();
+    }
+  }
   modalClosed() {
     this.setState({ modalVisible: false });
     this.camera.resumePreview();
@@ -132,8 +141,9 @@ class CameraScreen extends React.Component {
       <View style={styles.container}>
         <PopUpProduct
           style={styles.modal}
-          addItemCallback={addItemCallback}
+          btnCallback={addItemCallback}
           modalCloseCallback={this.modalClosed}
+
           ref={modal => {
             this.modal = modal;
           }}
@@ -144,7 +154,7 @@ class CameraScreen extends React.Component {
   }
 }
 
-export default CameraScreen;
+export default withNavigationFocus(CameraScreen);
 
 const styles = StyleSheet.create({
   container: {
