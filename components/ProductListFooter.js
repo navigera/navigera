@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { globalStyles } from '../utilities';
+import { numberWithSpaces,globalStyles } from '../utilities';
 
 export default class ProductListFooter extends Component {
-
-  numberWithSpaces(x) {
-   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  }
 
   getProductsText(quantity){
     let text = "product";
@@ -30,7 +26,7 @@ export default class ProductListFooter extends Component {
           </View>
           <View style={styles.textContainer}>
             <Text style={[styles.textPrice, globalStyles.bold]}> Total </Text>
-            <Text style={[styles.textPrice, globalStyles.bold]}> {this.numberWithSpaces(price)} kr </Text>
+            <Text style={[styles.textPrice, globalStyles.bold]}> {numberWithSpaces(price)} kr </Text>
           </View>
         </View>
     );
@@ -39,7 +35,10 @@ export default class ProductListFooter extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    backgroundColor: "#f4f4f4",
+    paddingTop:5,
+    paddingBottom:5,
+    height: 65,
     flexDirection: 'column',
   },
   textContainer: {

@@ -72,7 +72,7 @@ export default class ProductList extends Component {
         {this.getPopUpProduct()}
         {this.getHeader()}
 
-        <ScrollView style={[styles.container, styles.padding]}>
+        <ScrollView style={[styles.padding]}>
           {this.props.screenProps.products.map(p => {
             return (
               <ProductListItem
