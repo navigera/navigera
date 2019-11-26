@@ -60,9 +60,9 @@ export default class ProductList extends Component {
 
           {this.state.expanded == true &&
             <View style={styles.flex}>
-              {this.state.packages.map(p => {
+              {this.state.packages.map((p, index) => {
                 //todo: generate unique keys
-                return <PackageListItem item = {p.data} key={p.id} amount={p.count * this.props.product.amount}></PackageListItem>
+                return <PackageListItem item = {p.data} key={p.id} amount={p.count * this.props.product.amount} lastItem={(this.state.packages.length === index+1)}></PackageListItem>
               })}
             </View>
           }
