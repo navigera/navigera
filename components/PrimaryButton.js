@@ -13,25 +13,42 @@ export default class PrimaryButton extends Component {
   }
 
   renderIcon(icon) {
-    if (icon) {
+
       return (
         <Icon name={icon} size={30} color="white"></Icon>
       );
+  }
+
+  renderText(text){
+    if(text.length>0){
+      return(
+      <Text style={[styles.text, globalStyles.bold]}>
+        {text}
+      </Text>);
     }
+  }
+
+  getColor(){
+    if(this.props.color=="green"){
+      return styles.green;
+    }
+    console.log("color: ",this.props.color);
+    
   }
 
   render() {
     const { text, onPress, icon } = this.props;
-
+    
+    
     return (
       <View style={styles.Box}>
         <TouchableHighlight underlayColor={"#3379b5"}
-          style={styles.button} onPress={onPress}>
+          style={[styles.button,this.getColor()]} onPress={onPress}>
+          
           <View style={styles.buttonContent}>
             {this.renderIcon(icon)}
-            <Text style={[styles.text, globalStyles.bold]}>
-              {text}
-            </Text>
+            {this.renderText(text)}
+            
           </View>
         </TouchableHighlight>
       </View>
@@ -53,6 +70,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "center",
     alignItems: "center",
+  },
+  green:{
+    backgroundColor: "#00FF00",
   },
   text: {
     fontSize: 20,

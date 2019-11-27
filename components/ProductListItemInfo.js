@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderStyle: "dotted",
-    borderBottomColor: "gray",
+    borderBottomColor: "lightgray",
     borderBottomWidth: 1,
     borderTopEndRadius: 15,
     borderTopLeftRadius: 15
