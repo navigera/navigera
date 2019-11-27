@@ -45,35 +45,47 @@ export default class SelfServeCarouselEntryItem extends Component {
     if (this.state.data) {
       return (
         <View style={styles.container}>
-          {/*<Image
+          <View style={styles.leftGrid}>
+            {/*<Image
             style={styles.image}
             source={{ uri: this.state.data.product_info.image_url }}
           /> */}
 
-          <DescriptionBox product={this.state.data}></DescriptionBox>
+            <DescriptionBox product={this.state.data}></DescriptionBox>
 
-          <View style={styles.amount}>
-            <Text style={styles.amountText}>x {item.amount}</Text>
+            <View style={styles.productIDBox}>
+              <Text style={styles.productIDText}>{item.id}</Text>
+            </View>
+
+            <View style={styles.productNumbers}>
+              <View style={styles.shelfBox}>
+                <Text style={styles.productIDText}>
+                  {formatSingleUnit(this.state.data.availability.aisle)}
+                </Text>
+              </View>
+              <Text style={styles.h3}>Aisle</Text>
+
+              <View style={styles.shelfBox}>
+                <Text style={styles.productIDText}>
+                  {formatSingleUnit(this.state.data.availability.shelf)}
+                </Text>
+              </View>
+              <Text style={styles.h3}>Shelf</Text>
+            </View>
           </View>
 
-          <View style={styles.productIDBox}>
-            <Text style={styles.productIDText}>{item.id}</Text>
-          </View>
-
-          <View style={styles.productNumbers}>
-            <View style={styles.shelfBox}>
-              <Text style={styles.productIDText}>
-                {formatSingleUnit(this.state.data.availability.aisle)}
-              </Text>
+          <View style={styles.rightGrid}>
+            <View style={styles.amount}>
+              <Text style={styles.amountText}>x {item.amount}</Text>
             </View>
-            <Text style={styles.h3}>Aisle</Text>
-
-            <View style={styles.shelfBox}>
-              <Text style={styles.productIDText}>
-                {formatSingleUnit(this.state.data.availability.shelf)}
-              </Text>
+            <View style={styles.btn}>
+              <PrimaryButton
+                color="green"
+                icon="check"
+                img=""
+                text={""}
+              ></PrimaryButton>
             </View>
-            <Text style={styles.h3}>Shelf</Text>
           </View>
         </View>
       );
@@ -89,10 +101,25 @@ export default class SelfServeCarouselEntryItem extends Component {
 }
 
 const styles = StyleSheet.create({
+  btn: {
+    width: 40,
+    marginTop: "55%",
+    alignSelf: "flex-end",
+    justifyContent: "space-around"
+  },
   container: {
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 15
+    padding: 15,
+    flexDirection: "row",
+    marginBottom: 10
+  },
+  leftGrid: {
+    width: "50%"
+  },
+  rightGrid: {
+    width: "50%",
+    alignContent: "center"
   },
   descriptionBox: {
     flexDirection: "column"
@@ -102,10 +129,10 @@ const styles = StyleSheet.create({
     height: 70
   },
   amount: {
-    flex: 1,
     alignSelf: "flex-end",
+    textAlignVertical: "top",
     justifyContent: "space-around",
-    alignItems: "flex-end"
+    alignItems: "center"
   },
   amountText: {
     fontSize: 16,

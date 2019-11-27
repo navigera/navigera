@@ -21,7 +21,7 @@ export default class LandingPage extends Component {
   render() {
     return (
     <View style={styles.container}>
-        <Text style={[styles.text,globalStyles]}>NAVIGERA</Text>
+        <Text style={[styles.text,globalStyles.bold]}>NAVIGERA</Text>
         
         <TouchableHighlight underlayColor={"#116fbf"} onPress={this.handlePress}>
             <View style={styles.btn}>
@@ -51,15 +51,13 @@ const styles = StyleSheet.create({
         color:"white",
         textAlign: "center",
         fontSize:24,
-
     },
     btn:{
         flexDirection:"row",
         alignContent:"center",
         alignItems:"center",
         borderColor: "white",
-        borderWidth:1,
-        
+        borderWidth:1,   
         paddingLeft:20,
         paddingRight:20
     }
