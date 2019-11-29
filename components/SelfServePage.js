@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Dimensions, StyleSheet } from "react-native";
-import Carousel from "react-native-snap-carousel";
-import { Icon } from "@up-shared/components";
+import { Text, View, StyleSheet } from "react-native";
 import SelfServeCarousel from "./SelfServeCarousel";
 
 export default class SelfServePage extends Component {
@@ -10,12 +8,13 @@ export default class SelfServePage extends Component {
   }
 
   render() {
-    const packages = this.props.screenProps.packages;
-    console.log('SelfServePage packages: ', packages)
+    const { packages, setPickedCallback } = this.props.screenProps;
+    console.log("SelfServePage packages: ", packages);
 
     return (
       <View style={styles.container}>
         <SelfServeCarousel
+          setPickedCallback={setPickedCallback}
           style={styles.carouselContainer}
           entries={packages}
         />

@@ -8,10 +8,11 @@ import {
   Vibration
 } from "react-native";
 import { RNCamera } from "react-native-camera";
+import BarcodeMask from "react-native-barcode-mask";
 import CONSTANTS from "./components/Constants.js";
 import PopUpProduct from "./components/PopUpProduct";
 import { GetProduct } from "./utilities.js";
-import { withNavigationFocus } from 'react-navigation';
+import { withNavigationFocus } from "react-navigation";
 
 class CameraScreen extends React.Component {
   constructor(props) {
@@ -27,10 +28,9 @@ class CameraScreen extends React.Component {
   };
 
   componentDidUpdate(props) {
-
     if (!this.props.isFocused) {
       this.camera.pausePreview();
-    }else{
+    } else {
       this.camera.resumePreview();
     }
   }
@@ -50,8 +50,8 @@ class CameraScreen extends React.Component {
   }
 
   renderCamera() {
-	var temp;
-	
+    var temp;
+
     return (
       <RNCamera
         ref={ref => {
@@ -89,7 +89,7 @@ class CameraScreen extends React.Component {
                       if (!this.state.modalVisible) {
                         Vibration.vibrate(200);
                       }
-                      this.modal.showPopover(product,true);
+                      this.modal.showPopover(product, true);
                       this.setState({ modalVisible: true });
                       console.log("camera opened popup");
                     }
@@ -101,36 +101,32 @@ class CameraScreen extends React.Component {
           }
         }}
       >
-		  {this.renderMaskAndButton()}
-	  </RNCamera>
+        {this.renderMaskAndButton()}
+      </RNCamera>
     );
   }
 
   renderMaskAndButton() {
-	const { height, width } = Dimensions.get("window");
-	const maskRowHeight = height * 0.05;
-	const maskColWidth = width * 0.2;
+    const { height, width } = Dimensions.get("window");
+    const maskRowHeight = height * 0.1;
+    const maskColWidth = width * 0.9;
 
     return (
-      <View style={styles.maskOuter}>
+      <>
+        <BarcodeMask
+          width={maskColWidth}
+          height={maskRowHeight}
+          backgroundColor={'rgba(0,0,0,.4)'}
+          edgeBorderWidth={2}
+          animatedLineHeight={1}
+        />
         <TouchableHighlight
           style={styles.textContainer}
           onPress={this.openModal}
         >
           <Text style={styles.textBox}>Search</Text>
         </TouchableHighlight>
-        <View
-          style={[{ flex: maskRowHeight }, styles.maskRow, styles.maskFrame]}
-        />
-        <View style={[{ flex: 6 }, styles.maskCenter]}>
-          <View style={[{ width: maskColWidth }, styles.maskFrame]} />
-          <View style={styles.maskInner} />
-          <View style={[{ width: maskColWidth }, styles.maskFrame]} />
-        </View>
-        <View
-          style={[{ flex: maskRowHeight }, styles.maskRow, styles.maskFrame]}
-        />
-      </View>
+      </>
     );
   }
 
@@ -143,7 +139,6 @@ class CameraScreen extends React.Component {
           style={styles.modal}
           btnCallback={addItemCallback}
           modalCloseCallback={this.modalClosed}
-
           ref={modal => {
             this.modal = modal;
           }}
@@ -203,17 +198,21 @@ const styles = StyleSheet.create({
     position: "absolute"
   },
   textBox: {
-    backgroundColor: "white",
+    backgroundColor: "lightgray",
     borderRadius: 30,
-    opacity: 0.4,
+    fontSize: 16,
+    opacity: 1,
     textAlign: "auto",
-    padding: 10
+    padding: 10,
+    paddingLeft: 20,
+    textAlignVertical: "center"
   },
   textContainer: {
-    flexDirection: "column",
-    backgroundColor: "black",
+    position: "absolute",
+    top: 0,
+    backgroundColor: "transparent",
     width: "100%",
     padding: 20,
-    opacity: 0.7
+    opacity: 1
   }
 });
