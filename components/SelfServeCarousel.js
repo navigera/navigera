@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, Dimensions, StyleSheet } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import ProductListItem from "./ProductListItem";
 import SelfServeCarouselEntryItem from "./SelfServeCarouselEntryItem";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -16,8 +15,14 @@ export default class SelfServeCarousel extends Component {
   }
 
   _renderItem({ item, index }) {
+    const { setPickedCallback } = this.props;
     if (item) {
-      return <SelfServeCarouselEntryItem item={item} />;
+      return (
+        <SelfServeCarouselEntryItem
+          setPickedCallback={setPickedCallback}
+          item={item}
+        />
+      );
     } else {
       return <></>;
     }
@@ -26,7 +31,7 @@ export default class SelfServeCarousel extends Component {
   render() {
     const { entries } = this.props;
 
-    console.log('SelfServeCarousel entries: ', entries)
+    console.log("SelfServeCarousel entries: ", entries);
     const sliderWidth = viewportWidth;
     const itemWidth = sliderWidth - 30 * 2;
 
@@ -38,7 +43,7 @@ export default class SelfServeCarousel extends Component {
               this._carousel = c;
             }}
             data={entries}
-            renderItem={this._renderItem}
+            renderItem={this._renderItem.bind(this)}
             sliderWidth={sliderWidth}
             itemWidth={itemWidth}
             layout={"default"}
@@ -74,7 +79,7 @@ export default class SelfServeCarousel extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   carouselContainer: {},
   carouselStyle: {},

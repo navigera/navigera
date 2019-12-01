@@ -49,10 +49,10 @@ export default class WarehouseLocationPage extends Component {
     console.log(this.state.onStartUp);
       return (
         <View style={styles.container}>
-          <Text style={[styles.text1, globalStyles]}>
+          <Text style={[styles.text1, globalStyles.bold]}>
             Your closest warehouse is in
           </Text>
-          <Text style={[styles.text2, globalStyles]}>
+          <Text style={[styles.text2, globalStyles.bold]}>
             {this.state.closestWarehouse}
           </Text>
 
@@ -61,7 +61,7 @@ export default class WarehouseLocationPage extends Component {
             onPress={this.handlePress}
           >
             <View style={styles.btn}>
-              <Text style={[styles.textBtn, globalStyles]}>
+              <Text style={[styles.textBtn, globalStyles.bold]}>
                 Use this location
               </Text>
             </View>

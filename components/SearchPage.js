@@ -130,13 +130,6 @@ const styles = StyleSheet.create({
   padding: {
     padding: 20
   },
-  textBox: {
-    backgroundColor: "white",
-    borderRadius: 30,
-    opacity: 0.4,
-    textAlign: "auto",
-    padding: 10
-  },
   textContainer: {
     flexDirection: "column",
     backgroundColor: "black",
