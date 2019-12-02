@@ -13,6 +13,9 @@ import CONSTANTS from "./components/Constants.js";
 import PopUpProduct from "./components/PopUpProduct";
 import { GetProduct } from "./utilities.js";
 import { withNavigationFocus } from "react-navigation";
+import GestureRecognizer, {
+  swipeDirections
+} from "react-native-swipe-gestures";
 
 class CameraScreen extends React.Component {
   constructor(props) {
@@ -20,6 +23,7 @@ class CameraScreen extends React.Component {
 
     this.modalClosed = this.modalClosed.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.onSwipeDown = this.onSwipeDown.bind(this);
   }
 
   state = {
@@ -39,6 +43,10 @@ class CameraScreen extends React.Component {
     this.camera.resumePreview();
   }
 
+  onSwipeDown(gestureState) {
+    this.openModal();
+  }
+
   openModal() {
     this.camera.pausePreview();
     this.setState({ modalVisible: true });
@@ -53,56 +61,58 @@ class CameraScreen extends React.Component {
     var temp;
 
     return (
-      <RNCamera
-        ref={ref => {
-          this.camera = ref;
-        }}
-        captureAudio={false}
-        style={styles.preview}
-        cropScanArea={[1, 1]}
-        type={RNCamera.Constants.Type.back}
-        androidCameraPermissionOptions={{
-          title: "Permission to use camera",
-          message: "We need your permission to use your camera",
-          buttonPositive: "Ok",
-          buttonNegative: "Cancel"
-        }}
-        androidRecordAudioPermissionOptions={{
-          title: "Permission to use audio recording",
-          message: "We need your permission to use your audio",
-          buttonPositive: "Ok",
-          buttonNegative: "Cancel"
-        }}
-        onTextRecognized={async data => {
-          if (!this.state.modalVisible) {
-            temp = data.textBlocks;
+      <GestureRecognizer style={styles.container} onSwipeDown={this.onSwipeDown}>
+        <RNCamera
+          ref={ref => {
+            this.camera = ref;
+          }}
+          captureAudio={false}
+          style={styles.preview}
+          cropScanArea={[1, 1]}
+          type={RNCamera.Constants.Type.back}
+          androidCameraPermissionOptions={{
+            title: "Permission to use camera",
+            message: "We need your permission to use your camera",
+            buttonPositive: "Ok",
+            buttonNegative: "Cancel"
+          }}
+          androidRecordAudioPermissionOptions={{
+            title: "Permission to use audio recording",
+            message: "We need your permission to use your audio",
+            buttonPositive: "Ok",
+            buttonNegative: "Cancel"
+          }}
+          onTextRecognized={async data => {
+            if (!this.state.modalVisible) {
+              temp = data.textBlocks;
 
-            if (typeof temp !== "undefined") {
-              for (let i = 0; i < temp.length; i++) {
-                if (temp[i].value.length == CONSTANTS.SERIAL_LENGTH) {
-                  var possibleSerial = temp[i].value;
-                  if (CONSTANTS.REGEX.test(possibleSerial)) {
-                    let product = await GetProduct(possibleSerial);
-                    if (product) {
-                      this.camera.pausePreview();
-                      this.setState({ item: product });
-                      if (!this.state.modalVisible) {
-                        Vibration.vibrate(200);
+              if (typeof temp !== "undefined") {
+                for (let i = 0; i < temp.length; i++) {
+                  if (temp[i].value.length == CONSTANTS.SERIAL_LENGTH) {
+                    var possibleSerial = temp[i].value;
+                    if (CONSTANTS.REGEX.test(possibleSerial)) {
+                      let product = await GetProduct(possibleSerial);
+                      if (product) {
+                        this.camera.pausePreview();
+                        this.setState({ item: product });
+                        if (!this.state.modalVisible) {
+                          Vibration.vibrate(200);
+                        }
+                        this.modal.showPopover(product, true);
+                        this.setState({ modalVisible: true });
+                        console.log("camera opened popup");
                       }
-                      this.modal.showPopover(product, true);
-                      this.setState({ modalVisible: true });
-                      console.log("camera opened popup");
+                      //Obviously will not alert, but rather send value elsewhere.
                     }
-                    //Obviously will not alert, but rather send value elsewhere.
                   }
                 }
               }
             }
-          }
-        }}
-      >
-        {this.renderMaskAndButton()}
-      </RNCamera>
+          }}
+        >
+          {this.renderMaskAndButton()}
+        </RNCamera>
+      </GestureRecognizer>
     );
   }
 
@@ -116,7 +126,7 @@ class CameraScreen extends React.Component {
         <BarcodeMask
           width={maskColWidth}
           height={maskRowHeight}
-          backgroundColor={'rgba(0,0,0,.4)'}
+          backgroundColor={"rgba(0,0,0,.4)"}
           edgeBorderWidth={2}
           animatedLineHeight={1}
         />
@@ -160,7 +170,7 @@ const styles = StyleSheet.create({
   preview: {
     flex: 1,
     justifyContent: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
   },
   bottom: {
     flex: 0,
