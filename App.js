@@ -8,11 +8,10 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from "@up-shared/components";
 
-import LandingPage from './components/LandingPage';
-import WarehouseLocationPage from './components/WarehouseLocationPage';
+import LandingPage from "./components/LandingPage";
+import WarehouseLocationPage from "./components/WarehouseLocationPage";
 import { setCustomText } from "react-native-global-props";
 import SearchPage from "./components/SearchPage";
-
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,6 +21,7 @@ export default class App extends React.Component {
 
     this.addItemCallback = this.addItemCallback.bind(this);
     this.removeItemCallback = this.removeItemCallback.bind(this);
+    this.setPickedCallback = this.setPickedCallback.bind(this);
   }
 
   state = {
@@ -34,9 +34,10 @@ export default class App extends React.Component {
       <SafeAreaView style={styles.container}>
         <ModalContainer
           screenProps={{
-			products: this.state.products,
-			packages: this.state.packages,
+            products: this.state.products,
+            packages: this.state.packages,
             modalVisible: this.state.modalVisible,
+            setPickedCallback: this.setPickedCallback,
             addItemCallback: this.addItemCallback,
             removeItemCallback: this.removeItemCallback
           }}
@@ -45,14 +46,27 @@ export default class App extends React.Component {
     );
   }
 
+  setPickedCallback(id) {
+	var packages = this.state.packages;
+	packages.forEach(pkg => {
+		if(id == pkg.id){
+			pkg.isPicked = !pkg.isPicked;
+		}
+	});
+	this.setState({
+		packages: packages,
+	});
+
+	console.log(this.state.packages);
+  }
+
   removeItemCallback(id, num) {
-	//Remove product from shopping list
-	var productList = this.state.products;
-	var packageList = this.state.packages;
+    //Remove product from shopping list
+    var productList = this.state.products;
+    var packageList = this.state.packages;
     for (var i = 0; i < productList.length; i++) {
       if (productList[i].product_info.id == id) {
-		
-		//Remove packages from package list
+        //Remove packages from package list
         productList[i].packages.forEach(pkg => {
           for (var j = 0; j < packageList.length; j++) {
             if (packageList[j].id == pkg.id) {
@@ -65,7 +79,7 @@ export default class App extends React.Component {
               }
             }
           }
-		});
+        });
       }
 
       if (productList[i].amount > num) {
@@ -75,10 +89,10 @@ export default class App extends React.Component {
         productList.splice(i, 1);
         break;
       }
-	}
-	
-	console.log("PRODUCTS:", productList)
-	console.log("PACKAGES:", packageList)
+    }
+
+    console.log("PRODUCTS:", productList);
+    console.log("PACKAGES:", packageList);
 
     this.setState({ products: productList, packages: packageList });
   }
@@ -120,12 +134,16 @@ export default class App extends React.Component {
       }
 
       if (!pkgExists) {
-        packageList.push({ id: pkg.id, amount: pkg.count * num });
+        packageList.push({
+          id: pkg.id,
+          amount: pkg.count * num,
+          isPicked: false
+        });
       }
-	});
-	
-	console.log("PRODUCTS:", productList)
-	console.log("PACKAGES:", packageList)
+    });
+
+    console.log("PRODUCTS:", productList);
+    console.log("PACKAGES:", packageList);
 
     this.setState({ products: productList, packages: packageList });
   }
@@ -167,8 +185,8 @@ const AppTabNavigator = createMaterialTopTabNavigator(
     swipeEnabled: true,
     lazy: false,
     tabBarOptions: {
-      activeTintColor: "blue",
-      inactiveTintColor: "black",
+      activeTintColor: "#0058a3",
+      inactiveTintColor: "gray",
       style: {
         backgroundColor: "white",
         height: 50
@@ -186,45 +204,46 @@ const AppTabNavigator = createMaterialTopTabNavigator(
   }
 );
 
-const LandingTabNavigator = createMaterialTopTabNavigator({
-	LandingPage: {
-		screen: LandingPage,
-		navigationOptions: {
-			tabBarLabel: 'LandingPage',
-		}
-	},
-	LocationPage: {
-		screen: WarehouseLocationPage,
-		navigationOptions: {
-			tabBarLabel: 'LocationPage',
-		}
-	}
-},
-{
-	initialRouteName: 'LandingPage',
-	tabBarPosition: 'bottom',
-	swipeEnabled: true,
-	removeClippedSubviews:true,
-	tabBarOptions: {
-		style: {
-			backgroundColor: '#0058a3',
-		},
-		showIcon: false,
-		showLabel: false,
-		indicatorStyle: {
-			height: 0.
-		},
-	},
-});
+const LandingTabNavigator = createMaterialTopTabNavigator(
+  {
+    LandingPage: {
+      screen: LandingPage,
+      navigationOptions: {
+        tabBarLabel: "LandingPage"
+      }
+    },
+    LocationPage: {
+      screen: WarehouseLocationPage,
+      navigationOptions: {
+        tabBarLabel: "LocationPage"
+      }
+    }
+  },
+  {
+    initialRouteName: "LandingPage",
+    tabBarPosition: "bottom",
+    swipeEnabled: true,
+    removeClippedSubviews: true,
+    tabBarOptions: {
+      style: {
+        backgroundColor: "#0058a3"
+      },
+      showIcon: false,
+      showLabel: false,
+      indicatorStyle: {
+        height: 0
+      }
+    }
+  }
+);
 
 const RootStack = createStackNavigator(
   {
-	Start:{
-		screen: LandingTabNavigator,
-	},
+    Start: {
+      screen: LandingTabNavigator
+    },
     Main: {
       screen: AppTabNavigator
-
     },
     Modal: {
       screen: SearchPage

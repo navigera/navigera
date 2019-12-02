@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
 		borderColor:"gray",
 		borderWidth:1,
 		paddingHorizontal: 20,
+		fontSize: 16,
 	}
 });
 

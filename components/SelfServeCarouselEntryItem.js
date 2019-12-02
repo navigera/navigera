@@ -3,10 +3,13 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import DescriptionBox from "./DescriptionBox";
 import { GetProduct, formatSingleUnit } from "../utilities";
 import PrimaryButton from "./PrimaryButton";
+import { TouchableHighlight } from "react-native-gesture-handler";
+import { Icon } from "@up-shared/components";
 
 export default class SelfServeCarouselEntryItem extends Component {
   constructor() {
     super();
+    this.handleHold = this.handleHold.bind(this);
   }
 
   state = {
@@ -31,6 +34,12 @@ export default class SelfServeCarouselEntryItem extends Component {
 
   handlePress() {}
 
+  handleHold() {
+    console.log("Hold lmao, setting isPicked");
+    const { setPickedCallback } = this.props;
+    setPickedCallback(this.state.id);
+  }
+
   render() {
     const { item } = this.props;
 
@@ -44,50 +53,62 @@ export default class SelfServeCarouselEntryItem extends Component {
 
     if (this.state.data) {
       return (
-        <View style={styles.container}>
-          <View style={styles.leftGrid}>
-            {/*<Image
+        <TouchableHighlight underlayColor={"#0058a3"} onLongPress={this.handleHold}>
+          <View style={styles.container}>
+            <View style={styles.leftGrid}>
+              {/*<Image
             style={styles.image}
             source={{ uri: this.state.data.product_info.image_url }}
           /> */}
 
-            <DescriptionBox product={this.state.data}></DescriptionBox>
+              <DescriptionBox product={this.state.data}></DescriptionBox>
 
-            <View style={styles.productIDBox}>
-              <Text style={styles.productIDText}>{item.id}</Text>
+              <View style={styles.productIDBox}>
+                <Text style={styles.productIDText}>{item.id}</Text>
+              </View>
+
+              <View style={styles.productNumbers}>
+                <View style={styles.shelfBox}>
+                  <Text style={styles.productIDText}>
+                    {formatSingleUnit(this.state.data.availability.aisle)}
+                  </Text>
+                </View>
+                <Text style={styles.h3}>Aisle</Text>
+
+                <View style={styles.shelfBox}>
+                  <Text style={styles.productIDText}>
+                    {formatSingleUnit(this.state.data.availability.shelf)}
+                  </Text>
+                </View>
+                <Text style={styles.h3}>Shelf</Text>
+              </View>
             </View>
 
-            <View style={styles.productNumbers}>
-              <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>
-                  {formatSingleUnit(this.state.data.availability.aisle)}
-                </Text>
+            <View style={styles.rightGrid}>
+              <View style={styles.amount}>
+                <Text style={styles.amountText}>x {item.amount}</Text>
               </View>
-              <Text style={styles.h3}>Aisle</Text>
-
-              <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>
-                  {formatSingleUnit(this.state.data.availability.shelf)}
-                </Text>
+              <View style={styles.btn}>
+                <PrimaryButton
+                  color="green"
+                  icon="check"
+                  img=""
+                  text={""}
+                ></PrimaryButton>
               </View>
-              <Text style={styles.h3}>Shelf</Text>
+            </View>
+            <View
+              style={
+                !item.isPicked
+                  ? styles.containerEnabled
+                  : styles.containerDisabled
+              }
+            >
+              <View style={styles.overlay} />
+          <Icon style={styles.checkIcon} name="check" size={60} color="white"></Icon>
             </View>
           </View>
-
-          <View style={styles.rightGrid}>
-            <View style={styles.amount}>
-              <Text style={styles.amountText}>x {item.amount}</Text>
-            </View>
-            <View style={styles.btn}>
-              <PrimaryButton
-                color="green"
-                icon="check"
-                img=""
-                text={""}
-              ></PrimaryButton>
-            </View>
-          </View>
-        </View>
+        </TouchableHighlight>
       );
     } else {
       return (
@@ -112,7 +133,39 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     flexDirection: "row",
-    marginBottom: 10
+    marginBottom: 10,
+    overflow: "hidden"
+  },
+  containerEnabled: {
+    display: "none"
+  },
+  containerDisabled: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    opacity: 0.6,
+    backgroundColor: "green",
+  },
+  checkIcon: {
+    borderWidth: 4,
+    borderRadius: 9999,
+    borderColor: "white"
+  },
+  collectedText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 16
   },
   leftGrid: {
     width: "50%"
