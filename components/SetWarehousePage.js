@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, BackHandler, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, BackHandler, TouchableOpacity } from 'react-native';
 import { Icon } from "@up-shared/components";
 import { globalStyles } from "../utilities";
 import MapView, { Marker } from 'react-native-maps';
@@ -173,7 +173,7 @@ export default class SetWarehousePage extends Component {
     constructor(props){
         super(props);
 
-        this.settingsClosed = this.settingsClosed.bind(this);
+        this.setWarehouseClosed = this.setWarehouseClosed.bind(this);
         this.onPressMarker = this.onPressMarker.bind(this);
         this.updateWarehouse = this.updateWarehouse.bind(this);
         this.unSelectMarker = this.unSelectMarker.bind(this);
@@ -195,7 +195,7 @@ export default class SetWarehousePage extends Component {
         
     }
 
-    settingsClosed(){
+    setWarehouseClosed(){
         this.props.navigation.goBack();
         return true;
     }
@@ -203,7 +203,7 @@ export default class SetWarehousePage extends Component {
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             "hardwareBackPress",
-            this.settingsClosed
+            this.setWarehouseClosed
         );
         this.assignState();
     }
@@ -263,9 +263,8 @@ export default class SetWarehousePage extends Component {
   render() {
     return (
         <View style={styles.container}>
-
             <View style={styles.header}>  
-                <TouchableOpacity style={styles.button} onPress={this.settingsClosed}>
+                <TouchableOpacity style={styles.button} onPress={this.setWarehouseClosed}>
                     <Icon name="arrow-left" size={33} color="white"></Icon>
                 </TouchableOpacity>  
                 <Text style={[styles.headerText, globalStyles.bold]}>Change Warehouse</Text>  
@@ -292,17 +291,20 @@ export default class SetWarehousePage extends Component {
                             />
                         ))}
                     </MapView>
-                </View>  
-                <View style={styles.infoContainer}>
-                    <View style={styles.textContainer}>
-                        <Text style={[styles.infoText, globalStyles.bold]}>Chosen Warehouse: {this.state.chosenWarehouse.Name}</Text>
-                        <Text style={[styles.infoText, globalStyles.bold]}> {this.state.selectedMarker.Name} </Text>
-                    </View>
-                    <TouchableOpacity style={[styles.updateButton, {backgroundColor: this.state.ableToUpdate==true? 'grey' : 'yellow'}]} onPress={this.updateWarehouse} disabled={this.state.ableToUpdate}>
-                        <Text style={[styles.infoText, globalStyles.bold]}>Update</Text>
+                    <View style={styles.infoContainer}>
+                        <Text style={[styles.infoText, globalStyles.regular]}>Selected warehouse: </Text>
+                        <Text style={[styles.infoText, globalStyles.bold]}>{this.state.chosenWarehouse.Name}</Text>
+                    </View>   
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={[styles.updateButton, {backgroundColor: this.state.ableToUpdate==true? '#b8b8b6' : '#ffff78'}]} onPress={this.updateWarehouse} disabled={this.state.ableToUpdate}>
+                        <View style={styles.updateTextContainer}>
+                            <Text style={[styles.infoText, globalStyles.bold]}>Change to warehouse in </Text>
+                            <Text style={[styles.infoText, globalStyles.bold]}>{this.state.selectedMarker.Name}</Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View>  
         </View>
     );
   }
@@ -314,20 +316,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f4',
   },
   mapContainer: {
-    height: 500,
+    height: 525,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
   infoContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    height: 75,
+    width: 175,
+    flexDirection: 'column',
+    padding: 15,
+    margin: 15,
     backgroundColor: '#f4f4f4',
+    borderWidth: 0.5,
   },
-  textContainer: {
-      flexDirection: 'column',
+  buttonContainer: {
+      flex: 1,
       justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -348,17 +355,22 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0058a3',  
   },
   infoText: {
       color: 'black',
-      fontSize: 15,
+      fontSize: 14,
   },
   updateButton: {
-    height: 60,
-    width: 60,
+    height: 50,
+    width: 300,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 15,
+    margin: 5,
+  },
+  updateTextContainer: {
+    flexDirection: "column",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
