@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import SelfServeCarousel from "./SelfServeCarousel";
+import SelfServeMap from "./SelfServeMap";
 
 export default class SelfServePage extends Component {
   constructor(props) {
@@ -12,13 +13,18 @@ export default class SelfServePage extends Component {
     console.log("SelfServePage packages: ", packages);
 
     return (
-      <View style={styles.container}>
-        <SelfServeCarousel
-          setPickedCallback={setPickedCallback}
-          style={styles.carouselContainer}
-          entries={packages}
-        />
-      </View>
+      <>
+        <View style={styles.mapContainer}>
+          <SelfServeMap style={styles.map} />
+        </View>
+        <View style={styles.container}>
+          <SelfServeCarousel
+            setPickedCallback={setPickedCallback}
+            style={styles.carouselContainer}
+            entries={packages}
+          />
+        </View>
+      </>
     );
   }
 }
@@ -28,6 +34,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     backgroundColor: "#0058a3"
+  },
+  map: {
+    width: "100%",
+  },
+  mapContainer: {
+    flex: 3,
+    width: "100%",
+    backgroundColor: "#0058a3",
+    justifyContent: "flex-end"
   },
   carouselContainer: {
     alignSelf: "flex-end"

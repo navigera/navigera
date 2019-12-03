@@ -50,25 +50,7 @@ export default class SelfServeCarousel extends Component {
             style={styles.carouselStyle}
             onSnapToItem={index => this.setState({ activeSlide: index })}
           />
-          <Pagination
-            dotsLength={entries.length}
-            activeDotIndex={this.state.activeSlide}
-            containerStyle={{ backgroundColor: "rgba(0,0,0,0)" }}
-            dotStyle={{
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-              marginHorizontal: 8,
-              backgroundColor: "rgba(255, 255, 255, 0.8)"
-            }}
-            inactiveDotStyle={
-              {
-                // Define styles for inactive dots here
-              }
-            }
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-          />
+          
         </View>
       );
     } else {

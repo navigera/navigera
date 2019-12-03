@@ -14,27 +14,27 @@ export default class ProductList extends Component {
         <View style={styles.descriptionBox}>
           <View style={styles.amount}>
             <Text style={styles.h3}>
-              {capitalizeFirst(item.product.product_info.category)}
+              {capitalizeFirst(item.product_info.category)}
             </Text>
             <Text style={styles.amountText}>x {amount}</Text>
           </View>
           <View style={styles.productNumbers}>
             <View style={styles.productIDBox}>
               <Text style={styles.productIDText}>
-                {item.product.product_info.id}
+                {item.product_info.id}
               </Text>
             </View>
 
             <View style={styles.shelfBox}>
               <Text style={styles.productIDText}>
-                {formatSingleUnit(item.product.availability.aisle)}
+                {formatSingleUnit(item.availability.aisle)}
               </Text>
             </View>
             <Text style={styles.h3}>Aisle</Text>
 
             <View style={styles.shelfBox}>
               <Text style={styles.productIDText}>
-                {formatSingleUnit(item.product.availability.shelf)}
+                {formatSingleUnit(item.availability.shelf)}
               </Text>
             </View>
             <Text style={styles.h3}>Shelf</Text>
