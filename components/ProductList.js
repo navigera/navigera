@@ -1,72 +1,157 @@
-import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import ProductListItem from "./ProductListItem.js"
-import ProductListFooter from "./ProductListFooter.js"
-import { globalStyles } from '../utilities.js';
+import React, { Component } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
+import ProductListItem from "./ProductListItem.js";
+import ProductListFooter from "./ProductListFooter.js";
+import { globalStyles } from "../utilities.js";
 import { Icon } from "@up-shared/components";
+import PopUpProduct from "./PopUpProduct";
+import Video from "react-native-video";
 
 export default class ProductList extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
+
+    this.state = {
+      modalVisible: false
+    };
+
+    this.modalClosed = this.modalClosed.bind(this);
+    this.handleHold = this.handleHold.bind(this);
   }
 
-  render(){
-    const products = this.props.screenProps.products;
-    let quantity = 0;
-    let totalPrice = 0;
-    products.map((item) => {
-      quantity += item.amount;
-      totalPrice += item.availability.price * item.amount;
-    });
+  handleHold(product) {
+    this.setState({ modalVisible: true });
+    this.modal.showPopover(product, false);
+  }
 
-    return(
-      <SafeAreaView style={styles.container}>
+  modalClosed() {
+    this.setState({ modalVisible: false });
+  }
+
+  getPopUpProduct() {
+    return (
+      <PopUpProduct
+        style={styles.modal}
+        modalCloseCallback={this.modalClosed}
+        btnCallback={this.props.screenProps.removeItemCallback}
+        ref={modal => {
+          this.modal = modal;
+        }}
+      ></PopUpProduct>
+    );
+  }
+
+  getHeader() {
+    return (
       <View style={styles.header}>
-        <Text style={[styles.headerText, globalStyles.bold]}> My items </Text>
+        <Text style={[styles.headerText, globalStyles.bold]}> Shopping list{" "}</Text>
         <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate("SettingsMain")}>
             <Icon name="settings" size={33} color="white"></Icon>
         </TouchableOpacity>
       </View>
-        <ScrollView style={[styles.container, styles.padding]}>
+    );
+  }
+
+  getList() {
+    if (
+      this.props.screenProps.products &&
+      this.props.screenProps.products.length > 0
+    ) {
+      return (
+        <ScrollView style={[styles.padding]}>
           {this.props.screenProps.products.map(p => {
-            return <ProductListItem product={p} removeCallback={this.props.screenProps.removeItemCallback} key={p.product_info.id}/>
+            return (
+              <ProductListItem
+                product={p}
+                longPressCallback={this.handleHold}
+                btnCallback={this.props.screenProps.removeItemCallback}
+                key={p.product_info.id}
+              />
+            );
           })}
         </ScrollView>
-        <ProductListFooter price={totalPrice} quantity={quantity}/>
+      );
+    } else {
+      return (
+        <>
+          <Video
+            source={require("../assets/media/ufo.mp4")} // Can be a URL or a local file.
+            ref={ref => {
+              this.player = ref;
+            }} // Store reference
+            repeat={true}
+            onBuffer={() => {console.log('buffering')}} // Callback when remote video is buffering
+            onError={() => {console.log('error')}}
+            resizeMode="contain"
+            style={[styles.padding, styles.video]} />
+
+            <Text style={[styles.videoText, globalStyles.regular]}>Your shopping list is empty. Hmm.</Text>
+          </>
+      );
+    }
+  }
+
+  render() {
+    const products = this.props.screenProps.products;
+    let quantity = 0;
+    let totalPrice = 0;
+    products.map(item => {
+      quantity += item.amount;
+      totalPrice += item.availability.price * item.amount;
+    });
+
+    return (
+      <SafeAreaView style={(products.length > 0) ? styles.container : styles.emptyContainer}>
+        {this.getPopUpProduct()}
+        {this.getHeader()}
+
+        {this.getList()}
+
+        <ProductListFooter price={totalPrice} quantity={quantity} />
       </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-	button: {
-    color:"white"
+  button: {
+    color: "white"
   },
-
-  container:{
+  container: {
     flex: 1,
-    backgroundColor:"#f4f4f4"
+    backgroundColor: "#f5f5f5"
+  },
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: "white"
+  },
+  padding: {
+    padding: 20
   },
 
-  padding:{
-    padding: 20,
-  },
-
-  image:{
+  image: {
     width: 300,
     height: 300
   },
   header: {
-    flexDirection: 'row',
-    backgroundColor: '#0058a3',
+    flexDirection: "row",
+    backgroundColor: "#0058a3",
     height: 70,
-    justifyContent: 'space-between',
+    justifyContent: "space-between"
   },
   headerText: {
-    color: 'white',
+    color: "white",
     fontSize: 25,
     paddingTop: 20,
-    paddingLeft: 15,
+    paddingLeft: 15
   },
   button: {
     backgroundColor: '#0058a3',
@@ -77,4 +162,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  footer: {
+    paddingTop: 10,
+  },
+  video: {
+    height: 240,
+    width: 240,
+    marginTop: '40%',
+    justifyContent: "center",
+    alignContent: "center",
+    alignSelf: "center"
+  },
+  videoText: {
+    textAlign: "center",
+    fontSize: 16,
+    marginTop: 30,
+  }
 });

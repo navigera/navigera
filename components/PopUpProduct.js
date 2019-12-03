@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, Text, Image, StyleSheet, View } from 'react-native';
 import InputSpinner from './InputSpinner';
-import PrimaryButton from './PrimaryButton';
 import Popover from 'react-native-popover-view';
 import { Icon } from "@up-shared/components";
-import { globalStyles } from '../utilities.js';
+import PrimaryButton from "./PrimaryButton";
+import ShelfLocationBox from "./ShelfLocationBox";
+import { numberWithSpaces, capitalizeFirst, globalStyles } from '../utilities.js';
+
 
 
 export default class PopUpProduct extends Component {
@@ -19,10 +21,23 @@ export default class PopUpProduct extends Component {
     isVisible: false,
     amount: 1,
     item: null,
+    addItemPopup:false
   }
 
-  showPopover(item) {
-    this.setState({ isVisible: true, amount: 1, item: item });
+  showPopover(item, addItemPopup) {
+    if(addItemPopup){
+    this.setState({ 
+      isVisible: true, 
+      amount: 1, 
+      item: item,
+      addItemPopup: true });
+    }
+    else{
+      this.setState({ isVisible: true, 
+        item: item,
+        amount: item.amount,
+        addItemPopup: false });
+    }
   }
 
   closePopover() {
@@ -30,28 +45,28 @@ export default class PopUpProduct extends Component {
     this.setState({ isVisible: false });
     modalCloseCallback();
   }
-
-  numberWithSpaces(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  }
-
-  formatSingleUnit(x) {
-    return ((x > 10) ? x : "0" + x);
-
-  }
-
-  capitalizeFirst(str) {
-    return str[0].toUpperCase() + str.slice(1);
-  }
-
+  
   handlePress() {
-    const { addItemCallback } = this.props;
-    console.log('popup item', this.state.item);
-    addItemCallback(this.state.item, this.state.amount);
-    console.log('PopUp', 'addItem');
+      const { btnCallback } = this.props;
+      
+      if(this.state.addItemPopup){
+        btnCallback(this.state.item, this.state.amount);
+      }
+      else{
+        btnCallback(this.state.item.product_info.id, this.state.amount);
+      }
     this.closePopover();
   }
-
+  
+  handleSpinnerChange(value) {
+    if(!this.state.addItemPopup){
+      const product = this.state.item;
+      product.amount = value;
+    }
+    this.setState({
+      amount: value,
+    });
+  }
   getProductIDBox(item) {
     return (
       <View style={styles.productIDBox}>
@@ -59,28 +74,15 @@ export default class PopUpProduct extends Component {
       </View>);
   }
 
-  handleSpinnerChange(value) {
-    this.setState({
-      amount: value,
-    });
-  }
+  
 
   getProductInformation(item) {
     if (!item.combo_product) {
       return (
         <View style={styles.productNumbers}>
-
           {this.getProductIDBox(item)}
-
-          <View style={styles.shelfBox}>
-            <Text style={[styles.productIDText, globalStyles.bold]}>{this.formatSingleUnit(item.availability.aisle)}</Text>
-          </View>
-          <Text>Aisle</Text>
-
-          <View style={styles.shelfBox}>
-            <Text style={[styles.productIDText, globalStyles.bold]}>{this.formatSingleUnit(item.availability.shelf)}</Text>
-          </View>
-          <Text>Shelf</Text>
+          <ShelfLocationBox locationNumber={item.availability.aisle} locationText={"Aisle"}></ShelfLocationBox>
+          <ShelfLocationBox locationNumber={item.availability.shelf} locationText={"Shelf"}></ShelfLocationBox>
         </View>);
 
     }
@@ -107,10 +109,10 @@ export default class PopUpProduct extends Component {
         <Text style={[styles.h1, globalStyles.bold]}>{item.product_info.family.toUpperCase()}</Text>
 
         <Text style={styles.h3}>
-          {this.capitalizeFirst(item.product_info.category)}, {item.product_info.color}
+          {capitalizeFirst(item.product_info.category)}, {item.product_info.color}
         </Text>
 
-        <Text style={[styles.h1, globalStyles.bold]}>{this.numberWithSpaces(item.availability.price)} kr</Text>
+        <Text style={[styles.h1, globalStyles.bold]}>{numberWithSpaces(item.availability.price)} kr</Text>
 
 
         {this.getProductInformation(item)}
@@ -124,8 +126,24 @@ export default class PopUpProduct extends Component {
       </View>);
   }
 
+  getButton(){
+    let btnText = "Add to shopping list";
+    let btnIcon = "buy-online-add";   
+
+    if(!this.state.addItemPopup){
+      btnText = "Remove all";
+      btnIcon = ""; 
+    }
+    return(
+      <View style={styles.buttonContainer}>
+        <PrimaryButton onPress={this.handlePress} icon={btnIcon} img="" text={btnText}></PrimaryButton>
+      </View>
+    );
+  }
+
   render() {
     const { item } = this.state;
+    
 
     if(item){
       return (
@@ -138,9 +156,7 @@ export default class PopUpProduct extends Component {
   
             {this.getProductInfo(item)}
   
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={this.handlePress} icon="buy-online-add" img="" text={"Add to shopping list"}></PrimaryButton>
-            </View>
+            {this.getButton()}
           </View>
         </Popover>
       );
@@ -214,12 +230,5 @@ const styles = StyleSheet.create({
   productIDText: {
     textAlign: "center",
     color: "white",
-  },
-  shelfBox: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#cc0008",
-    width: 30,
-    height: 30
   }
 });

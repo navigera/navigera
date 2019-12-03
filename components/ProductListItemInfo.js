@@ -39,17 +39,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderStyle: "dotted",
-    borderBottomColor: "gray",
+    borderBottomColor: "lightgray",
     borderBottomWidth: 1,
-    borderTopEndRadius: 5,
-    borderTopLeftRadius: 5
+    borderTopEndRadius: 15,
+    borderTopLeftRadius: 15
   },
   descriptionBox: {
     flexDirection: "column"
   },
   image: {
     width: 70,
-    height: 70
+    height: 70,
+    margin: 5,
   },
 
   amount: {
