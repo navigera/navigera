@@ -14,8 +14,6 @@ import SetRoutePage from './components/SetRoutePage';
 import SetWarehousePage from './components/SetWarehousePage';
 import LandingPage from "./components/LandingPage";
 import WarehouseLocationPage from "./components/WarehouseLocationPage";
-import { setCustomText } from "react-native-global-props";
-import SearchPage from "./components/SearchPage";
 
 export default class App extends React.Component {
   constructor(props) {
