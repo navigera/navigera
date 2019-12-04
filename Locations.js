@@ -1,295 +1,125 @@
-const locations = {
-  _embedded: {
-    storeList: [
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/014/info"
-          }
-        },
-        Name: "Göteborg Kållered",
-        No: "014",
-        Latitude: 57.60379,
-        Longitude: 12.048397,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/017/info"
-          }
-        },
-        Name: "Linköping",
-        No: "017",
-        Latitude: 58.433189,
-        Longitude: 15.58755,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/019/info"
-          }
-        },
-        Name: "Stockholm Barkarby",
-        No: "019",
-        Latitude: 59.420331,
-        Longitude: 17.857064,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/020/info"
-          }
-        },
-        Name: "Västerås",
-        No: "020",
-        Latitude: 59.607596,
-        Longitude: 16.456017,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/053/info"
-          }
-        },
-        Name: "Uddevalla",
-        No: "053",
-        Latitude: 58.355878,
-        Longitude: 11.818371,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/070/info"
-          }
-        },
-        Name: "Uppsala",
-        No: "070",
-        Latitude: 59.847755,
-        Longitude: 17.692156,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/106/info"
-          }
-        },
-        Name: "Örebro",
-        No: "106",
-        Latitude: 59.211089,
-        Longitude: 15.134397,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/109/info"
-          }
-        },
-        Name: "Jönköping",
-        No: "109",
-        Latitude: 57.77267,
-        Longitude: 14.205751,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/012/info"
-          }
-        },
-        Name: "Stockholm Kungens Kurva",
-        No: "012",
-        Latitude: 59.271155,
-        Longitude: 17.916201,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/122/info"
-          }
-        },
-        Name: "Gävle",
-        No: "122",
-        Latitude: 60.633906,
-        Longitude: 16.989895,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/248/info"
-          }
-        },
-        Name: "Borlänge",
-        No: "248",
-        Latitude: 60.482664,
-        Longitude: 15.421457,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/268/info"
-          }
-        },
-        Name: "Älmhult",
-        No: "268",
-        Latitude: 56.550534,
-        Longitude: 14.161674,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/398/info"
-          }
-        },
-        Name: "Göteborg Bäckebol",
-        No: "398",
-        Latitude: 57.771771,
-        Longitude: 11.999672,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/416/info"
-          }
-        },
-        Name: "Umeå",
-        No: "416",
-        Latitude: 63.80771,
-        Longitude: 20.25501,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/445/info"
-          }
-        },
-        Name: "Malmö",
-        No: "445",
-        Latitude: 55.552634,
-        Longitude: 12.986215,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/467/info"
-          }
-        },
-        Name: "Sundsvall",
-        No: "467",
-        Latitude: 62.444195,
-        Longitude: 17.334119,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/468/info"
-          }
-        },
-        Name: "Helsingborg",
-        No: "468",
-        Latitude: 56.092426,
-        Longitude: 12.760899,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/469/info"
-          }
-        },
-        Name: "Kalmar",
-        No: "469",
-        Latitude: 56.68556,
-        Longitude: 16.321199,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/470/info"
-          }
-        },
-        Name: "HaparandaTornio",
-        No: "470",
-        Latitude: 65.842982,
-        Longitude: 24.13192,
-        SupportedLocales: ["en_SE", "fi_SE", "sv_SE"],
-        PrimaryLocale: "sv_SE"
-      },
-      {
-        _links: {
-          "selling-store-info-store-info": {
-            href:
-              "https://store-info-prod-selling-api.ocp-01.ikea.com/stores/471/info"
-          }
-        },
-        Name: "Karlstad",
-        No: "471",
-        Latitude: 59.378797,
-        Longitude: 13.41966,
-        SupportedLocales: ["sv_SE", "en_SE"],
-        PrimaryLocale: "sv_SE"
-      }
-    ]
+const locations = [
+  {
+    name: "Stockholm Kungens Kurva",
+    no: "012",
+    lat: 59.271155,
+    long: 17.916201
   },
-  _links: {
-    self: {
-      href:
-        "https://store-info-prod-selling-api.ocp-01.ikea.com/stores?locale=sv_SE"
-    }
+  {
+    name: "Göteborg Kållered",
+    no: "014",
+    lat: 57.60379,
+    long: 12.048397
+  },
+  {
+    name: "Linköping",
+    no: "017",
+    lat: 58.433189,
+    long: 15.58755
+  },
+  {
+    name: "Stockholm Barkarby",
+    no: "019",
+    lat: 59.420331,
+    long: 17.857064
+  },
+  {
+    name: "Västerås",
+    no: "020",
+    lat: 59.607596,
+    long: 16.456017
+  },
+  {
+    name: "Uddevalla",
+    no: "053",
+    lat: 58.355878,
+    long: 11.818371
+  },
+  {
+    name: "Uppsala",
+    no: "070",
+    lat: 59.847755,
+    long: 17.692156
+  },
+  {
+    name: "Örebro",
+    no: "106",
+    lat: 59.211089,
+    long: 15.134397
+  },
+  {
+    name: "Jönköping",
+    no: "109",
+    lat: 57.77267,
+    long: 14.205751
+  },
+  {
+    name: "Gävle",
+    no: "122",
+    lat: 60.633906,
+    long: 16.989895
+  },
+  {
+    name: "Borlänge",
+    no: "248",
+    lat: 60.482664,
+    long: 15.421457
+  },
+  {
+    name: "Älmhult",
+    no: "268",
+    lat: 56.550534,
+    long: 14.161674
+  },
+  {
+    name: "Göteborg Bäckebol",
+    no: "398",
+    lat: 57.771771,
+    long: 11.999672
+  },
+  {
+    name: "Umeå",
+    no: "416",
+    lat: 63.80771,
+    long: 20.25501
+  },
+  {
+    name: "Malmö",
+    no: "445",
+    lat: 55.552634,
+    long: 12.986215
+  },
+  {
+    name: "Sundsvall",
+    no: "467",
+    lat: 62.444195,
+    long: 17.334119
+  },
+  {
+    name: "Helsingborg",
+    no: "468",
+    lat: 56.092426,
+    long: 12.760899
+  },
+  {
+    name: "Kalmar",
+    no: "469",
+    lat: 56.68556,
+    long: 16.321199
+  },
+  {
+    name: "HaparandaTornio",
+    no: "470",
+    lat: 65.842982,
+    long: 24.13192
+  },
+  {
+    name: "Karlstad",
+    no: "471",
+    lat: 59.378797,
+    long: 13.41966
   }
-};
+];
 
 function Deg2Rad(deg) {
   return (deg * Math.PI) / 180;
@@ -312,12 +142,12 @@ export function NearestCity(latitude, longitude) {
   var closest;
   var index = 0;
 
-  locations._embedded.storeList.map(location => {
+  locations.map(location => {
     var dif = PythagorasEquirectangular(
       latitude,
       longitude,
-      location.Latitude,
-      location.Longitude
+      location.lat,
+      location.long
     );
     if (dif < minDif) {
       closest = index;
@@ -326,6 +156,6 @@ export function NearestCity(latitude, longitude) {
     index++;
   });
 
-  console.log("Closest warehouse: ", locations._embedded.storeList[closest]);
-  return locations._embedded.storeList[closest].Name;
+  console.log("Closest warehouse: ", locations[closest]);
+  return locations[closest].name;
 }
