@@ -3,12 +3,11 @@ import {
   Text,
   View,
   StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
   Dimensions
 } from "react-native";
 import ImageMapper from "react-native-image-mapper";
 import { getMarkerPosition } from "../utilities";
+import { ScrollView } from "react-native-gesture-handler";
 
 const window = Dimensions.get("window");
 
@@ -16,13 +15,7 @@ export default class SelfServeMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [],
-      imageWidth: 0,
-      imageHeight: 0,
-      plRow: 0,
-      plCol: 0,
-      rowSize: 0,
-      colSize: 0
+      markers: []
     };
 
     this.onAnyAreaPress = this.onAnyAreaPress.bind(this);
@@ -43,35 +36,19 @@ export default class SelfServeMap extends Component {
         mapping.push({
           id: mapping.length,
           name: "random sumtin " + mapping.length,
-          shape: "rectangle",
+          shape: "circle",
           x1: pos.x,
           y1: pos.y,
-          width: 10,
-          height: 10,
+          radius: 10,
           prefill: "yellow",
           fill: "red"
         });
-
-        console.log("add marker at x: " + pos.x + " y: " + pos.y);
       });
-
-      console.log("setting state, markers: " + JSON.stringify(mapping));
 
       this.setState({
         markers: mapping
       });
     });
-  }
-
-  getMarkers(aisleNo, shelfNo) {
-    return (
-      <MapMarker
-        isActive={true}
-        inGray={true}
-        aisleNo={aisleNo}
-        shelfNo={shelfNo}
-      />
-    );
   }
 
   onAnyAreaPress(item, idx, event) {
@@ -81,19 +58,26 @@ export default class SelfServeMap extends Component {
   render() {
     const imageSource = { uri: "https://lord.lol/files/floorplan.png" };
 
-    console.log("render markers: " + this.state.markers);
+    console.log("window width: " + window.width);
+    console.log("width / 600: " + 600 / window.width);
+
     return (
-        <ImageMapper
-          imgHeight={600}
-          imgWidth={window.width}
-          imgSource={imageSource}
-          imgMap={this.state.markers}
-          onPress={(item, idx, event) => {
-            console.log("test");
-          }}
-          containerStyle={styles.backgroundImage}
-          selectedAreaId="my_area_id"
-        />
+      <>
+        <ScrollView>
+          <ImageMapper
+            imgHeight={window.width * 1.4583333333333333}
+            imgWidth={window.width}
+            imgSource={imageSource}
+            imgMap={this.state.markers}
+            onPress={(item, idx, event) => {
+              console.log("test");
+            }}
+            containerStyle={styles.backgroundImage}
+            selectedAreaId="my_area_id"
+          />
+          <View style={{ height: window.height / 3 }} />
+        </ScrollView>
+      </>
     );
   }
 }

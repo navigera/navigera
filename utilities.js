@@ -82,7 +82,6 @@ export async function getMarkerPosition(aisleNo, shelfNo) {
         (shelfNo - shelf.start + 1) *
           ((shelf.endX - shelf.startX) / (shelf.end - shelf.start));
       position = { x: x, y: aisle.y };
-      console.log("returning ", position);
     }
   });
   //position.inGray = (aisle.aisle != 0 && (aisle.aisle % 4 == 0 || (aisle.aisle - 1) % 4 == 0));
