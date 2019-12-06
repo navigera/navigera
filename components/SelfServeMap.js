@@ -65,7 +65,7 @@ export default class SelfServeMap extends Component {
       <>
         <ScrollView>
           <ImageMapper
-            imgHeight={window.width * 1.4583333333333333}
+            imgHeight={window.width * 1.4166666401757135}
             imgWidth={window.width}
             imgSource={imageSource}
             imgMap={this.state.markers}
