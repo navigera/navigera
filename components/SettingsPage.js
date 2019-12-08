@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet, BackHandler, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { Icon } from "@up-shared/components";
 import { globalStyles } from "../utilities";
+import SettingsHeader from "./SettingsHeader.js";
 
 
 export default class SettingsPage extends Component {
@@ -28,46 +29,60 @@ export default class SettingsPage extends Component {
     }
 
   render() {
+    const location = this.props.screenProps.chosenWarehouse.Name;
     return (
         <View style={styles.container}>
-
-            <View style={styles.header}>  
-                <TouchableOpacity style={styles.button} onPress={this.settingsClosed}>
-                    <Icon name="arrow-left" size={33} color="white"></Icon>
-                </TouchableOpacity>  
-                <Text style={[styles.headerText, globalStyles.bold]}>Settings</Text>  
-            </View>
+          
+            <SettingsHeader titleText={"Settings"} method={this.settingsClosed}/>
 
             <View style={styles.contentContainer}>
                 
-                <Text style={[styles.titleText, globalStyles.bold]}>Application</Text>
-
-                <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingWarehouse", {warehouse: this.props.screenProps.chosenWarehouse, update: this.props.screenProps.updateWarehouse})}>
+                <TouchableHighlight>
                     <View style={styles.optionContainer}>
-                        <Text style={[styles.optionText, globalStyles.regular]}>Change warehouse</Text>
-                        <Icon name="arrow-right" size={20} color="#5a5e66"></Icon>
+                        <Text style={[styles.eraseText, globalStyles.regular]}>Clear shopping list</Text>
                     </View>
                 </TouchableHighlight>
+
                 <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingRoute")}>
                     <View style={styles.optionContainer}>
                         <Text style={[styles.optionText, globalStyles.regular]}>Order route by</Text>
-                        <Icon name="arrow-right" size={20} color="#5a5e66"></Icon>
+                        <View style={styles.infoContainer}>
+                            <Text style={[styles.infoText, globalStyles.regular]}>Package volume</Text>
+                            <Icon name="arrow-right" size={25} color="black"></Icon>
+                        </View>   
                     </View>
                 </TouchableHighlight>
 
-                <Text style={[styles.titleText, globalStyles.bold]}>About</Text>
-
-                <View style={styles.aboutContainer}>
+                <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingWarehouse", {warehouse: this.props.screenProps.chosenWarehouse, update: this.props.screenProps.updateWarehouse})}>
                     <View style={styles.optionContainer}>
-                        <Text style={[styles.optionText, globalStyles.regular]}>Version</Text>
-                        <Text style={[styles.optionText, globalStyles.regular]}>1.0.0</Text>
+                        <Text style={[styles.optionText, globalStyles.regular]}>Warehouse location</Text>
+                        <View style={styles.infoContainer}>
+                            <Text style={[styles.infoText, globalStyles.regular]}>{location}</Text>
+                            <Icon name="arrow-right" size={25} color="black"></Icon>
+                        </View>
                     </View>
-                    <View style={styles.optionContainer}>
-                        <Text style={[styles.optionText, globalStyles.regular]}>License</Text>
-                        <Text style={[styles.optionText, globalStyles.regular]}>IKEA</Text>
-                    </View>
-                </View>
+                </TouchableHighlight>
 
+                <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingAbout")}>
+                    <View style={styles.optionContainer}>
+                        <Text style={[styles.optionText, globalStyles.regular]}>About NAVIGERA</Text>
+                        <Icon name="arrow-right" size={25} color="black"></Icon>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight>
+                    <View style={styles.optionContainer}>
+                        <Text style={[styles.notImplementedText, globalStyles.regular]}>Help</Text>
+                        <Icon name="arrow-right" size={25} color="grey"></Icon>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight>
+                    <View style={styles.optionContainer}>
+                        <Text style={[styles.notImplementedText, globalStyles.regular]}>Report a problem</Text>
+                        <Icon name="arrow-right" size={25} color="grey"></Icon>
+                    </View>
+                </TouchableHighlight>
             </View>
         </View>
     );
@@ -77,60 +92,39 @@ export default class SettingsPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f4',
   },
   contentContainer: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#f4f4f4',
-  },
-  header: {
-    flexDirection: 'row',
-    backgroundColor: '#0058a3',
-    height: 70,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderColor: 'grey',
-    borderBottomWidth: 0.5,
-  },
-  headerText: {
-    color: 'white',
-    fontSize: 25,
-    marginTop: 15,
-    marginRight: 155,
-  },
-  button: {
-    height: 40,
-    marginTop: 15,
-    marginLeft: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#0058a3',  
-  },
-  titleText: {
-    color: '#5a5e66',
-    fontSize: 20,
-    margin: 10,
-    paddingLeft: 10,
+    backgroundColor: 'white',
   },
   optionContainer: {
     flexDirection:'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 60,
-    paddingRight: 20,
-    paddingLeft: 20,
-    borderColor: 'grey',
-    borderBottomWidth: 0.5,
-    borderTopWidth: 0.5,
-    backgroundColor: 'white',
+    height: 70,
+    paddingRight: 25,
+    paddingLeft: 25,
   },
   optionText: {
     color: 'black',
-    fontSize: 15,
+    fontSize: 18,
   },
-  aboutContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  }
+  eraseText: {
+    color: 'red',
+    fontSize: 18,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  infoText: {
+    color: 'grey',
+    marginRight: 10,
+    fontSize: 14,
+  },
+  notImplementedText: {
+    color: 'grey',
+    fontSize: 18,
+  },
 })

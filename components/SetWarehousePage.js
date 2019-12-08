@@ -4,6 +4,7 @@ import { Icon } from "@up-shared/components";
 import { globalStyles } from "../utilities";
 import MapView, { Marker } from 'react-native-maps';
 import {PROVIDER_GOOGLE} from 'react-native-maps';
+import SettingsHeader from "./SettingsHeader.js";
 
 const stores = [
     {
@@ -263,12 +264,9 @@ export default class SetWarehousePage extends Component {
   render() {
     return (
         <View style={styles.container}>
-            <View style={styles.header}>  
-                <TouchableOpacity style={styles.button} onPress={this.setWarehouseClosed}>
-                    <Icon name="arrow-left" size={33} color="white"></Icon>
-                </TouchableOpacity>  
-                <Text style={[styles.headerText, globalStyles.bold]}>Change Warehouse</Text>  
-            </View>
+
+            <SettingsHeader titleText={"Change Warehouse"} method={this.setWarehouseClosed}/>
+
             <View style={styles.container}>
                 <View style={styles.mapContainer}>
                     <MapView
@@ -335,26 +333,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'white',
-  },
-  header: {
-    flexDirection: 'row',
-    backgroundColor: '#0058a3',
-    height: 70,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerText: {
-    color: 'white',
-    fontSize: 25,
-    marginTop: 15,
-    marginRight: 85,
-  },
-  button: {
-    height: 40,
-    marginTop: 15,
-    marginLeft: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   infoText: {
       color: 'black',

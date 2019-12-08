@@ -14,6 +14,7 @@ import SetRoutePage from './components/SetRoutePage';
 import SetWarehousePage from './components/SetWarehousePage';
 import LandingPage from "./components/LandingPage";
 import WarehouseLocationPage from "./components/WarehouseLocationPage";
+import AboutPage from "./components/AboutPage";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -293,7 +294,10 @@ const SettingsStack = createStackNavigator(
 		},
 		SettingRoute: {
 			screen: SetRoutePage,
-		},
+    },
+    SettingAbout: {
+      screen: AboutPage,
+    },
 	},
 	{
 		headerMode: 'none',

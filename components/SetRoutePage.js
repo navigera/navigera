@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, BackHandler, TouchableOpacity, Switch } from 'react-native';
 import { Icon } from "@up-shared/components";
 import { globalStyles } from "../utilities";
+import SettingsHeader from "./SettingsHeader.js";
 
 
 export default class SetRoutePage extends Component {
@@ -31,27 +32,22 @@ export default class SetRoutePage extends Component {
     return (
         <View style={styles.container}>
 
-            <View style={styles.header}>  
-                <TouchableOpacity style={styles.button} onPress={this.setRouteClosed}>
-                    <Icon name="arrow-left" size={33} color="white"></Icon>
-                </TouchableOpacity>  
-                <Text style={[styles.headerText, globalStyles.bold]}>Order route by</Text>  
-            </View>
+            <SettingsHeader titleText={"Route order"} method={this.setRouteClosed}/>
+
             <View style={styles.contentContainer}>
+
                 <View style={styles.optionContainer}>
-                    <Text style={[styles.optionText, globalStyles.regular]}>Order by package volume</Text>
-                    <Switch disabled={true} trackColor={{false:'#b8b8b6', true:'#68ed8c'}} thumbColor={'white'} value={true}/>
+                    <Text style={[styles.optionText, globalStyles.regular]}>Package volume</Text>
+                    <Switch disabled={true} trackColor={{false:'#b8b8b6', true:'#68ed8c'}} thumbColor={'white'} value={true} style={styles.switch,{ transform: [{ scaleX: 1.6 }, { scaleY: 1.5 }]}}/>
                 </View>
                 <View style={styles.optionContainer}>
-                    <Text style={[styles.optionText, globalStyles.regular]}>Order by package weight</Text>
-                    <Text style={[styles.featureText, globalStyles.bold]}>Feature coming soon</Text>
-                    <Switch disabled={true} trackColor={{false:'#b8b8b6', true:'#68ed8c'}} thumbColor={'white'} value={false} />
+                    <Text style={[styles.notImplementedText, globalStyles.regular]}>Package weight</Text>
+                    <Switch disabled={true} trackColor={{false:'#b8b8b6', true:'#68ed8c'}} thumbColor={'white'} value={false} style={{ transform: [{ scaleX: 1.6 }, { scaleY: 1.5 }] }}/>
                 </View>
                 
                 <View style={styles.optionContainer}>
-                    <Text style={[styles.optionText, globalStyles.regular]}>Order by quickest route</Text>
-                    <Text style={[styles.featureText, globalStyles.bold]}>Feature coming soon</Text>
-                    <Switch disabled={true} trackColor={{false:'#b8b8b6', true:'#68ed8c'}} thumbColor={'white'} value={false} />
+                    <Text style={[styles.notImplementedText, globalStyles.regular]}>Quickest route</Text>
+                    <Switch disabled={true} trackColor={{false:'#b8b8b6', true:'#68ed8c'}} thumbColor={'white'} value={false} style={{ transform: [{ scaleX: 1.6 }, { scaleY: 1.5 }] }}/>
                 </View>
                 
             </View>
@@ -63,51 +59,26 @@ export default class SetRoutePage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f4',
   },
   contentContainer: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#f4f4f4',
-    marginTop: 15,
-  },
-  header: {
-    flexDirection: 'row',
-    backgroundColor: '#0058a3',
-    height: 70,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerText: {
-    color: 'white',
-    fontSize: 25,
-    marginTop: 15,
-    marginRight: 115,
-  },
-  button: {
-    height: 40,
-    marginTop: 15,
-    marginLeft: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#0058a3',  
+    backgroundColor: 'white',
   },
   optionContainer: {
-    height: 60,
-    //borderWidth: 1,
+    height: 70,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 15,
-    marginVertical: 10,
+    paddingRight: 25,
+    paddingLeft: 25,
   },
   optionText: {
     color: 'black',
-    fontSize: 15,
+    fontSize: 18,
   },
-  featureText: {
+  notImplementedText: {
     color: 'grey',
-    fontSize: 11,
-    marginHorizontal: 15,
-  }
+    fontSize: 18,
+  },
 })
