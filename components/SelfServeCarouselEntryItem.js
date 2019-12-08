@@ -20,8 +20,6 @@ export default class SelfServeCarouselEntryItem extends Component {
   render() {
     const { item } = this.props;
 
-    console.log("CAROUSEL ITEM", item);
-
     if (item.data) {
       return (
         <View style={styles.container}>

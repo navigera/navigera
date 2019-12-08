@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions
-} from "react-native";
+import { Text, View, StyleSheet, Dimensions } from "react-native";
 import ImageMapper from "react-native-image-mapper";
 import { getMarkerPosition } from "../utilities";
 import { ScrollView } from "react-native-gesture-handler";
@@ -21,35 +16,36 @@ export default class SelfServeMap extends Component {
     this.onAnyAreaPress = this.onAnyAreaPress.bind(this);
   }
 
-  componentDidMount() {
-    const { packagePositions } = this.props;
-    var promises = [];
+  // componentDidMount() {
+  //   const { packages } = this.props;
 
-    packagePositions.forEach(pos => {
-      promises.push(getMarkerPosition(pos.aisle, pos.shelf));
-    });
+  //   var promises = [];
 
-    Promise.all(promises).then(items => {
-      var mapping = [];
+  //   packages.forEach(pkg => {
+  //     promises.push(getMarkerPosition(pkg.availability.aisle, pkg.availability.shelf));
+  //   });
 
-      items.forEach(pos => {
-        mapping.push({
-          id: mapping.length,
-          name: "random sumtin " + mapping.length,
-          shape: "circle",
-          x1: pos.x,
-          y1: pos.y,
-          radius: 10,
-          prefill: "yellow",
-          fill: "red"
-        });
-      });
+  //   Promise.all(promises).then(items => {
+  //     var mapping = [];
 
-      this.setState({
-        markers: mapping
-      });
-    });
-  }
+  //     items.forEach(pos => {
+  //       mapping.push({
+  //         id: mapping.length,
+  //         name: "random sumtin " + mapping.length,
+  //         shape: "circle",
+  //         x1: pos.x,
+  //         y1: pos.y,
+  //         radius: 10,
+  //         prefill: "yellow",
+  //         fill: "red"
+  //       });
+  //     });
+
+  //     this.setState({
+  //       markers: mapping
+  //     });
+  //   });
+  // }
 
   onAnyAreaPress(item, idx, event) {
     console.log(item);
@@ -57,9 +53,33 @@ export default class SelfServeMap extends Component {
 
   render() {
     const imageSource = { uri: "https://lord.lol/files/floorplan.png" };
+    const { packages } = this.props;
 
-    console.log("window width: " + window.width);
-    console.log("width / 600: " + 600 / window.width);
+    var mapping = [];
+
+    packages.forEach(pkg => {
+      if(pkg.data){
+        const position = getMarkerPosition(
+          pkg.data.availability.aisle,
+          pkg.data.availability.shelf
+        );
+        console.log("POSITION: ", position);
+  
+        var prefill = pkg.isPicked ? "green" : "yellow";
+  
+        mapping.push({
+          id: pkg.id,
+          name: pkg.data.product_info.family,
+          shape: "circle",
+          x1: position.x,
+          y1: position.y,
+          radius: 10,
+          prefill: prefill,
+          fill: "red"
+        });
+      }
+
+    });
 
     return (
       <>
@@ -68,7 +88,7 @@ export default class SelfServeMap extends Component {
             imgHeight={window.width * 1.4166666401757135}
             imgWidth={window.width}
             imgSource={imageSource}
-            imgMap={this.state.markers}
+            imgMap={mapping}
             onPress={(item, idx, event) => {
               console.log("test");
             }}

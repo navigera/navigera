@@ -12,14 +12,14 @@ export default class SelfServePage extends Component {
 
   render() {
     const { packages, setPickedCallback } = this.props.screenProps;
-    const packagePositions = getAllCorners();
+    //const packagePositions = getAllCorners();
     console.log("SelfServePage packages: ", packages);
 
     return (
       <View style={styles.container}>
         <View style={styles.mapContainer}>
           <SelfServeMap
-            packagePositions={packagePositions}
+            packages={packages}
             style={styles.map}
           />
         </View>

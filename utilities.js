@@ -55,7 +55,7 @@ export function capitalizeFirst(str) {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-const mapData = require("./assets/maps/map.json");
+const {mapData} = require("./assets/maps/map");
 
 export function getAllCorners() {
   var corners = [];
@@ -69,7 +69,9 @@ export function getAllCorners() {
   return corners;
 }
 
-export async function getMarkerPosition(aisleNo, shelfNo) {
+export function getMarkerPosition(aisleNo, shelfNo) {
+  console.log("map data: ", mapData);
+
   const aisle = mapData.find(e => {
     return aisleNo == e.aisle;
   });
