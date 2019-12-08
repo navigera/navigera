@@ -12,6 +12,7 @@ import LandingPage from "./components/LandingPage";
 import WarehouseLocationPage from "./components/WarehouseLocationPage";
 import { setCustomText } from "react-native-global-props";
 import SearchPage from "./components/SearchPage";
+import { GetProduct } from "./utilities";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,6 +21,8 @@ export default class App extends React.Component {
     setCustomText(customTextProps);
 
     this.addItemCallback = this.addItemCallback.bind(this);
+    this.updatePackages = this.updatePackages.bind(this);
+
     this.removeItemCallback = this.removeItemCallback.bind(this);
     this.setPickedCallback = this.setPickedCallback.bind(this);
   }
@@ -47,17 +50,17 @@ export default class App extends React.Component {
   }
 
   setPickedCallback(id) {
-	var packages = this.state.packages;
-	packages.forEach(pkg => {
-		if(id == pkg.id){
-			pkg.isPicked = !pkg.isPicked;
-		}
-	});
-	this.setState({
-		packages: packages,
-	});
+    var packages = this.state.packages;
+    packages.forEach(pkg => {
+      if (id == pkg.id) {
+        pkg.isPicked = !pkg.isPicked;
+      }
+    });
+    this.setState({
+      packages: packages
+    });
 
-	console.log(this.state.packages);
+    console.log(this.state.packages);
   }
 
   removeItemCallback(id, num) {
@@ -134,10 +137,18 @@ export default class App extends React.Component {
       }
 
       if (!pkgExists) {
+        // GetProduct(pkg.id).then(pkgData => {
+        //   packageList.push({
+        //     id: pkg.id,
+        //     amount: pkg.count * num,
+        //     isPicked: false,
+        //     data: pkgData
+        //   });
+        // });
         packageList.push({
           id: pkg.id,
           amount: pkg.count * num,
-          isPicked: false
+          isPicked: false,
         });
       }
     });
@@ -146,6 +157,29 @@ export default class App extends React.Component {
     console.log("PACKAGES:", packageList);
 
     this.setState({ products: productList, packages: packageList });
+    this.updatePackages();
+  }
+
+  updatePackages() {
+    var packageList = this.state.packages;
+    var promises = [];
+    
+    packageList.forEach((pkg) => {
+      promises.push(GetProduct(pkg.id));
+    });
+
+    Promise.all(promises).then((results) => {
+      results.forEach((result) => {
+        packageList.forEach((pkg) => {
+          if(pkg.id == result.product_info.id){
+            pkg.data = result;
+          }
+        });
+      });
+      this.setState({
+        packages: packageList
+      })
+    });
   }
 }
 
