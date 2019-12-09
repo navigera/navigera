@@ -7,11 +7,14 @@ import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from "@up-shared/components";
-
+import { setCustomText } from 'react-native-global-props';
+import SearchPage from './components/SearchPage';
+import SettingsPage from './components/SettingsPage';
+import SetRoutePage from './components/SetRoutePage';
+import SetWarehousePage from './components/SetWarehousePage';
 import LandingPage from "./components/LandingPage";
 import WarehouseLocationPage from "./components/WarehouseLocationPage";
-import { setCustomText } from "react-native-global-props";
-import SearchPage from "./components/SearchPage";
+import AboutPage from "./components/AboutPage";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,11 +25,21 @@ export default class App extends React.Component {
     this.addItemCallback = this.addItemCallback.bind(this);
     this.removeItemCallback = this.removeItemCallback.bind(this);
     this.setPickedCallback = this.setPickedCallback.bind(this);
+    this.updateWarehouse = this.updateWarehouse.bind(this);
   }
 
   state = {
     products: [],
-    packages: []
+    packages: [],
+    chosenWarehouse: {
+			Id: 17,
+			Name: "Helsingborg",
+      No: "468",
+      Address: "Marknadsvägen, Väla Centrum 7, 260 36 Ödåkra",
+			Latitude: 56.092426,
+			Longitude: 12.760899,
+			isActive: false,
+		},
   };
 
   render() {
@@ -39,7 +52,9 @@ export default class App extends React.Component {
             modalVisible: this.state.modalVisible,
             setPickedCallback: this.setPickedCallback,
             addItemCallback: this.addItemCallback,
-            removeItemCallback: this.removeItemCallback
+            removeItemCallback: this.removeItemCallback,
+            chosenWarehouse: this.state.chosenWarehouse,
+				  	updateWarehouse: this.updateWarehouse,
           }}
         />
       </SafeAreaView>
@@ -147,6 +162,10 @@ export default class App extends React.Component {
 
     this.setState({ products: productList, packages: packageList });
   }
+
+  updateWarehouse(warehouse) {
+		this.setState({chosenWarehouse: warehouse});
+	}
 }
 
 const AppTabNavigator = createMaterialTopTabNavigator(
@@ -237,13 +256,63 @@ const LandingTabNavigator = createMaterialTopTabNavigator(
   }
 );
 
+const SlideTransition = (index, position, width) => {
+	const sceneRange = [index - 1, index, index + 1];
+	const outputWidth  = [width, 0, 0];
+	const transition = position.interpolate({
+		inputRange: sceneRange,
+		outputRange: outputWidth,
+	});
+
+	return {
+		transform: [{ translateX: transition}]
+	}
+}
+
+const NavigationConfig = () => {
+	return {
+		screenInterpolator: (sceneProps) => {
+			const position = sceneProps.position;
+			const scene = sceneProps.scene;
+			const index = scene.index;
+			const width = sceneProps.layout.initWidth;
+
+			return SlideTransition(index, position, width);
+		}
+	}
+}
+
+const SettingsStack = createStackNavigator(
+	{
+		Main: {
+			screen: AppTabNavigator,
+		},
+		SettingsMain: {
+			screen: SettingsPage,
+		},
+		SettingWarehouse: {
+			screen: SetWarehousePage,
+		},
+		SettingRoute: {
+			screen: SetRoutePage,
+    },
+    SettingAbout: {
+      screen: AboutPage,
+    },
+	},
+	{
+		headerMode: 'none',
+		transitionConfig: NavigationConfig,
+	}	
+);
+
 const RootStack = createStackNavigator(
   {
     Start: {
       screen: LandingTabNavigator
     },
     Main: {
-      screen: AppTabNavigator
+      screen: SettingsStack
     },
     Modal: {
       screen: SearchPage
@@ -259,8 +328,10 @@ const RootStack = createStackNavigator(
   }
 );
 
+
 const AppContainer = createAppContainer(AppTabNavigator);
 const ModalContainer = createAppContainer(RootStack);
+const MainContainer = createAppContainer(SettingsStack);
 
 const customTextProps = {
   style: {
