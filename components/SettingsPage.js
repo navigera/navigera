@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, BackHandler, TouchableOpacity, TouchableHighlight } from 'react-native';
-import { Icon } from "@up-shared/components";
+import { Text, View, StyleSheet, BackHandler, TouchableHighlight } from 'react-native';
 import { globalStyles } from "../utilities";
 import SettingsHeader from "./SettingsHeader.js";
+import SettingsOption from "./SettingsOption.js";
+import SettingsOptionExtended from "./SettingsOptionExtended.js";
 
 
 export default class SettingsPage extends Component {
@@ -44,54 +45,23 @@ export default class SettingsPage extends Component {
                 </TouchableHighlight>
 
                 <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingRoute")}>
-                    <View style={styles.optionContainer}>
-                        <Text style={[styles.optionText, globalStyles.regular]}>Order route by</Text>
-                        <View style={styles.infoContainer}>
-                            <Text style={[styles.infoText, globalStyles.regular]}>Package volume</Text>
-                            <View style={{transform: [{rotate: '90deg'}]}}>
-                                <Icon name="chevron-up" size={27} color="black"></Icon>
-                            </View>     
-                        </View>   
-                    </View>
+                    <SettingsOptionExtended title={"Order route by"} subTitle={"Package volume"}/>
                 </TouchableHighlight>
 
                 <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingWarehouse", {warehouse: this.props.screenProps.chosenWarehouse, update: this.props.screenProps.updateWarehouse})}>
-                    <View style={styles.optionContainer}>
-                        <Text style={[styles.optionText, globalStyles.regular]}>Warehouse location</Text>
-                        <View style={styles.infoContainer}>
-                            <Text style={[styles.infoText, globalStyles.regular]}>{location}</Text>
-                            <View style={{transform: [{rotate: '90deg'}]}}>
-                                <Icon name="chevron-up" size={27} color="black"></Icon>
-                            </View>     
-                        </View>
-                    </View>
+                    <SettingsOptionExtended title={"Warehouse location"} subTitle={location}/>
                 </TouchableHighlight>
 
                 <TouchableHighlight>
-                    <View style={styles.optionContainer}>
-                        <Text style={[styles.optionText, globalStyles.regular]}>Help</Text>
-                        <View style={{transform: [{rotate: '90deg'}]}}>
-                              <Icon name="chevron-up" size={27} color="black"></Icon>
-                        </View>     
-                    </View>
+                    <SettingsOption title={"Help"}/>
                 </TouchableHighlight>
 
                 <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingAbout")}>
-                    <View style={styles.optionContainer}>
-                        <Text style={[styles.optionText, globalStyles.regular]}>About NAVIGERA</Text>
-                        <View style={{transform: [{rotate: '90deg'}]}}>
-                              <Icon name="chevron-up" size={27} color="black"></Icon>
-                        </View>     
-                    </View>
+                    <SettingsOption title={"About NAVIGERA"}/>
                 </TouchableHighlight>
 
                 <TouchableHighlight>
-                    <View style={styles.optionContainer}>
-                        <Text style={[styles.notImplementedText, globalStyles.regular]}>Report a problem</Text>
-                        <View style={{transform: [{rotate: '90deg'}]}}>
-                              <Icon name="chevron-up" size={27} color="grey"></Icon>
-                        </View>     
-                    </View>
+                    <SettingsOption title={"Report a problem"}/>
                 </TouchableHighlight>
             </View>
         </View>
@@ -116,22 +86,9 @@ const styles = StyleSheet.create({
     paddingRight: 25,
     paddingLeft: 25,
   },
-  optionText: {
-    color: 'black',
-    fontSize: 18,
-  },
   eraseText: {
     color: 'red',
     fontSize: 18,
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  infoText: {
-    color: 'grey',
-    marginRight: 10,
-    fontSize: 14,
   },
   notImplementedText: {
     color: 'grey',
