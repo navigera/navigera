@@ -48,7 +48,9 @@ export default class SettingsPage extends Component {
                         <Text style={[styles.optionText, globalStyles.regular]}>Order route by</Text>
                         <View style={styles.infoContainer}>
                             <Text style={[styles.infoText, globalStyles.regular]}>Package volume</Text>
-                            <Icon name="arrow-right" size={25} color="black"></Icon>
+                            <View style={{transform: [{rotate: '90deg'}]}}>
+                                <Icon name="chevron-up" size={27} color="black"></Icon>
+                            </View>     
                         </View>   
                     </View>
                 </TouchableHighlight>
@@ -58,29 +60,37 @@ export default class SettingsPage extends Component {
                         <Text style={[styles.optionText, globalStyles.regular]}>Warehouse location</Text>
                         <View style={styles.infoContainer}>
                             <Text style={[styles.infoText, globalStyles.regular]}>{location}</Text>
-                            <Icon name="arrow-right" size={25} color="black"></Icon>
+                            <View style={{transform: [{rotate: '90deg'}]}}>
+                                <Icon name="chevron-up" size={27} color="black"></Icon>
+                            </View>     
                         </View>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight>
+                    <View style={styles.optionContainer}>
+                        <Text style={[styles.optionText, globalStyles.regular]}>Help</Text>
+                        <View style={{transform: [{rotate: '90deg'}]}}>
+                              <Icon name="chevron-up" size={27} color="black"></Icon>
+                        </View>     
                     </View>
                 </TouchableHighlight>
 
                 <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingAbout")}>
                     <View style={styles.optionContainer}>
                         <Text style={[styles.optionText, globalStyles.regular]}>About NAVIGERA</Text>
-                        <Icon name="arrow-right" size={25} color="black"></Icon>
-                    </View>
-                </TouchableHighlight>
-
-                <TouchableHighlight>
-                    <View style={styles.optionContainer}>
-                        <Text style={[styles.notImplementedText, globalStyles.regular]}>Help</Text>
-                        <Icon name="arrow-right" size={25} color="grey"></Icon>
+                        <View style={{transform: [{rotate: '90deg'}]}}>
+                              <Icon name="chevron-up" size={27} color="black"></Icon>
+                        </View>     
                     </View>
                 </TouchableHighlight>
 
                 <TouchableHighlight>
                     <View style={styles.optionContainer}>
                         <Text style={[styles.notImplementedText, globalStyles.regular]}>Report a problem</Text>
-                        <Icon name="arrow-right" size={25} color="grey"></Icon>
+                        <View style={{transform: [{rotate: '90deg'}]}}>
+                              <Icon name="chevron-up" size={27} color="grey"></Icon>
+                        </View>     
                     </View>
                 </TouchableHighlight>
             </View>

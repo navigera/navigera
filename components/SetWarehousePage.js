@@ -11,6 +11,7 @@ const stores = [
         Id: 1,
         Name: "Stockholm Kungens Kurva",
         No: "012",
+        Address: "Modulvägen 1, 141 08 Kungens Kurva",
         Latitude: 59.271155,
         Longitude: 17.916201,
         isActive: false,
@@ -19,6 +20,7 @@ const stores = [
         Id: 2,
         Name: "Göteborg Kållered",
         No: "014",
+        Address: "Ekenleden 2, 428 36 Kållered",
         Latitude: 57.60379,
         Longitude: 12.048397,
         isActive: false,
@@ -27,6 +29,7 @@ const stores = [
         Id: 3,
         Name: "Linköping",
         No: "017",
+        Address: "Västra Svedengatan 7, 581 28 Linköping",
         Latitude: 58.433189,
         Longitude: 15.58755,
         isActive: false,
@@ -35,6 +38,7 @@ const stores = [
         Id: 4,
         Name: "Stockholm Barkarby",
         No: "019",
+        Address: "Folkungavägen 50, 177 35 Järfälla",
         Latitude: 59.420331,
         Longitude: 17.857064,
         isActive: false,
@@ -43,6 +47,7 @@ const stores = [
         Id: 5,
         Name: "Västerås",
         No: "020",
+        Address: "Domkraftsgatan 2, 721 38 Västerås",
         Latitude: 59.607596,
         Longitude: 16.456017,
         isActive: false,
@@ -51,6 +56,7 @@ const stores = [
         Id: 6,
         Name: "Uddevalla",
         No: "053",
+        Address: "Östra Torpsvägen 30, 451 76 Uddevalla",
         Latitude: 58.355878,
         Longitude: 11.818371,
         isActive: false,
@@ -59,6 +65,7 @@ const stores = [
         Id: 7,
         Name: "Uppsala",
         No: "070",
+        Address: "Rapsgatan 3, 753 23 Uppsala",
         Latitude: 59.847755,
         Longitude: 17.692156,
         isActive: false,
@@ -67,6 +74,7 @@ const stores = [
         Id: 8,
         Name: "Örebro",
         No: "106",
+        Address: "Kundvägen 2, 702 31 Örebro",
         Latitude: 59.211089,
         Longitude: 15.134397,
         isActive: false,
@@ -75,6 +83,7 @@ const stores = [
         Id: 9,
         Name: "Jönköping",
         No: "109",
+        Address: "A6 Center, Kompanigatan 6, 553 05 Jönköping",
         Latitude: 57.77267,
         Longitude: 14.205751,
         isActive: false,
@@ -83,6 +92,7 @@ const stores = [
         Id: 10,
         Name: "Gävle",
         No: "122",
+        Address: "Valbovägen 307, 818 32 Valbo",
         Latitude: 60.633906,
         Longitude: 16.989895, 
         isActive: false,
@@ -91,6 +101,7 @@ const stores = [
         Id: 11,
         Name: "Borlänge",
         No: "248",
+        Address: "Norra Backagatan 1, 781 70 Borlänge",
         Latitude: 60.482664,
         Longitude: 15.421457,
         isActive: false,
@@ -99,6 +110,7 @@ const stores = [
         Id: 12,
         Name: "Älmhult",
         No: "268",
+        Address: "Handelsvägen 4, 343 33 Älmhult",
         Latitude: 56.550534,
         Longitude: 14.161674,
         isActive: false,
@@ -107,6 +119,7 @@ const stores = [
         Id: 13,
         Name: "Göteborg Bäckebol",
         No: "398",
+        Address: "Transportgatan 23, 422 46 Hisings Backa",
         Latitude: 57.771771,
         Longitude: 11.999672,
         isActive: false,
@@ -115,6 +128,7 @@ const stores = [
         Id: 14,
         Name: "Umeå",
         No: "416",
+        Address: "Marknadsgatan 1, 904 22 Umeå",
         Latitude: 63.80771,
         Longitude: 20.25501,
         isActive: false,
@@ -123,6 +137,7 @@ const stores = [
         Id: 15,
         Name: "Malmö",
         No: "445",
+        Address: "Kulthusgatan 1, 215 86 Malmö",
         Latitude: 55.552634,
         Longitude: 12.986215,
         isActive: false,
@@ -131,6 +146,7 @@ const stores = [
         Id: 16,
         Name: "Sundsvall",
         No: "467",
+        Address: "Gesällvägen 3, 857 53 Sundsvall",
         Latitude: 62.444195,
         Longitude: 17.334119,
         isActive: false,
@@ -139,6 +155,7 @@ const stores = [
         Id: 17,
         Name: "Helsingborg",
         No: "468",
+        Address: "Marknadsvägen, Väla Centrum 7, 260 36 Ödåkra",
         Latitude: 56.092426,
         Longitude: 12.760899,
         isActive: false,
@@ -147,6 +164,7 @@ const stores = [
         Id: 18,
         Name: "Kalmar",
         No: "469",
+        Address: "Bilbyggarvägen 6, 395 56 Kalmar",
         Latitude: 56.68556,
         Longitude: 16.321199,
         isActive: false,
@@ -155,6 +173,7 @@ const stores = [
         Id: 19,
         Name: "HaparandaTornio",
         No: "470",
+        Address: "Norrmalmsvägen 2, 953 36 Haparanda",
         Latitude: 65.842982,
         Longitude: 24.13192,
         isActive: false,
@@ -163,6 +182,7 @@ const stores = [
         Id: 20,
         Name: "Karlstad",
         No: "471",
+        Address: "Bergviksvägen 43, 653 46 Karlstad",
         Latitude: 59.378797,
         Longitude: 13.41966,
         isActive: false,
@@ -187,11 +207,13 @@ export default class SetWarehousePage extends Component {
                 Id: null,
                 Name: null,
                 No: null,
+                Address: null,
                 Latitude: null,
                 Longitude: null,
                 isActive: false,
             },
             ableToUpdate: true,
+            showInfo: false,
         }
         
     }
@@ -237,6 +259,7 @@ export default class SetWarehousePage extends Component {
                 this.setState({selectedMarker: selMarker, ableToUpdate: same}); 
             }
         })
+        this.setState({showInfo: true});
     }
 
     updateWarehouse() {
@@ -250,7 +273,7 @@ export default class SetWarehousePage extends Component {
                 marker.isActive = false;
             }
         })
-        this.setState({chosenWarehouse: cur, ableToUpdate: true});
+        this.setState({chosenWarehouse: cur, ableToUpdate: true, showInfo: false});
         this.unSelectMarker();  
         this.props.screenProps.updateWarehouse(cur);
     }
@@ -265,7 +288,7 @@ export default class SetWarehousePage extends Component {
     return (
         <View style={styles.container}>
 
-            <SettingsHeader titleText={"Change Warehouse"} method={this.setWarehouseClosed}/>
+            <SettingsHeader titleText={"Warehouse location"} method={this.setWarehouseClosed}/>
 
             <View style={styles.container}>
                 <View style={styles.mapContainer}>
@@ -289,18 +312,14 @@ export default class SetWarehousePage extends Component {
                             />
                         ))}
                     </MapView>
-                    <View style={styles.infoContainer}>
-                        <Text style={[styles.infoText, globalStyles.regular]}>Selected warehouse: </Text>
-                        <Text style={[styles.infoText, globalStyles.bold]}>{this.state.chosenWarehouse.Name}</Text>
-                    </View>   
                 </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={[styles.updateButton, {backgroundColor: this.state.ableToUpdate==true? '#b8b8b6' : '#ffff78'}]} onPress={this.updateWarehouse} disabled={this.state.ableToUpdate}>
-                        <View style={styles.updateTextContainer}>
-                            <Text style={[styles.infoText, globalStyles.bold]}>Change to warehouse in </Text>
-                            <Text style={[styles.infoText, globalStyles.bold]}>{this.state.selectedMarker.Name}</Text>
-                        </View>
+                <View style={styles.infoContainer}>
+                    <Text style={[styles.infoTitleText, globalStyles.regular]}> {this.state.showInfo ? 'IKEA Warehouse ' + this.state.selectedMarker.Name : ''} </Text>
+                    <Text style={[styles.infoText, globalStyles.regular]}> {this.state.showInfo ? this.state.selectedMarker.Address : ''} </Text>
+                    <TouchableOpacity style={[styles.updateButton, {backgroundColor: this.state.ableToUpdate==true? '#b8b8b6' : '#0058a3'}]} onPress={this.updateWarehouse} disabled={this.state.ableToUpdate}>
+                        <Text style={[styles.updateText, globalStyles.regular]}>Select {this.state.selectedMarker.Name}</Text>
                     </TouchableOpacity>
+                    <Text style={[styles.currentWarehouseText, globalStyles.regular]}>Current warehouse: {this.state.chosenWarehouse.Name}</Text>
                 </View>
             </View>  
         </View>
@@ -311,44 +330,48 @@ export default class SetWarehousePage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f4',
+    backgroundColor: 'white',
   },
   mapContainer: {
-    height: 525,
+   // height: 440,
+    flex: 1,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
   infoContainer: {
-    height: 75,
-    width: 175,
-    flexDirection: 'column',
-    padding: 15,
-    margin: 15,
-    backgroundColor: '#f4f4f4',
-    borderWidth: 0.5,
+    //flex: 1,
+    height: 150,
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
-  buttonContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'white',
+  infoTitleText: {
+    color: 'black',
+    fontSize: 18,
+    marginTop: 10,
+    marginLeft: 60,
+    width: '100%'
   },
   infoText: {
-      color: 'black',
-      fontSize: 14,
+    color: 'grey',
+    fontSize: 14,
+    marginLeft: 60,
+    width: '100%'
   },
   updateButton: {
-    height: 50,
-    width: 300,
-    borderRadius: 20,
+    height: 40,
+    width: 350,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 5,
   },
-  updateTextContainer: {
-    flexDirection: "column",
-    alignItems: 'center',
-    justifyContent: 'center',
+  updateText: {
+    color: 'white',
+    fontSize: 17,
+  },
+  currentWarehouseText: {
+    color: 'grey',
+    fontSize: 14,
   },
 })

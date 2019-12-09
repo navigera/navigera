@@ -34,7 +34,8 @@ export default class App extends React.Component {
     chosenWarehouse: {
 			Id: 17,
 			Name: "Helsingborg",
-			No: "468",
+      No: "468",
+      Address: "Marknadsvägen, Väla Centrum 7, 260 36 Ödåkra",
 			Latitude: 56.092426,
 			Longitude: 12.760899,
 			isActive: false,

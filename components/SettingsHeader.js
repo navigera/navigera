@@ -8,7 +8,9 @@ export default class SettingsHeader extends Component {
     return (
         <View style={styles.header}>  
             <TouchableOpacity style={styles.button} onPress={this.props.method}>
-                <Icon name="arrow-left" size={33} color="white"></Icon>
+                <View style={{transform: [{rotate: '90deg'}]}}>
+                    <Icon name="chevron-down" size={30} color="white"></Icon>
+                </View> 
             </TouchableOpacity>  
             <Text style={[styles.headerText, globalStyles.bold]}>{this.props.titleText}</Text>  
          </View>
@@ -26,9 +28,9 @@ const styles = StyleSheet.create({
     },
     headerText: {
         color: 'white',
-        fontSize: 25,
-        marginTop: 17,
-        marginRight: 215,
+        fontSize: 27,
+        marginTop: 20,
+        marginLeft: 8,
         width: '100%',
     },
     button: {
