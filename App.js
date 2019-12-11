@@ -208,9 +208,7 @@ export default class App extends React.Component {
   handlePackageResults(packageList, results){
     results.forEach(result => {
       packageList.forEach(pkg => {
-        if (pkg.id == result.product_info.id) {
-          pkg.data = result;
-        }
+        this.comparePackageData(pkg, result);
       });
     });
 
@@ -219,6 +217,12 @@ export default class App extends React.Component {
     this.setState({
       packages: packageList
     });
+  }
+
+  comparePackageData(pkg, result){
+    if (pkg.id == result.product_info.id) {
+      pkg.data = result;
+    }
   }
 
   updateWarehouse(warehouse) {
