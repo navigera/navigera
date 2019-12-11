@@ -50,6 +50,25 @@ export default class SetRoutePage extends Component {
     );
   }
 
+  renderPicker(updateRoute, chosenRoute) {
+    return (
+      <View style={styles.pickerView}>
+        <Picker
+          selectedValue={chosenRoute}
+          style={styles.picker}
+          prompt="Select package order"
+          onValueChange={(itemValue, itemIndex) => {
+            console.log("updating route to: " + itemValue);
+            updateRoute(itemValue);
+          }}
+        >
+          <Picker.Item label="Entrance to exit" value="default" />
+          <Picker.Item label="Quickest route" value="quickest" />
+        </Picker>
+      </View>
+    );
+  }
+
   render() {
     const { chosenRoute, updateRoute } = this.props.screenProps;
     console.log("chosen route render ", chosenRoute);
@@ -67,40 +86,7 @@ export default class SetRoutePage extends Component {
             affect the packages tab, to help you find your way in the self serve
             area.
           </Text>
-          <View style={styles.pickerView}>
-            <Picker
-              selectedValue={chosenRoute}
-              style={styles.picker}
-              prompt="Select package order"
-              onValueChange={(itemValue, itemIndex) => {
-                console.log("updating route to: " + itemValue);
-                updateRoute(itemValue);
-              }}
-            >
-              <Picker.Item label="Entrance to exit" value="default" />
-              <Picker.Item label="Quickest route" value="quickest" />
-            </Picker>
-          </View>
-
-          {/*<View style={styles.optionContainer}>
-            <Text style={[styles.optionText, globalStyles.regular]}>
-              Package volume
-            </Text>
-            {renderSwitch()}
-          </View>
-          <View style={styles.optionContainer}>
-            <Text style={[styles.notImplementedText, globalStyles.regular]}>
-              Package weight
-            </Text>
-            {renderSwitch()}
-          </View>
-
-          <View style={styles.optionContainer}>
-            <Text style={[styles.notImplementedText, globalStyles.regular]}>
-              Quickest route
-            </Text>
-          {renderSwitch()
-          </View>}*/}
+          {this.renderPicker(updateRoute, chosenRoute)}
         </View>
       </View>
     );
@@ -127,7 +113,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     padding: 5,
     borderWidth: 2,
-    borderRadius: 10000,
+    borderRadius: 10000
   },
   picker: {
     textAlign: "right"
