@@ -25,7 +25,7 @@ export default class LandingPage extends Component {
         
         <TouchableHighlight underlayColor={"#116fbf"} onPress={this.handlePress}>
             <View style={styles.btn}>
-                <Text style={[styles.textBtn,globalStyles]}> Locate a warehouse </Text>
+                <Text style={[styles.textBtn,globalStyles.bold]}> Locate a warehouse </Text>
                 <Icon name="arrow-right" size={40} color="#ffdb00" />
             </View>
         </TouchableHighlight>

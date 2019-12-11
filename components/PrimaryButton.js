@@ -37,13 +37,13 @@ export default class PrimaryButton extends Component {
   }
 
   render() {
-    const { text, onPress, icon } = this.props;
+    const { text, onPress, icon, color, disabled } = this.props;
     
     
     return (
       <View style={styles.Box}>
         <TouchableHighlight underlayColor={"#3379b5"}
-          style={[styles.button,this.getColor()]} onPress={onPress}>
+          style={[styles.button, {backgroundColor: color}]} onPress={onPress} disabled={disabled}>
           
           <View style={styles.buttonContent}>
             {this.renderIcon(icon)}
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     color: "white",
     margin: 15,
-    marginLeft: 25,
+    marginLeft: 10,
     textAlign: "center",
   },
 });

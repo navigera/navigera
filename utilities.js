@@ -54,3 +54,39 @@ export function formatSingleUnit(x) {
 export function capitalizeFirst(str) {
   return str[0].toUpperCase() + str.slice(1);
 }
+
+const {mapData} = require("./assets/maps/map");
+
+export function getAllCorners() {
+  var corners = [];
+
+  mapData.forEach(aisle => {
+    aisle.shelves.forEach(shelf => {
+      corners.push({ aisle: aisle.aisle, shelf: shelf.start }, {aisle: aisle.aisle, shelf: shelf.end});
+    });
+  });
+
+  return corners;
+}
+
+export function getMarkerPosition(aisleNo, shelfNo) {
+  console.log("map data: ", mapData);
+
+  const aisle = mapData.find(e => {
+    return aisleNo == e.aisle;
+  });
+
+  var position;
+  aisle.shelves.forEach(shelf => {
+    if (shelfNo >= shelf.start && shelfNo <= shelf.end) {
+      const x =
+        shelf.startX +
+        (shelfNo - shelf.start + 1) *
+          ((shelf.endX - shelf.startX) / (shelf.end - shelf.start));
+      position = { x: x, y: aisle.y };
+    }
+  });
+  //position.inGray = (aisle.aisle != 0 && (aisle.aisle % 4 == 0 || (aisle.aisle - 1) % 4 == 0));
+
+  return position;
+}

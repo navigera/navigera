@@ -30,7 +30,8 @@ export default class SettingsPage extends Component {
     }
 
   render() {
-    const location = this.props.screenProps.chosenWarehouse.Name;
+    const { clearShoppingList, chosenRoute, chosenWarehouse } = this.props.screenProps;
+
     return (
         <View style={styles.container}>
           
@@ -38,25 +39,25 @@ export default class SettingsPage extends Component {
 
             <View style={styles.contentContainer}>
                 
-                <TouchableHighlight>
+                <TouchableHighlight underlayColor="#f5f5f5" onPress={clearShoppingList}>
                     <View style={styles.optionContainer}>
                         <Text style={[styles.eraseText, globalStyles.regular]}>Clear shopping list</Text>
                     </View>
                 </TouchableHighlight>
 
-                <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingRoute")}>
-                    <SettingsOptionExtended title={"Order route by"} subTitle={"Package volume"}/>
+                <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this.props.navigation.navigate("SettingRoute")}>
+                    <SettingsOptionExtended title={"Order route by"} subTitle={(chosenRoute === 'default') ? "Classic" : "Quickest"}/>
                 </TouchableHighlight>
 
-                <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingWarehouse", {warehouse: this.props.screenProps.chosenWarehouse, update: this.props.screenProps.updateWarehouse})}>
-                    <SettingsOptionExtended title={"Warehouse location"} subTitle={location}/>
+                <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this.props.navigation.navigate("SettingWarehouse", {warehouse: this.props.screenProps.chosenWarehouse, update: this.props.screenProps.updateWarehouse})}>
+                    <SettingsOptionExtended title={"Warehouse location"} subTitle={chosenWarehouse ? chosenWarehouse.name : "None"}/>
                 </TouchableHighlight>
 
-                <TouchableHighlight>
+                <TouchableHighlight underlayColor="#f5f5f5">
                     <SettingsOption title={"Help"}/>
                 </TouchableHighlight>
 
-                <TouchableHighlight onPress={() => this.props.navigation.navigate("SettingAbout")}>
+                <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this.props.navigation.navigate("SettingAbout")}>
                     <SettingsOption title={"About NAVIGERA"}/>
                 </TouchableHighlight>
 
