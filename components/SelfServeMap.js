@@ -9,64 +9,30 @@ const window = Dimensions.get("window");
 export default class SelfServeMap extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      markers: []
-    };
 
     this.onAnyAreaPress = this.onAnyAreaPress.bind(this);
+    this.getMarkers = this.getMarkers.bind(this);
   }
-
-  // componentDidMount() {
-  //   const { packages } = this.props;
-
-  //   var promises = [];
-
-  //   packages.forEach(pkg => {
-  //     promises.push(getMarkerPosition(pkg.availability.aisle, pkg.availability.shelf));
-  //   });
-
-  //   Promise.all(promises).then(items => {
-  //     var mapping = [];
-
-  //     items.forEach(pos => {
-  //       mapping.push({
-  //         id: mapping.length,
-  //         name: "random sumtin " + mapping.length,
-  //         shape: "circle",
-  //         x1: pos.x,
-  //         y1: pos.y,
-  //         radius: 10,
-  //         prefill: "yellow",
-  //         fill: "red"
-  //       });
-  //     });
-
-  //     this.setState({
-  //       markers: mapping
-  //     });
-  //   });
-  // }
 
   onAnyAreaPress(item, idx, event) {
     console.log(item);
   }
 
-  render() {
-    const imageSource = { uri: "https://lord.lol/files/floorplan.png" };
+  getMarkers() {
     const { packages } = this.props;
 
     var mapping = [];
 
     packages.forEach(pkg => {
-      if(pkg.data){
+      if (pkg.data) {
         const position = getMarkerPosition(
           pkg.data.availability.aisle,
           pkg.data.availability.shelf
         );
         console.log("POSITION: ", position);
-  
+
         var prefill = pkg.isPicked ? "green" : "yellow";
-  
+
         mapping.push({
           id: pkg.id,
           name: pkg.data.product_info.family,
@@ -78,8 +44,13 @@ export default class SelfServeMap extends Component {
           fill: "red"
         });
       }
-
     });
+
+    return mapping;
+  }
+
+  render() {
+    const imageSource = { uri: "https://lord.lol/files/floorplan.png" };
 
     return (
       <>
@@ -88,7 +59,7 @@ export default class SelfServeMap extends Component {
             imgHeight={window.width * 1.4166666401757135}
             imgWidth={window.width}
             imgSource={imageSource}
-            imgMap={mapping}
+            imgMap={this.getMarkers()}
             onPress={(item, idx, event) => {
               console.log("test");
             }}

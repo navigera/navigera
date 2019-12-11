@@ -112,6 +112,45 @@ export default class SetWarehousePage extends Component {
     }
   }
 
+  renderInfoBox() {
+    return (
+      <View style={styles.infoContainer}>
+        <Text style={[styles.infoTitleText, globalStyles.regular]}>
+          {" "}
+          {this.state.showInfo
+            ? "IKEA " + this.state.selectedMarker.name
+            : "IKEA " +
+              (this.state.chosenWarehouse
+                ? this.state.chosenWarehouse.name
+                : "")}{" "}
+        </Text>
+        <Text style={[styles.infoText, globalStyles.regular]}>
+          {" "}
+          {this.state.showInfo
+            ? this.state.selectedMarker.address
+            : this.state.chosenWarehouse
+            ? this.state.chosenWarehouse.address
+            : ""}{" "}
+        </Text>
+        {this.state.selectedMarker ||
+        (this.state.selectedMarker &&
+          this.state.selectedMarker.id != this.state.chosenWarehouse.id) ? (
+          <PrimaryButton
+            text={"Select " + this.state.selectedMarker.name}
+            onPress={this.updateWarehouse}
+            color={this.state.ableToUpdate == true ? "#b8b8b6" : "#0058a3"}
+            disabled={this.state.ableToUpdate}
+          />
+        ) : (
+          <></>
+        )}
+        <Text style={[styles.currentWarehouseText, globalStyles.regular]}>
+          Current warehouse: {this.state.chosenWarehouse.name}
+        </Text>
+      </View>
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -150,38 +189,7 @@ export default class SetWarehousePage extends Component {
               })}
             </MapView>
           </View>
-          <View style={styles.infoContainer}>
-            <Text style={[styles.infoTitleText, globalStyles.regular]}>
-              {" "}
-              {this.state.showInfo
-                ? "IKEA " + this.state.selectedMarker.name
-                : "IKEA " +
-                  (this.state.chosenWarehouse
-                    ? this.state.chosenWarehouse.name
-                    : "")}{" "}
-            </Text>
-            <Text style={[styles.infoText, globalStyles.regular]}>
-              {" "}
-              {this.state.showInfo
-                ? this.state.selectedMarker.address
-                : this.state.chosenWarehouse
-                ? this.state.chosenWarehouse.address
-                : ""}{" "}
-            </Text>
-            {this.state.selectedMarker || ((this.state.selectedMarker) && this.state.selectedMarker.id != this.state.chosenWarehouse.id) ? (
-              <PrimaryButton
-                text={"Select " + this.state.selectedMarker.name}
-                onPress={this.updateWarehouse}
-                color={this.state.ableToUpdate == true ? "#b8b8b6" : "#0058a3"}
-                disabled={this.state.ableToUpdate}
-              />
-            ) : (
-              <></>
-            )}
-            <Text style={[styles.currentWarehouseText, globalStyles.regular]}>
-              Current warehouse: {this.state.chosenWarehouse.name}
-            </Text>
-          </View>
+          {this.renderInfoBox()}
         </View>
       </View>
     );
