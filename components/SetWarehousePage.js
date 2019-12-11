@@ -112,6 +112,36 @@ export default class SetWarehousePage extends Component {
     }
   }
 
+  renderMap() {
+    return (
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        initialRegion={{
+          latitude: 61.383105,
+          longitude: 15.085107,
+          latitudeDelta: 12.0,
+          longitudeDelta: 12.0
+        }}
+      >
+        {stores.map(marker => {
+          return (
+            <Marker
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude
+              }}
+              title={marker.name}
+              key={`${marker.id}-${marker.isActive ? "active" : "inactive"}`}
+              pinColor={marker.isActive == true ? "yellow" : "#0058a3"}
+              onPress={e => this.onPressMarker(e, marker.id)}
+            />
+          );
+        })}
+      </MapView>
+    );
+  }
+
   renderInfoBox() {
     return (
       <View style={styles.infoContainer}>
@@ -160,35 +190,7 @@ export default class SetWarehousePage extends Component {
         />
 
         <View style={styles.container}>
-          <View style={styles.mapContainer}>
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              initialRegion={{
-                latitude: 61.383105,
-                longitude: 15.085107,
-                latitudeDelta: 12.0,
-                longitudeDelta: 12.0
-              }}
-            >
-              {stores.map(marker => {
-                return (
-                  <Marker
-                    coordinate={{
-                      latitude: marker.latitude,
-                      longitude: marker.longitude
-                    }}
-                    title={marker.name}
-                    key={`${marker.id}-${
-                      marker.isActive ? "active" : "inactive"
-                    }`}
-                    pinColor={marker.isActive == true ? "yellow" : "#0058a3"}
-                    onPress={e => this.onPressMarker(e, marker.id)}
-                  />
-                );
-              })}
-            </MapView>
-          </View>
+          <View style={styles.mapContainer}>{this.renderMap()}</View>
           {this.renderInfoBox()}
         </View>
       </View>

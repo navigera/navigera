@@ -23,14 +23,8 @@ export default class App extends React.Component {
 
     setCustomText(customTextProps);
 
-    this.addItemCallback = this.addItemCallback.bind(this);
-    this.updatePackages = this.updatePackages.bind(this);
-
-    this.removeItemCallback = this.removeItemCallback.bind(this);
-    this.setPickedCallback = this.setPickedCallback.bind(this);
-    this.updateWarehouse = this.updateWarehouse.bind(this);
-    this.updateRoute = this.updateRoute.bind(this);
-    this.clearShoppingList = this.clearShoppingList.bind(this);
+    this.bindMethods = this.bindMethods.bind(this);
+    this.bindMethods();
 
     this.state = {
       products: [],
@@ -38,6 +32,17 @@ export default class App extends React.Component {
       chosenWarehouse: null,
       chosenRoute: "default"
     };
+  }
+
+  bindMethods(){
+    this.addItemCallback = this.addItemCallback.bind(this);
+    this.updatePackages = this.updatePackages.bind(this);
+    this.removeItemCallback = this.removeItemCallback.bind(this);
+    this.setPickedCallback = this.setPickedCallback.bind(this);
+    this.updateWarehouse = this.updateWarehouse.bind(this);
+    this.updateRoute = this.updateRoute.bind(this);
+    this.clearShoppingList = this.clearShoppingList.bind(this);
+    this.handlePackageResults = this.handlePackageResults.bind(this);
   }
 
   render() {
@@ -196,19 +201,23 @@ export default class App extends React.Component {
     });
 
     Promise.all(promises).then(results => {
-      results.forEach(result => {
-        packageList.forEach(pkg => {
-          if (pkg.id == result.product_info.id) {
-            pkg.data = result;
-          }
-        });
-      });
+      this.handlePackageResults(packageList, results);
+    });
+  }
 
-      //Sortera packageList
-
-      this.setState({
-        packages: packageList
+  handlePackageResults(packageList, results){
+    results.forEach(result => {
+      packageList.forEach(pkg => {
+        if (pkg.id == result.product_info.id) {
+          pkg.data = result;
+        }
       });
+    });
+
+    //Sortera packageList
+
+    this.setState({
+      packages: packageList
     });
   }
 
