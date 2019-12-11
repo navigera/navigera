@@ -1,3 +1,5 @@
+import {sortByDistance} from "./ShortestPathUtils"
+
 export async function GetProduct(id) {
   if (id.length == 10) {
     let response = await (
@@ -90,3 +92,47 @@ export function getMarkerPosition(aisleNo, shelfNo) {
 
   return position;
 }
+
+
+export function sortPackagesBySize(packages) {
+  //package like :  [{"amount": 1, "id": "002.638.50", "isPicked": false, width: 29, length: 206, height: 13, weight: 36500}]
+  if (packages.length < 2) {
+    return packages;
+  }
+  let sortedPackages = deepCopy(packages); //Deep copy of packages
+  sortedPackages.sort(sortBySurfaceArea);
+  return sortedPackages;
+}
+
+export function sortPackagesByWeight(packages){
+	if(packages.length < 2) return packages;
+	
+	var sortedPackages = deepCopy(packages); 
+	sortedPackages.sort(sortByWeight);
+	return sortedPackages
+}
+
+export function sortPackagesByDistance(packages){
+  return sortByDistance(packages)
+}
+
+function deepCopy(array){
+  return JSON.parse(JSON.stringify(array));
+}
+
+function surfaceArea(package1) {
+  //ignore height, since it doesn't really matter if packages are stacked? 
+  return package1.width * package1.length
+}
+
+/**
+ * Sorting utils
+ */
+ 
+ function sortBySurfaceArea(package1, package2){ 
+  return surfaceArea(package2)- surfaceArea(package1);
+ }
+ 
+ function sortByWeight(package1, package2){
+	 return package2.weight - package1.weight;
+ }
