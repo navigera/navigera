@@ -37,13 +37,13 @@ export default class PrimaryButton extends Component {
   }
 
   render() {
-    const { text, onPress, icon, color } = this.props;
+    const { text, onPress, icon, color, disabled } = this.props;
     
     
     return (
       <View style={styles.Box}>
         <TouchableHighlight underlayColor={"#3379b5"}
-          style={[styles.button, {backgroundColor: color}]} onPress={onPress}>
+          style={[styles.button, {backgroundColor: color}]} onPress={onPress} disabled={disabled}>
           
           <View style={styles.buttonContent}>
             {this.renderIcon(icon)}

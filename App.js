@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, Text } from "react-native";
+import { StyleSheet, SafeAreaView, Text, Alert } from "react-native";
 import ProductList from "./components/ProductList";
 import CameraScreen from "./Camera";
 import SelfServePage from "./components/SelfServePage";
@@ -7,12 +7,15 @@ import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from "@up-shared/components";
-
-import LandingPage from "./components/LandingPage";
-import WarehouseLocationPage from "./components/WarehouseLocationPage";
 import { setCustomText } from "react-native-global-props";
 import SearchPage from "./components/SearchPage";
+import SettingsPage from "./components/SettingsPage";
+import SetRoutePage from "./components/SetRoutePage";
+import SetWarehousePage from "./components/SetWarehousePage";
+import LandingPage from "./components/LandingPage";
+import WarehouseLocationPage from "./components/WarehouseLocationPage";
 import { GetProduct } from "./utilities";
+import AboutPage from "./components/AboutPage";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,12 +28,17 @@ export default class App extends React.Component {
 
     this.removeItemCallback = this.removeItemCallback.bind(this);
     this.setPickedCallback = this.setPickedCallback.bind(this);
-  }
+    this.updateWarehouse = this.updateWarehouse.bind(this);
+    this.updateRoute = this.updateRoute.bind(this);
+    this.clearShoppingList = this.clearShoppingList.bind(this);
 
-  state = {
-    products: [],
-    packages: []
-  };
+    this.state = {
+      products: [],
+      packages: [],
+      chosenWarehouse: null,
+      chosenRoute: "default"
+    };
+  }
 
   render() {
     return (
@@ -39,10 +47,15 @@ export default class App extends React.Component {
           screenProps={{
             products: this.state.products,
             packages: this.state.packages,
+            chosenWarehouse: this.state.chosenWarehouse,
+            chosenRoute: this.state.chosenRoute,
             modalVisible: this.state.modalVisible,
             setPickedCallback: this.setPickedCallback,
             addItemCallback: this.addItemCallback,
-            removeItemCallback: this.removeItemCallback
+            removeItemCallback: this.removeItemCallback,
+            updateWarehouse: this.updateWarehouse,
+            updateRoute: this.updateRoute,
+            clearShoppingList: this.clearShoppingList
           }}
         />
       </SafeAreaView>
@@ -137,18 +150,10 @@ export default class App extends React.Component {
       }
 
       if (!pkgExists) {
-        // GetProduct(pkg.id).then(pkgData => {
-        //   packageList.push({
-        //     id: pkg.id,
-        //     amount: pkg.count * num,
-        //     isPicked: false,
-        //     data: pkgData
-        //   });
-        // });
         packageList.push({
           id: pkg.id,
           amount: pkg.count * num,
-          isPicked: false,
+          isPicked: false
         });
       }
     });
@@ -160,26 +165,61 @@ export default class App extends React.Component {
     this.updatePackages();
   }
 
+  clearShoppingList() {
+    Alert.alert(
+      "Clear shopping list",
+      "Are you sure you want to clear your shopping list?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: () =>
+            this.setState({
+              products: [],
+              packages: []
+            })
+        }
+      ],
+      { cancelable: true }
+    );
+  }
+
   updatePackages() {
     var packageList = this.state.packages;
     var promises = [];
-    
-    packageList.forEach((pkg) => {
+
+    packageList.forEach(pkg => {
       promises.push(GetProduct(pkg.id));
     });
 
-    Promise.all(promises).then((results) => {
-      results.forEach((result) => {
-        packageList.forEach((pkg) => {
-          if(pkg.id == result.product_info.id){
+    Promise.all(promises).then(results => {
+      results.forEach(result => {
+        packageList.forEach(pkg => {
+          if (pkg.id == result.product_info.id) {
             pkg.data = result;
           }
         });
       });
+
+      //Sortera packageList
+
       this.setState({
         packages: packageList
-      })
+      });
     });
+  }
+
+  updateWarehouse(warehouse) {
+    this.setState({ chosenWarehouse: warehouse });
+  }
+
+  updateRoute(route) {
+    this.setState({ chosenRoute: route });
+    console.log("chosen route method: " + route);
+    // Sortera this.state.packages
   }
 }
 
@@ -271,13 +311,63 @@ const LandingTabNavigator = createMaterialTopTabNavigator(
   }
 );
 
+const SlideTransition = (index, position, width) => {
+  const sceneRange = [index - 1, index, index + 1];
+  const outputWidth = [width, 0, 0];
+  const transition = position.interpolate({
+    inputRange: sceneRange,
+    outputRange: outputWidth
+  });
+
+  return {
+    transform: [{ translateX: transition }]
+  };
+};
+
+const NavigationConfig = () => {
+  return {
+    screenInterpolator: sceneProps => {
+      const position = sceneProps.position;
+      const scene = sceneProps.scene;
+      const index = scene.index;
+      const width = sceneProps.layout.initWidth;
+
+      return SlideTransition(index, position, width);
+    }
+  };
+};
+
+const SettingsStack = createStackNavigator(
+  {
+    Main: {
+      screen: AppTabNavigator
+    },
+    SettingsMain: {
+      screen: SettingsPage
+    },
+    SettingWarehouse: {
+      screen: SetWarehousePage
+    },
+    SettingRoute: {
+      screen: SetRoutePage
+    },
+    SettingAbout: {
+      screen: AboutPage
+    }
+  },
+  {
+    headerMode: "none",
+    transitionConfig: NavigationConfig
+  }
+);
+
 const RootStack = createStackNavigator(
   {
     Start: {
       screen: LandingTabNavigator
     },
     Main: {
-      screen: AppTabNavigator
+      screen: SettingsStack
     },
     Modal: {
       screen: SearchPage
@@ -295,6 +385,7 @@ const RootStack = createStackNavigator(
 
 const AppContainer = createAppContainer(AppTabNavigator);
 const ModalContainer = createAppContainer(RootStack);
+const MainContainer = createAppContainer(SettingsStack);
 
 const customTextProps = {
   style: {
