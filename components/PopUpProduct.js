@@ -136,7 +136,7 @@ export default class PopUpProduct extends Component {
     }
     return(
       <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={this.handlePress} icon={btnIcon} img="" text={btnText}></PrimaryButton>
+        <PrimaryButton onPress={this.handlePress} color="#0058a3" icon={btnIcon} img="" text={btnText}></PrimaryButton>
       </View>
     );
   }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TouchableHighlight, Text, StyleSheet, View } from "react-native";
 import { globalStyles } from "../utilities.js";
 import Geolocation from "@react-native-community/geolocation";
-import { NearestCity } from "../Locations.js";
+import { NearestCity } from "../assets/stores";
 
 export default class WarehouseLocationPage extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class WarehouseLocationPage extends Component {
       lastPosition: "unknown",
       latitude: 0,
       longitude: 0,
-      closestWarehouse: ""
+      closestWarehouse: null
     };
 
     this.handlePress = this.handlePress.bind(this);
@@ -42,6 +42,10 @@ export default class WarehouseLocationPage extends Component {
   }
 
   handlePress() {
+    const { updateWarehouse } = this.props.screenProps;
+    const closestWarehouse = this.state.closestWarehouse;
+    console.log('closest warehouse in location page: ', this.state.closestWarehouse);
+    updateWarehouse(closestWarehouse);
     this.props.navigation.navigate("Main");
   }
 
@@ -53,7 +57,7 @@ export default class WarehouseLocationPage extends Component {
             Your closest warehouse is in
           </Text>
           <Text style={[styles.text2, globalStyles.bold]}>
-            {this.state.closestWarehouse}
+            {(this.state.closestWarehouse) ? this.state.closestWarehouse.name : ""}
           </Text>
 
           <TouchableHighlight
