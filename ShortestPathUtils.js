@@ -8,6 +8,7 @@ export function sortByDistance(packages) {
     The actual TSP solving is implemented as DP with bitmask. For a 2^n * n^2 runtime instead of n! 
     Should be fast enough for 15-20 packages. 
 */
+    let d = new Date();
     let modifiedPackageList = JSON.parse(JSON.stringify(packages));
     console.log("Modified Package List : ", JSON.stringify(modifiedPackageList, null , 4));
     const gridString = "O(4) X(28) O(4) X(20) X(22)\nO(4) 1(1-28) O(4) 1(29-48) X(22)\nO(4) 2(23-1) O(20) 3(1-9) X(22)\nO(4) X(23) O(20) X(31)\nO(4) X(23) O(20) X(31)\nO(4) 4(23-1) O(20) 5(1-31)\nO(4) 6(23-1) O(20) 7(1-25) O(3) 7(29-31)\nO(4) X(23) O(20) X(25) O(3) X(3)\nO(4) X(23) O(20) X(25) O(3) X(3)\nO(4) 8(23-1) O(20) 9(1-25) O(3) 9(29-31)\nO(4) 10(23-1) O(20) 11(1-25) O(3) 11(29-31)\nO(4) X(23) O(20) X(25) O(3) X(3)\nO(4) X(23) O(20) X(25) O(3) X(3)\nO(4) 12(23-1) O(20) 13(1-25) O(3) 13(29-31)\nO(4) 14(23-1) O(20) 15(1-25) O(3) 15(29-31)\nO(4) X(23) O(20) X(25) O(3) X(3)\nO(4) X(23) O(20) X(25) O(3) X(3)\nO(4) 16(23-1) O(20) 17(1-25) O(3) 17(29-31)\nO(4) 18(23-1) O(20) 19(1-25) O(3) 19(29-31)\nO(4) X(23) O(20) X(25) O(3) X(3)\nO(4) X(23) O(20) X(25) O(3) X(3)\nO(4) 20(23-1) O(20) 21(1-25) O(3) 21(29-31)\nO(4) 22(23-1) O(10) 23(1-35) O(3) 23(39-41)\nO(4) X(23) O(10) X(35) O(3) X(3)\nO(4) X(23) O(10) X(35) O(3) X(3)\nO(4) 24(23-1) O(10) 25(1-35) O(3) 25(39-41)\nO(4) 26(23-1) O(10) 27(1-35) O(3) 27(39-41)\nO(4) X(23) O(10) X(35) O(3) X(3)\nO(4) X(23) O(10) X(35) O(3) X(3)\nO(4) 28(23-1) O(10) 29(1-35) O(3) 29(39-41)\nO(4) 30(23-1) O(10) 31(1-35) O(3) 31(39-41)\nO(4) X(23) O(10) X(35) O(3) X(3)\nO(4) X(23) O(10) X(35) O(3) X(3)\nO(4) 32(23-1) O(10) 33(1-35) O(3) 33(39-41)\nO(4) 34(20-1) O(22) 35(1-32)\nO(4) X(20) O(22) X(32)\nO(4) X(20) O(22) X(32)\nO(4) 36(20-1) O(22) 37(1-32)\nO(52) 39(1-26)\nO(52) X(26)\nO(52) X(26)\nO(52) 41(1-26)\nO(72) 43(1-6)"
@@ -15,6 +16,7 @@ export function sortByDistance(packages) {
     grid = JSON.parse(JSON.stringify(grid));
     resetGrid(grid); //add needed stuff to grid. parent, visited, distance.
     addInfoToPackageList(modifiedPackageList, grid);
+    console.log("Modified Package List : ", JSON.stringify(modifiedPackageList, null , 4));
     setupWaypoints(grid);
     let distanceGrid = [];
     distanceGrid.push(getStartDistances(modifiedPackageList, grid)) //Add euclidean distance from start to all packages. As well as set distance to end high.
@@ -32,6 +34,8 @@ export function sortByDistance(packages) {
     for (let i = 1; i < path.length - 1; i++) {
         sorted.push(packages[path[i] - 1]);
     }
+    let s = new Date();
+    console.log("Time for sorting: ", s-d);
     return sorted;
 }
 /**
@@ -109,8 +113,13 @@ function getDistances(currentPackage, modifiedPackageList, grid, distanceGrid) {
         if (currentPackage.index === i) {
             distances.push(0);
         } else {
-            let next = grid[modifiedPackageList[i].row].data[modifiedPackageList[i].col];
-            distances.push(nodeToNodeDistance(current, next, grid));
+            if(!isUndefined(distanceGrid, i+1, currentPackage.index+1)){
+                distances.push(distanceGrid[i+1][currentPackage.index+1]);
+            }else{
+                let next = grid[modifiedPackageList[i].row].data[modifiedPackageList[i].col];
+                distances.push(nodeToNodeDistance(current, next, grid));
+            }
+            
         }
     }
     distances.push(nodeToNodeDistance(current, { row: 41, col: 39 }, grid)) //Arbitrary endpoint bottom center of map. 
