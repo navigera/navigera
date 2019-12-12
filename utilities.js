@@ -116,13 +116,20 @@ export function sortPackagesByDistance(packages){
   return sortByDistance(packages)
 }
 
+export function sortPackagesClassic(packages){
+  if(packages.length < 2 ) return packages;
+  var sortedPackages = deepCopy(packages);
+  sortedPackages.sort(sortByAisle);
+  return sortedPackages;
+}
+
 function deepCopy(array){
   return JSON.parse(JSON.stringify(array));
 }
 
 function surfaceArea(package1) {
   //ignore height, since it doesn't really matter if packages are stacked? 
-  return package1.width * package1.length
+  return package1.data.measurements.package.width * package1.data.measurements.package.length
 }
 
 /**
@@ -130,9 +137,15 @@ function surfaceArea(package1) {
  */
  
  function sortBySurfaceArea(package1, package2){ 
+   console.log("SORTING: ", JSON.stringify(package1,null,2), "\n", JSON.stringify(package2,null,2));
   return surfaceArea(package2)- surfaceArea(package1);
  }
  
+ function sortByAisle(package1, package2){
+   if(package1.data.availability.aisle !== package2.data.availability.aisle) return package1.data.availability.aisle - package2.data.availability.aisle
+   return package1.data.availability.shelf - package2.data.availability.shelf
+ }
+ 
  function sortByWeight(package1, package2){
-	 return package2.weight - package1.weight;
+	 return package2.data.measurements.package.weight - package1.data.measurements.package.weight;
  }

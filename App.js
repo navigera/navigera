@@ -16,6 +16,7 @@ import LandingPage from "./components/LandingPage";
 import WarehouseLocationPage from "./components/WarehouseLocationPage";
 import { GetProduct } from "./utilities";
 import AboutPage from "./components/AboutPage";
+import {sortPackagesBySize, sortPackagesByWeight, sortPackagesByDistance, sortPackagesClassic} from "./utilities"
 
 export default class App extends React.Component {
   constructor(props) {
@@ -213,7 +214,17 @@ export default class App extends React.Component {
     });
 
     //Sortera packageList
-
+    switch(this.state.chosenRoute){
+      case "default": 
+        console.log("sorting by size")
+        packageList  = sortPackagesClassic(packageList);
+        break;
+      case "quickest":
+        console.log("sorting quickest");
+        packageList = sortPackagesByDistance(packageList);
+        break;
+    }
+      
     this.setState({
       packages: packageList
     });
