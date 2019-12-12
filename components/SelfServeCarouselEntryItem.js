@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet, Image, TouchableHighlight } from "react-native";
 import DescriptionBox from "./DescriptionBox";
-import { GetProduct, formatSingleUnit } from "../utilities";
+import { GetProduct, formatSingleUnit, globalStyles } from "../utilities";
 import PrimaryButton from "./PrimaryButton";
 import { Icon } from "@up-shared/components";
 
@@ -23,40 +23,42 @@ export default class SelfServeCarouselEntryItem extends Component {
     if (item.data) {
       return (
         <View style={styles.container}>
-          <View style={styles.leftGrid}>
-            {/*<Image
-            style={styles.image}
-            source={{ uri: this.state.data.product_info.image_url }}
-          /> */}
-
-            <DescriptionBox product={item.data}></DescriptionBox>
-
-            <View style={styles.productIDBox}>
-              <Text style={styles.productIDText}>{item.id}</Text>
-            </View>
-
-            <View style={styles.productNumbers}>
-              <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>
-                  {formatSingleUnit(item.data.availability.aisle)}
+            <View style={styles.leftGrid}>
+            <View style={styles.nameContainer}>
+                <Text style={styles.amountText}>x {item.amount}</Text>
+                <Text style={[styles.h1,globalStyles.bold]}>
+                  {item.data.product_info.family.toUpperCase()}
                 </Text>
               </View>
-              <Text style={styles.h3}>Aisle</Text>
-
-              <View style={styles.shelfBox}>
-                <Text style={styles.productIDText}>
-                  {formatSingleUnit(item.data.availability.shelf)}
-                </Text>
+              <View style={styles.productIDBox}>
+                <Text style={styles.productIDText}>{item.id}</Text>
               </View>
-              <Text style={styles.h3}>Shelf</Text>
-            </View>
-          </View>
 
-          <View style={styles.rightGrid}>
-            <View style={styles.amount}>
-              <Text style={styles.amountText}>x {item.amount}</Text>
+              <View style={styles.productNumbers}>
+                <View style={styles.shelfBox}>
+                  <Text style={styles.productIDText}>
+                    {formatSingleUnit(item.data.availability.aisle)}
+                  </Text>
+                </View>
+                <Text style={styles.h3}>Aisle</Text>
+
+                <View style={styles.shelfBox}>
+                  <Text style={styles.productIDText}>
+                    {formatSingleUnit(item.data.availability.shelf)}
+                  </Text>
+                </View>
+                <Text style={styles.h3}>Shelf</Text>
+              </View>
+
+              
             </View>
-            <View style={item.isPicked ? styles.containerEnabled : styles.btn}>
+
+            <View style={styles.rightGrid}>
+            <DescriptionBox
+                carousel={true}
+                product={item.data}
+              ></DescriptionBox>
+              <View style={item.isPicked ? styles.containerEnabled : styles.btn}>
               <PrimaryButton
                 color="#0a8a00"
                 icon="check"
@@ -65,23 +67,23 @@ export default class SelfServeCarouselEntryItem extends Component {
                 onPress={this.handlePress}
               ></PrimaryButton>
             </View>
+            </View>
+            <View
+              style={
+                !item.isPicked
+                  ? styles.containerEnabled
+                  : styles.containerDisabled
+              }
+            >
+              <View style={styles.overlay} />
+              <Icon
+                style={styles.checkIcon}
+                name="check"
+                size={60}
+                color="white"
+              ></Icon>
+            </View>
           </View>
-          <View
-            style={
-              !item.isPicked
-                ? styles.containerEnabled
-                : styles.containerDisabled
-            }
-          >
-            <View style={styles.overlay} />
-            <Icon
-              style={styles.checkIcon}
-              name="check"
-              size={60}
-              color="white"
-            ></Icon>
-          </View>
-        </View>
       );
     } else {
       return (
@@ -97,7 +99,7 @@ export default class SelfServeCarouselEntryItem extends Component {
 const styles = StyleSheet.create({
   btn: {
     width: 40,
-    marginTop: "55%",
+    marginTop: 15,
     alignSelf: "flex-end",
     justifyContent: "space-around"
   },
