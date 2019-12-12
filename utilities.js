@@ -1,3 +1,5 @@
+import {sortByDistance} from "./ShortestPathUtils"
+
 export async function GetProduct(id) {
   if (id.length == 10) {
     let response = await (
@@ -90,3 +92,60 @@ export function getMarkerPosition(aisleNo, shelfNo) {
 
   return position;
 }
+
+
+export function sortPackagesBySize(packages) {
+  //package like :  [{"amount": 1, "id": "002.638.50", "isPicked": false, width: 29, length: 206, height: 13, weight: 36500}]
+  if (packages.length < 2) {
+    return packages;
+  }
+  let sortedPackages = deepCopy(packages); //Deep copy of packages
+  sortedPackages.sort(sortBySurfaceArea);
+  return sortedPackages;
+}
+
+export function sortPackagesByWeight(packages){
+	if(packages.length < 2) return packages;
+	
+	var sortedPackages = deepCopy(packages); 
+	sortedPackages.sort(sortByWeight);
+	return sortedPackages
+}
+
+export function sortPackagesByDistance(packages){
+  return sortByDistance(packages)
+}
+
+export function sortPackagesClassic(packages){
+  if(packages.length < 2 ) return packages;
+  var sortedPackages = deepCopy(packages);
+  sortedPackages.sort(sortByAisle);
+  return sortedPackages;
+}
+
+function deepCopy(array){
+  return JSON.parse(JSON.stringify(array));
+}
+
+function surfaceArea(package1) {
+  //ignore height, since it doesn't really matter if packages are stacked? 
+  return package1.data.measurements.package.width * package1.data.measurements.package.length
+}
+
+/**
+ * Sorting utils
+ */
+ 
+ function sortBySurfaceArea(package1, package2){ 
+   console.log("SORTING: ", JSON.stringify(package1,null,2), "\n", JSON.stringify(package2,null,2));
+  return surfaceArea(package2)- surfaceArea(package1);
+ }
+ 
+ function sortByAisle(package1, package2){
+   if(package1.data.availability.aisle !== package2.data.availability.aisle) return package1.data.availability.aisle - package2.data.availability.aisle
+   return package1.data.availability.shelf - package2.data.availability.shelf
+ }
+ 
+ function sortByWeight(package1, package2){
+	 return package2.data.measurements.package.weight - package1.data.measurements.package.weight;
+ }

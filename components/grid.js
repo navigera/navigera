@@ -97,7 +97,7 @@ class Parser{
  
     this.isleNode = {
       type: "isle",
-      walkable: false,
+      walkable: true,
       symbol: "S",
     };
  
