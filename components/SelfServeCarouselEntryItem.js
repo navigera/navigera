@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   amountText: {
     fontSize: 18,
-    width: "20%",
+    width: "25%",
     color: "black",
     textAlign: "left",
   },

@@ -4,6 +4,7 @@ import InputSpinner from './InputSpinner';
 import Popover from 'react-native-popover-view';
 import { Icon } from "@up-shared/components";
 import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./PrimaryButton";
 import ShelfLocationBox from "./ShelfLocationBox";
 import { numberWithSpaces, capitalizeFirst, globalStyles } from '../utilities.js';
 
@@ -16,6 +17,7 @@ export default class PopUpProduct extends Component {
     this.handlePress = this.handlePress.bind(this);
     this.handleSpinnerChange = this.handleSpinnerChange.bind(this);
     this.closePopover = this.closePopover.bind(this);
+    this.getAmountBox= this.getAmountBox.bind(this);
   }
   state = {
     isVisible: false,
@@ -68,12 +70,12 @@ export default class PopUpProduct extends Component {
     });
   }
   getProductIDBox(item) {
+
     return (
       <View style={styles.productIDBox}>
         <Text style={[styles.productIDText, globalStyles.bold]}>{item.product_info.id}</Text>
       </View>);
-  }
-
+    }
   
 
   getProductInformation(item) {
@@ -93,6 +95,27 @@ export default class PopUpProduct extends Component {
         </View>
       );
     }
+  }
+
+  getAmountBox(){
+    if(this.state.addItemPopup){
+    return(
+        <View style={styles.productNumbers}>
+          <Text style={styles.h6}> Amount </Text>
+          <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
+        </View>
+    );
+  }
+  else{
+    return(
+      <View style={styles.productNumbers}>
+        <TouchableHighlight onPress={this.handlePress} >
+          <Text style={{textDecorationLine: "underline"}}>Remove All</Text>
+        </TouchableHighlight>
+        <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
+      </View>
+  );
+  }
   }
 
   getProductInfo(item) {
@@ -119,10 +142,7 @@ export default class PopUpProduct extends Component {
 
         <Text />
 
-        <View style={styles.productNumbers}>
-          <Text style={styles.h6}> Amount </Text>
-          <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
-        </View>
+        {this.getAmountBox()}
       </View>);
   }
 
@@ -131,12 +151,12 @@ export default class PopUpProduct extends Component {
     let btnIcon = "buy-online-add";   
 
     if(!this.state.addItemPopup){
-      btnText = "Remove all";
+      btnText = "Confirm";
       btnIcon = ""; 
     }
     return(
       <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={this.handlePress} color="#0058a3" icon={btnIcon} img="" text={btnText}></PrimaryButton>
+        <PrimaryButton onPress={this.state.addItemPopup ? this.handlePress : this.closePopover} color="#0058a3" icon={btnIcon} img="" text={btnText}></PrimaryButton>
       </View>
     );
   }
@@ -220,6 +240,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
+  productAmount:{
+
+  },
   productIDBox: {
     justifyContent: "center",
     alignItems: "center",
@@ -230,5 +253,7 @@ const styles = StyleSheet.create({
   productIDText: {
     textAlign: "center",
     color: "white",
-  }
+  },
+  
+
 });
