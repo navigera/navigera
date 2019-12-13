@@ -16,6 +16,7 @@ export default class PopUpProduct extends Component {
     this.handlePress = this.handlePress.bind(this);
     this.handleSpinnerChange = this.handleSpinnerChange.bind(this);
     this.closePopover = this.closePopover.bind(this);
+    this.getAmountBox= this.getAmountBox.bind(this);
   }
   state = {
     isVisible: false,
@@ -48,12 +49,12 @@ export default class PopUpProduct extends Component {
   closePopover() {
     const { modalCloseCallback } = this.props;
     this.setState({ isVisible: false });
-
+    
     if(!this.state.addItemPopup){
       if(this.state.amount > this.state.startAmount){
         this.props.addItemCallback(this.state.item, this.state.amount - this.state.startAmount);
       } else if(this.state.amount < this.state.startAmount){
-        this.props.removeItemCallback(this.state.item, this.state.startAmount - this.state.amount);
+        this.props.removeItemCallback(this.state.item.product_info.id, this.state.startAmount - this.state.amount);
       }
     }
 
@@ -76,13 +77,13 @@ export default class PopUpProduct extends Component {
     });
   }
   getProductIDBox(item) {
+
     return (
       <View style={styles.productIDBox}>
         <Text style={[styles.productIDText, globalStyles.bold]}>{item.product_info.id}</Text>
       </View>);
+
   }
-
-
 
   getProductInformation(item) {
     if (!item.combo_product) {
@@ -101,6 +102,27 @@ export default class PopUpProduct extends Component {
         </View>
       );
     }
+  }
+
+  getAmountBox(){
+    if(this.state.addItemPopup){
+    return(
+        <View style={styles.productNumbers}>
+          <Text style={styles.h6}> Amount </Text>
+          <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
+        </View>
+    );
+  }
+  else{
+    return(
+      <View style={styles.productNumbers}>
+        <TouchableHighlight  underlayColor={"transparent"} onPress={this.handlePress} >
+          <Text style={{textDecorationLine: "underline"}}>Remove All</Text>
+        </TouchableHighlight>
+        <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
+      </View>
+  );
+  }
   }
 
   getProductInfo(item) {
@@ -127,10 +149,7 @@ export default class PopUpProduct extends Component {
 
         <Text />
 
-        <View style={styles.productNumbers}>
-          <Text style={styles.h6}> Amount </Text>
-          <InputSpinner handleSpinnerChange={this.handleSpinnerChange} amount={this.state.amount}></InputSpinner>
-        </View>
+        {this.getAmountBox()}
       </View>);
   }
 
@@ -139,12 +158,14 @@ export default class PopUpProduct extends Component {
     let btnIcon = "buy-online-add";
 
     if(!this.state.addItemPopup){
-      btnText = "Remove all";
-      btnIcon = "";
+      console.log("Additempopup",this.state.addItemPopup);
+      btnText = "Confirm";
+      btnIcon = ""; 
+
     }
     return(
       <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={this.handlePress} color="#0058a3" icon={btnIcon} img="" text={btnText}></PrimaryButton>
+        <PrimaryButton onPress={this.state.addItemPopup ? this.handlePress :this.closePopover} color="#0058a3" icon={btnIcon} img="" text={btnText}></PrimaryButton>
       </View>
     );
   }
@@ -228,6 +249,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
+  productAmount:{
+
+  },
   productIDBox: {
     justifyContent: "center",
     alignItems: "center",
@@ -238,5 +262,7 @@ const styles = StyleSheet.create({
   productIDText: {
     textAlign: "center",
     color: "white",
-  }
+  },
+  
+
 });
