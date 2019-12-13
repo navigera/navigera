@@ -53,7 +53,7 @@ class CameraScreen extends React.Component {
     this.props.navigation.navigate("Modal", {
       item: this.state.item,
       modalClosedCallback: this.modalClosed,
-      btnCallback: this.props.screenProps.addItemCallback
+      addItemCallback: this.props.screenProps.addItemCallback
     });
   }
 
@@ -147,7 +147,7 @@ class CameraScreen extends React.Component {
       <View style={styles.container}>
         <PopUpProduct
           style={styles.modal}
-          btnCallback={addItemCallback}
+          addItemCallback={addItemCallback}
           modalCloseCallback={this.modalClosed}
           ref={modal => {
             this.modal = modal;
