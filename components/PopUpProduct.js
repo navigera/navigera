@@ -51,12 +51,9 @@ export default class PopUpProduct extends Component {
     this.setState({ isVisible: false });
     
     if(!this.state.addItemPopup){
-      console.log("HALLLÅÅÅÅ");
       if(this.state.amount > this.state.startAmount){
-        console.log("ADD ITEM");
         this.props.addItemCallback(this.state.item, this.state.amount - this.state.startAmount);
       } else if(this.state.amount < this.state.startAmount){
-        console.log("REMOVE ITEM");
         this.props.removeItemCallback(this.state.item.product_info.id, this.state.startAmount - this.state.amount);
       }
     }
@@ -65,7 +62,6 @@ export default class PopUpProduct extends Component {
   }
 
   handlePress() {
-    console.log("Tjena");
     if(this.state.addItemPopup){
       this.props.addItemCallback(this.state.item, this.state.amount);
     }
