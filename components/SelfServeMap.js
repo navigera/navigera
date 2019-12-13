@@ -23,28 +23,30 @@ export default class SelfServeMap extends Component {
 
     var mapping = [];
 
-    packages.forEach(pkg => {
-      if (pkg.data) {
-        const position = getMarkerPosition(
-          pkg.data.availability.aisle,
-          pkg.data.availability.shelf
-        );
-        console.log("POSITION: ", position);
-
-        var prefill = pkg.isPicked ? "green" : "yellow";
-
-        mapping.push({
-          id: pkg.id,
-          name: pkg.data.product_info.family,
-          shape: "circle",
-          x1: position.x,
-          y1: position.y,
-          radius: 10,
-          prefill: prefill,
-          fill: "red"
-        });
-      }
-    });
+    if(packages){
+      packages.forEach(pkg => {
+        if (pkg.data) {
+          const position = getMarkerPosition(
+            pkg.data.availability.aisle,
+            pkg.data.availability.shelf
+          );
+          console.log("POSITION: ", position);
+  
+          var prefill = pkg.isPicked ? "green" : "yellow";
+  
+          mapping.push({
+            id: pkg.id,
+            name: pkg.data.product_info.family,
+            shape: "circle",
+            x1: position.x,
+            y1: position.y,
+            radius: 10,
+            prefill: prefill,
+            fill: "red"
+          });
+        }
+      });
+    }
 
     return mapping;
   }

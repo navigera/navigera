@@ -23,8 +23,8 @@ export default class SelfServePage extends Component {
 
     var hasData = true;
 
-    for(var i = 0; i < packages.length; i++){
-      if(!packages[i].data){
+    for (var i = 0; i < packages.length; i++) {
+      if (!packages[i].data) {
         hasData = false;
         break;
       }
@@ -35,20 +35,23 @@ export default class SelfServePage extends Component {
     if (hasData) {
       //Sortera packageList
       switch (chosenRoute) {
-        case "default":
-          console.log("sorting by size");
+        case "classic":
           packageList = sortPackagesClassic(packages);
           break;
         case "quickest":
-          console.log("sorting quickest");
           packageList = sortPackagesByDistance(packages);
+          break;
+        case "volume":
+          packageList = sortPackagesBySize(packages);
+          break;
+        case "weight":
+          packageList = sortPackagesByWeight(packages);
           break;
       }
     } else {
       packageList = packages;
     }
 
-    console.log("returning sorted packageList: " + packageList);
     return packageList;
   }
 
@@ -58,7 +61,7 @@ export default class SelfServePage extends Component {
     //const packagePositions = getAllCorners();
     console.log("SelfServePage packages: ", packages);
 
-    const packages = this.sortPackages()
+    const packages = this.sortPackages();
 
     return (
       <View style={styles.container}>
