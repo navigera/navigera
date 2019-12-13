@@ -9,7 +9,6 @@ import {
 import { globalStyles } from "../utilities";
 import SettingsHeader from "./SettingsHeader.js";
 import SettingsOption from "./SettingsOption.js";
-import SettingsOptionExtended from "./SettingsOptionExtended.js";
 
 export default class SettingsPage extends Component {
   constructor(props) {
@@ -134,8 +133,4 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 18
   },
-  notImplementedText: {
-    color: "grey",
-    fontSize: 18
-  }
-});
+})

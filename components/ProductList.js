@@ -30,6 +30,7 @@ export default class ProductList extends Component {
   handleHold(product) {
     this.setState({ modalVisible: true });
     this.modal.showPopover(product, false);
+    
   }
 
   modalClosed() {

@@ -5,6 +5,7 @@ import { GetProduct, formatSingleUnit, globalStyles } from "../utilities";
 import PrimaryButton from "./PrimaryButton";
 import { Icon } from "@up-shared/components";
 
+
 export default class SelfServeCarouselEntryItem extends Component {
   constructor() {
     super();
@@ -23,13 +24,12 @@ export default class SelfServeCarouselEntryItem extends Component {
     if (item.data) {
       return (
         <View style={styles.container}>
+
             <View style={styles.leftGrid}>
-            <View style={styles.nameContainer}>
-                <Text style={styles.amountText}>x {item.amount}</Text>
-                <Text style={[styles.h1,globalStyles.bold]}>
-                  {item.data.product_info.family.toUpperCase()}
-                </Text>
-              </View>
+              <Text style={styles.amountText}>x {item.amount}</Text>
+              <Text style={[styles.h1,globalStyles.bold]}>
+                {item.data.product_info.family.toUpperCase()}
+              </Text>
               <View style={styles.productIDBox}>
                 <Text style={styles.productIDText}>{item.id}</Text>
               </View>
@@ -50,6 +50,7 @@ export default class SelfServeCarouselEntryItem extends Component {
                 <Text style={styles.h3}>Shelf</Text>
               </View>
 
+
               
             </View>
 
@@ -60,6 +61,7 @@ export default class SelfServeCarouselEntryItem extends Component {
               ></DescriptionBox>
               <View style={item.isPicked ? styles.containerEnabled : styles.btn}>
               <PrimaryButton
+
                 color="#0a8a00"
                 icon="check"
                 img=""
@@ -97,7 +99,11 @@ export default class SelfServeCarouselEntryItem extends Component {
 }
 
 const styles = StyleSheet.create({
+  h1: {
+    fontSize: 18,
+  },
   btn: {
+
     width: 40,
     marginTop: 15,
     alignSelf: "flex-end",
@@ -143,14 +149,13 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   leftGrid: {
-    width: "50%"
-  },
-  rightGrid: {
-    width: "50%",
     alignContent: "center"
   },
+  rightGrid: {
+    flexDirection: "column",
+    width: "50%",
+  },
   descriptionBox: {
-    flexDirection: "column"
   },
   image: {
     width: 70,
@@ -163,11 +168,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   amountText: {
-    fontSize: 16,
-    width: "35%",
+    fontSize: 18,
+    width: "20%",
     color: "black",
-    textAlign: "left"
+    textAlign: "left",
   },
+  
   productNumbers: {
     flexWrap: "wrap",
     flexDirection: "row",
