@@ -73,7 +73,7 @@ export default class SearchPage extends Component {
       <View style={styles.focusedContainer}>
         <PopUpProduct
           style={styles.modal}
-          btnCallback={addItemCallback}
+          addItemCallback={addItemCallback}
           modalCloseCallback={this.modalClosed}
           ref={modal => {
             this.modal = modal;
