@@ -3,6 +3,7 @@ import { TouchableHighlight, Text, StyleSheet, View } from "react-native";
 import { globalStyles } from "../utilities.js";
 import Geolocation from "@react-native-community/geolocation";
 import { NearestCity } from "../assets/stores";
+import { Icon } from "@up-shared/components";
 
 export default class WarehouseLocationPage extends Component {
   constructor(props) {
@@ -36,66 +37,100 @@ export default class WarehouseLocationPage extends Component {
         });
       },
       error => console.log("Error", JSON.stringify(error)),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      { enableHighAccuracy: true, timeout: 20000 },
+      { enableHighAccuracy: true, timeout: 20000 }
     );
   }
 
-  handlePress() {
+  handlePress(changeLocation) {
     const { updateWarehouse } = this.props.screenProps;
     const closestWarehouse = this.state.closestWarehouse;
-    console.log('closest warehouse in location page: ', this.state.closestWarehouse);
+    console.log(
+      "closest warehouse in location page: ",
+      this.state.closestWarehouse
+    );
     updateWarehouse(closestWarehouse);
-    this.props.navigation.navigate("Main");
+    this.props.navigation.navigate(changeLocation ? "Main": "SettingWarehouse");
   }
+
+
+ 
 
   getLandingView() {
     console.log(this.state.onStartUp);
-      return (
-        <View style={styles.container}>
-          <Text style={[styles.text1, globalStyles.bold]}>
+    return (
+      <View style={styles.container}>
+        <View style={styles.centerContainer}>
+          <Text style={[styles.text, globalStyles.bold]}>NAVIGERA</Text>
+          <Text style={[styles.text1, globalStyles.regular]}>
             Your closest warehouse is in
           </Text>
           <Text style={[styles.text2, globalStyles.bold]}>
-            {(this.state.closestWarehouse) ? this.state.closestWarehouse.name : ""}
+            {this.state.closestWarehouse ? this.state.closestWarehouse.name : ""}
           </Text>
 
           <TouchableHighlight
+            style={{ alignSelf: "center" }}
             underlayColor={"#116fbf"}
             onPress={this.handlePress}
           >
-            <View style={styles.btn}>
-              <Text style={[styles.textBtn, globalStyles.bold]}>
-                Use this location
-              </Text>
-            </View>
+            <Icon name="arrow-right" size={50} color="white" />
           </TouchableHighlight>
         </View>
-      );
+        <View styles={styles.bottomContainer}>
+          <TouchableHighlight
+            style={{ alignSelf: "center" }}
+            underlayColor={"#116fbf"}
+            onPress={()=>this.handlePress(false)}
+          >
+            <Text style={[styles.text3, globalStyles.bold]}>
+              Not what you expected? Change location here
+            </Text>
+          </TouchableHighlight>
+        </View>
+      </View>
+    );
   }
   render() {
-    return <View style={styles.container}>
-    {this.getLandingView()}</View>;
+    return <View style={styles.container}>{this.getLandingView()}</View>;
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0058a3",
-    alignContent: "center",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "#0058a3"
+  },
+  centerContainer: {
+    alignSelf: "center",
+    justifyContent: "center",
+    flex: 2
+  },
+
+  bottomContainer: {
+    flex: 3,
+    backgroundColor: "pink"
+  },
+  text: {
+    color: "#ffdb00",
+    textAlign: "center",
+    fontSize: 48
   },
   text1: {
     color: "white",
     textAlign: "center",
-    fontSize: 24
+    fontSize: 18
   },
   text2: {
     color: "white",
     textAlign: "center",
-    fontSize: 48
+    fontSize: 32
+  },
+  text3: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 16,
+    textDecorationLine: "underline"
   },
   textBtn: {
     color: "white",
@@ -103,13 +138,9 @@ const styles = StyleSheet.create({
     fontSize: 24
   },
   btn: {
-    flexDirection: "row",
-    alignContent: "center",
-    alignItems: "center",
+    alignSelf: "center",
     borderColor: "white",
     borderWidth: 1,
-
-    paddingLeft: 20,
-    paddingRight: 20
+    width: 250
   }
 });
