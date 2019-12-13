@@ -20,49 +20,58 @@ export default class PopUpProduct extends Component {
   state = {
     isVisible: false,
     amount: 1,
+    startAmount: 1,
     item: null,
     addItemPopup:false
   }
 
   showPopover(item, addItemPopup) {
     if(addItemPopup){
-    this.setState({ 
-      isVisible: true, 
-      amount: 1, 
-      item: item,
-      addItemPopup: true });
-    }
-    else{
-      this.setState({ isVisible: true, 
+      this.setState({
+        isVisible: true,
+        amount: 1,
         item: item,
-        amount: item.amount,
-        addItemPopup: false });
+        addItemPopup: true });
+      }
+      else{
+        this.setState({
+          isVisible: true,
+          item: item,
+          amount: item.amount,
+          startAmount: item.amount,
+          addItemPopup: false
+        }
+      );
     }
   }
 
   closePopover() {
     const { modalCloseCallback } = this.props;
     this.setState({ isVisible: false });
+
+    if(!this.state.addItemPopup){
+      if(this.state.amount > this.state.startAmount){
+        this.props.addItemCallback(this.state.item, this.state.amount - this.state.startAmount);
+      } else if(this.state.amount < this.state.startAmount){
+        this.props.removeItemCallback(this.state.item, this.state.startAmount - this.state.amount);
+      }
+    }
+
     modalCloseCallback();
   }
-  
+
   handlePress() {
-      const { btnCallback } = this.props;
-      
-      if(this.state.addItemPopup){
-        btnCallback(this.state.item, this.state.amount);
-      }
-      else{
-        btnCallback(this.state.item.product_info.id, this.state.amount);
-      }
+    console.log(this.props)
+    if(this.state.addItemPopup){
+      this.props.addItemCallback(this.state.item, this.state.amount);
+    }
+    else{
+      this.props.removeItemCallback(this.state.item.product_info.id, this.state.amount);
+    }
     this.closePopover();
   }
-  
+
   handleSpinnerChange(value) {
-    if(!this.state.addItemPopup){
-      const product = this.state.item;
-      product.amount = value;
-    }
     this.setState({
       amount: value,
     });
@@ -74,7 +83,7 @@ export default class PopUpProduct extends Component {
       </View>);
   }
 
-  
+
 
   getProductInformation(item) {
     if (!item.combo_product) {
@@ -128,11 +137,11 @@ export default class PopUpProduct extends Component {
 
   getButton(){
     let btnText = "Add to shopping list";
-    let btnIcon = "buy-online-add";   
+    let btnIcon = "buy-online-add";
 
     if(!this.state.addItemPopup){
       btnText = "Remove all";
-      btnIcon = ""; 
+      btnIcon = "";
     }
     return(
       <View style={styles.buttonContainer}>
@@ -143,7 +152,7 @@ export default class PopUpProduct extends Component {
 
   render() {
     const { item } = this.state;
-    
+
 
     if(item){
       return (
@@ -151,11 +160,11 @@ export default class PopUpProduct extends Component {
           isVisible={this.state.isVisible}
           fromView={this.touchable}
           onRequestClose={() => this.closePopover()}>
-  
+
           <View style={styles.container}>
-  
+
             {this.getProductInfo(item)}
-  
+
             {this.getButton()}
           </View>
         </Popover>

@@ -41,7 +41,8 @@ export default class ProductList extends Component {
       <PopUpProduct
         style={styles.modal}
         modalCloseCallback={this.modalClosed}
-        btnCallback={this.props.screenProps.removeItemCallback}
+        removeItemCallback={this.props.screenProps.removeItemCallback}
+        addItemCallback={this.props.screenProps.addItemCallback}
         ref={modal => {
           this.modal = modal;
         }}
@@ -72,7 +73,7 @@ export default class ProductList extends Component {
               <ProductListItem
                 product={p}
                 longPressCallback={this.handleHold}
-                btnCallback={this.props.screenProps.removeItemCallback}
+                removeItemCallback={this.props.screenProps.removeItemCallback}
                 key={p.product_info.id}
               />
             );
