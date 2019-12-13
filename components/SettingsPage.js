@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, BackHandler, TouchableHighlight } from 'react-n
 import { globalStyles } from "../utilities";
 import SettingsHeader from "./SettingsHeader.js";
 import SettingsOption from "./SettingsOption.js";
-import SettingsOptionExtended from "./SettingsOptionExtended.js";
 
 
 export default class SettingsPage extends Component {
@@ -46,23 +45,23 @@ export default class SettingsPage extends Component {
                 </TouchableHighlight>
 
                 <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this.props.navigation.navigate("SettingRoute")}>
-                    <SettingsOptionExtended title={"Order route by"} subTitle={(chosenRoute === 'default') ? "Classic" : "Quickest"}/>
+                    <SettingsOption title={"Order route by"} subTitle={(chosenRoute === 'default') ? "Classic" : "Quickest"} disabled={false} extended={true}/>
                 </TouchableHighlight>
 
                 <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this.props.navigation.navigate("SettingWarehouse", {warehouse: this.props.screenProps.chosenWarehouse, update: this.props.screenProps.updateWarehouse})}>
-                    <SettingsOptionExtended title={"Warehouse location"} subTitle={chosenWarehouse ? chosenWarehouse.name : "None"}/>
+                    <SettingsOption title={"Warehouse location"} subTitle={chosenWarehouse ? chosenWarehouse.name : "None"} disabled={false} extended={true}/>
                 </TouchableHighlight>
 
                 <TouchableHighlight underlayColor="#f5f5f5">
-                    <SettingsOption title={"Help"}/>
+                    <SettingsOption title={"Help"} disabled={false} extended={false}/>
                 </TouchableHighlight>
 
                 <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this.props.navigation.navigate("SettingAbout")}>
-                    <SettingsOption title={"About NAVIGERA"}/>
+                    <SettingsOption title={"About NAVIGERA"} disabled={false} extended={false}/>
                 </TouchableHighlight>
 
                 <TouchableHighlight>
-                    <SettingsOption title={"Report a problem"}/>
+                    <SettingsOption title={"Report a problem"} disabled={true} extended={false}/>
                 </TouchableHighlight>
             </View>
         </View>
@@ -89,10 +88,6 @@ const styles = StyleSheet.create({
   },
   eraseText: {
     color: 'red',
-    fontSize: 18,
-  },
-  notImplementedText: {
-    color: 'grey',
     fontSize: 18,
   },
 })
