@@ -23,8 +23,9 @@ export default class SelfServeCarouselEntryItem extends Component {
 
     if (item.data) {
       return (
+        
+        <TouchableHighlight underlayColor={"transparent"}  onLongPress={this.handlePress}>
         <View style={styles.container}>
-
             <View style={styles.leftGrid}>
               <Text style={styles.amountText}>x {item.amount}</Text>
               <Text style={[styles.h1,globalStyles.bold]}>
@@ -86,6 +87,7 @@ export default class SelfServeCarouselEntryItem extends Component {
               ></Icon>
             </View>
           </View>
+          </TouchableHighlight>
       );
     } else {
       return (
