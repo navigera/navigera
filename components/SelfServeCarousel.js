@@ -10,24 +10,33 @@ export default class SelfServeCarousel extends Component {
   constructor() {
     super();
     this.state = {
-      activeSlide: 0
+      activeSlide: 0,
+      firstSlide: false
     };
+
+    this.setActiveslide=this.setActiveslide.bind(this);
   }
 
   _renderItem({ item, index }) {
+    
     const { setPickedCallback } = this.props;
     if (item) {
       return (
         <SelfServeCarouselEntryItem
-          setPickedCallback={setPickedCallback}
-          item={item}
+        setPickedCallback={setPickedCallback}
+        item={item}
         />
-      );
+        );
     } else {
       return <></>;
     }
   }
 
+  setActiveslide(index, entry){
+    const {setActiveCallback} = this.props;
+    this.setState({ activeSlide: index })
+    setActiveCallback(entry.product_info.id);
+  }
   render() {
     const { entries } = this.props;
 
@@ -48,7 +57,7 @@ export default class SelfServeCarousel extends Component {
             itemWidth={itemWidth}
             layout={"default"}
             style={styles.carouselStyle}
-            onSnapToItem={index => this.setState({ activeSlide: index })}
+            onSnapToItem={index => this.setActiveslide(index,entries[index].data)}
           />
           
         </View>

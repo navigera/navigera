@@ -4,6 +4,7 @@ import DescriptionBox from "./DescriptionBox";
 import { GetProduct, formatSingleUnit } from "../utilities";
 import PrimaryButton from "./PrimaryButton";
 import { Icon } from "@up-shared/components";
+import { globalStyles } from '../utilities';
 
 export default class SelfServeCarouselEntryItem extends Component {
   constructor() {
@@ -24,12 +25,12 @@ export default class SelfServeCarouselEntryItem extends Component {
       return (
         <View style={styles.container}>
           <View style={styles.leftGrid}>
-            {/*<Image
-            style={styles.image}
-            source={{ uri: this.state.data.product_info.image_url }}
-          /> */}
-
-            <DescriptionBox product={item.data}></DescriptionBox>
+            <View style={styles.nameContainer}>
+                  <Text style={styles.amountText}>x {item.amount}</Text>
+                  <Text style={[styles.h1,globalStyles.bold]}>
+                    {item.data.product_info.family.toUpperCase()}
+                  </Text>
+                </View>
 
             <View style={styles.productIDBox}>
               <Text style={styles.productIDText}>{item.id}</Text>
@@ -53,11 +54,9 @@ export default class SelfServeCarouselEntryItem extends Component {
           </View>
 
           <View style={styles.rightGrid}>
-            <View style={styles.amount}>
-              <Text style={styles.amountText}>x {item.amount}</Text>
-            </View>
+             <DescriptionBox style={styles.descriptionBox} carousel={true} product={item.data}></DescriptionBox>
             <View style={item.isPicked ? styles.containerEnabled : styles.btn}>
-              <PrimaryButton
+              <PrimaryButton 
                 color="#0a8a00"
                 icon="check"
                 img=""
@@ -95,9 +94,11 @@ export default class SelfServeCarouselEntryItem extends Component {
 }
 
 const styles = StyleSheet.create({
+  h1: {
+    fontSize: 18,
+  },
   btn: {
-    width: 40,
-    marginTop: "55%",
+    padding:10,
     alignSelf: "flex-end",
     justifyContent: "space-around"
   },
@@ -141,14 +142,13 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   leftGrid: {
-    width: "50%"
-  },
-  rightGrid: {
-    width: "50%",
     alignContent: "center"
   },
+  rightGrid: {
+    flexDirection: "column",
+    width: "50%",
+  },
   descriptionBox: {
-    flexDirection: "column"
   },
   image: {
     width: 70,
@@ -161,10 +161,13 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   amountText: {
-    fontSize: 16,
-    width: "35%",
+    fontSize: 18,
+    width: "20%",
     color: "black",
-    textAlign: "left"
+    textAlign: "left",
+  },
+  nameContainer:{
+    flexDirection:"row",
   },
   productNumbers: {
     flexWrap: "wrap",

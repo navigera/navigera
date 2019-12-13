@@ -30,8 +30,11 @@ export default class SelfServeMap extends Component {
           pkg.data.availability.shelf
         );
         console.log("POSITION: ", position);
-
+        
         var prefill = pkg.isPicked ? "green" : "yellow";
+          if(pkg.isActive && !pkg.isPicked){
+            prefill = "red"
+          }
 
         mapping.push({
           id: pkg.id,
