@@ -30,7 +30,7 @@ export default class App extends React.Component {
       products: [],
       packages: [],
       chosenWarehouse: null,
-      chosenRoute: "default"
+      chosenRoute: "default",
     };
   }
 
@@ -39,6 +39,7 @@ export default class App extends React.Component {
     this.updatePackages = this.updatePackages.bind(this);
     this.removeItemCallback = this.removeItemCallback.bind(this);
     this.setPickedCallback = this.setPickedCallback.bind(this);
+    this.setActiveCallback = this.setActiveCallback.bind(this);
     this.updateWarehouse = this.updateWarehouse.bind(this);
     this.updateRoute = this.updateRoute.bind(this);
     this.clearShoppingList = this.clearShoppingList.bind(this);
@@ -56,6 +57,7 @@ export default class App extends React.Component {
             chosenRoute: this.state.chosenRoute,
             modalVisible: this.state.modalVisible,
             setPickedCallback: this.setPickedCallback,
+            setActiveCallback: this.setActiveCallback,
             addItemCallback: this.addItemCallback,
             removeItemCallback: this.removeItemCallback,
             updateWarehouse: this.updateWarehouse,
@@ -65,6 +67,18 @@ export default class App extends React.Component {
         />
       </SafeAreaView>
     );
+  }
+
+  setActiveCallback(id){
+    var packages = this.state.packages;
+    packages.forEach(pkg => {
+      if (id == pkg.id) {
+        pkg.isActive = true;
+      }else{ pkg.isActive = false;}
+    });
+    this.setState({
+      packages: packages
+    });
   }
 
   setPickedCallback(id) {
@@ -82,6 +96,7 @@ export default class App extends React.Component {
   }
 
   removeItemCallback(id, num) {
+    console.log("remove",id);
     //Remove product from shopping list
     var productList = this.state.products;
     var packageList = this.state.packages;
@@ -101,7 +116,7 @@ export default class App extends React.Component {
             }
           }
         });
-      }
+      
 
       if (productList[i].amount > num) {
         productList[i].amount -= num;
@@ -111,7 +126,7 @@ export default class App extends React.Component {
         break;
       }
     }
-
+  }
     console.log("PRODUCTS:", productList);
     console.log("PACKAGES:", packageList);
 
@@ -165,7 +180,8 @@ export default class App extends React.Component {
 
     console.log("PRODUCTS:", productList);
     console.log("PACKAGES:", packageList);
-
+  
+    
     this.setState({ products: productList, packages: packageList });
     this.updatePackages();
   }

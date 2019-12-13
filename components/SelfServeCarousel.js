@@ -10,31 +10,48 @@ export default class SelfServeCarousel extends Component {
   constructor() {
     super();
     this.state = {
-      activeSlide: 0
+      activeSlide: 0,
+      firstSlide: true
     };
+
+    this.setActiveslide=this.setActiveslide.bind(this);
   }
 
   _renderItem({ item, index }) {
     const { setPickedCallback } = this.props;
     if (item) {
+        if(this.state.firstSlide && index==0){
+          console.log("FIRSTSLIDE: ", item.id);
+          const { setActiveCallback } = this.props;
+          setActiveCallback(item.id);
+          this.setState({
+            firstSlide:false
+          });
+        }
       return (
         <SelfServeCarouselEntryItem
-          setPickedCallback={setPickedCallback}
-          item={item}
+        setPickedCallback={setPickedCallback}
+        item={item}
         />
-      );
+        );
     } else {
       return <></>;
     }
   }
 
+  setActiveslide(index, entry){
+    const {setActiveCallback} = this.props;
+    this.setState({ activeSlide: index })
+    setActiveCallback(entry);
+  }
   render() {
     const { entries } = this.props;
 
     console.log("SelfServeCarousel entries: ", entries);
     const sliderWidth = viewportWidth;
     const itemWidth = sliderWidth - 30 * 2;
-
+    
+    
     if (entries) {
       return (
         <View style={styles.carouselContainer}>
@@ -48,7 +65,7 @@ export default class SelfServeCarousel extends Component {
             itemWidth={itemWidth}
             layout={"default"}
             style={styles.carouselStyle}
-            onSnapToItem={index => this.setState({ activeSlide: index })}
+            onSnapToItem={index => this.setActiveslide(index,entries[index].data.product_info.id)}
           />
           
         </View>

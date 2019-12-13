@@ -53,7 +53,8 @@ export default class SelfServePage extends Component {
   }
 
   render() {
-    const { setPickedCallback } = this.props.screenProps;
+
+    const {setPickedCallback, setActiveCallback } = this.props.screenProps;
 
     //const packagePositions = getAllCorners();
     console.log("SelfServePage packages: ", packages);
@@ -68,6 +69,7 @@ export default class SelfServePage extends Component {
         <View style={styles.carouselContainer}>
           <SelfServeCarousel
             setPickedCallback={setPickedCallback}
+            setActiveCallback={setActiveCallback}
             style={styles.carouselContainer}
             entries={packages}
           />
