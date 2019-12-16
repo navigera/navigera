@@ -9,6 +9,7 @@ import {
 import { globalStyles } from "../utilities";
 import SettingsHeader from "./SettingsHeader.js";
 import SettingsOption from "./SettingsOption.js";
+import SettingsOptionExtended from "./SettingsOptionExtended";
 
 export default class SettingsPage extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ export default class SettingsPage extends Component {
 
   getRouteName() {
     const { chosenRoute } = this.props.screenProps;
+    console.log("chosen route: " + chosenRoute);
     switch (chosenRoute) {
       case "classic":
         return "Classic";
@@ -73,7 +75,7 @@ export default class SettingsPage extends Component {
           >
             <SettingsOptionExtended
               title={"Order route by"}
-              subTitle={this.getRouteName()}
+              subtitle={this.getRouteName()}
             />
           </TouchableHighlight>
 
@@ -88,7 +90,7 @@ export default class SettingsPage extends Component {
           >
             <SettingsOptionExtended
               title={"Warehouse location"}
-              subTitle={chosenWarehouse ? chosenWarehouse.name : "None"}
+              subtitle={chosenWarehouse ? chosenWarehouse.name : "None"}
             />
           </TouchableHighlight>
 

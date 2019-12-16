@@ -71,13 +71,16 @@ export default class App extends React.Component {
   }
 
   async saveStateToStorage(products, packages, chosenWarehouse, chosenRoute) {
+    console.log("save packages: " + packages);
     if (products) {
+      console.log('saving products');
       await AsyncStorage.setItem(
         "products",
         JSON.stringify(this.state.products)
       );
     }
     if (packages) {
+      console.log('saving packages');
       await AsyncStorage.setItem(
         "packages",
         JSON.stringify(this.state.packages)
@@ -109,8 +112,10 @@ export default class App extends React.Component {
         products: products ? JSON.parse(products) : [],
         packages: packages ? JSON.parse(packages) : [],
         chosenWarehouse: JSON.parse(chosenWarehouse),
-        chosenRoute: chosenRoute ? chosenRoute : "default"
+        chosenRoute: chosenRoute ? chosenRoute : "classic"
       });
+
+      console.log('storage pkgs: ' + packages);
 
       this.updatePackages();
     } catch (error) {
@@ -166,7 +171,6 @@ export default class App extends React.Component {
           }
         });
       
-
       if (productList[i].amount > num) {
         productList[i].amount -= num;
         break;
@@ -227,10 +231,6 @@ export default class App extends React.Component {
         });
       }
     });
-
-    console.log("PRODUCTS:", productList);
-    console.log("PACKAGES:", packageList);
-  
     
     this.setState({ products: productList, packages: packageList });
     this.updatePackages();
