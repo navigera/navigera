@@ -14,7 +14,7 @@ export default class LandingPage extends Component {
   }
 
   handlePress(){
-    this.props.navigation.navigate("LocationPage")
+    this.props.navigation.navigate("WarehouseLocationPage")
   }
 
 

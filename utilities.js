@@ -1,4 +1,5 @@
-import {sortByDistance} from "./ShortestPathUtils"
+import { sortByDistance } from "./ShortestPathUtils";
+import { max } from "moment";
 
 export async function GetProduct(id) {
   if (id.length == 10) {
@@ -57,14 +58,17 @@ export function capitalizeFirst(str) {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-const {mapData} = require("./assets/maps/map");
+const { mapData } = require("./assets/maps/map");
 
 export function getAllCorners() {
   var corners = [];
 
   mapData.forEach(aisle => {
     aisle.shelves.forEach(shelf => {
-      corners.push({ aisle: aisle.aisle, shelf: shelf.start }, {aisle: aisle.aisle, shelf: shelf.end});
+      corners.push(
+        { aisle: aisle.aisle, shelf: shelf.start },
+        { aisle: aisle.aisle, shelf: shelf.end }
+      );
     });
   });
 
@@ -93,7 +97,6 @@ export function getMarkerPosition(aisleNo, shelfNo) {
   return position;
 }
 
-
 export function sortPackagesBySize(packages) {
   //package like :  [{"amount": 1, "id": "002.638.50", "isPicked": false, width: 29, length: 206, height: 13, weight: 36500}]
   if (packages.length < 2) {
@@ -104,48 +107,91 @@ export function sortPackagesBySize(packages) {
   return sortedPackages;
 }
 
-export function sortPackagesByWeight(packages){
-	if(packages.length < 2) return packages;
-	
-	var sortedPackages = deepCopy(packages); 
-	sortedPackages.sort(sortByWeight);
-	return sortedPackages
+export function sortPackagesByWeight(packages) {
+  if (packages.length < 2) return packages;
+
+  var sortedPackages = deepCopy(packages);
+  sortedPackages.sort(sortByWeight);
+  return sortedPackages;
 }
 
-export function sortPackagesByDistance(packages){
-  return sortByDistance(packages)
+export function sortPackagesByDistance(packages) {
+  return sortByDistance(packages);
 }
 
-export function sortPackagesClassic(packages){
-  if(packages.length < 2 ) return packages;
+export function sortPackagesClassic(packages) {
+  if (packages.length < 2) return packages;
   var sortedPackages = deepCopy(packages);
   sortedPackages.sort(sortByAisle);
   return sortedPackages;
 }
 
-function deepCopy(array){
+function deepCopy(array) {
   return JSON.parse(JSON.stringify(array));
 }
 
 function surfaceArea(package1) {
-  //ignore height, since it doesn't really matter if packages are stacked? 
-  return package1.data.measurements.package.width * package1.data.measurements.package.length
+  //ignore height, since it doesn't really matter if packages are stacked?
+  if (package1.data.measurements.package.width[0]) {
+    var maxWidth = 0;
+    var maxLength = 0;
+    package1.data.measurements.package.width.forEach(width => {
+      if (maxWidth < width) {
+        maxWidth = width;
+      }
+    });
+
+    package1.data.measurements.package.length.forEach(length => {
+      if (maxLength < length) {
+        maxLength = length;
+      }
+    });
+
+    return maxWidth * maxLength;
+  }
+  return (
+    package1.data.measurements.package.width *
+    package1.data.measurements.package.length
+  );
 }
 
 /**
  * Sorting utils
  */
- 
- function sortBySurfaceArea(package1, package2){ 
-   console.log("SORTING: ", JSON.stringify(package1,null,2), "\n", JSON.stringify(package2,null,2));
-  return surfaceArea(package2)- surfaceArea(package1);
- }
- 
- function sortByAisle(package1, package2){
-   if(package1.data.availability.aisle !== package2.data.availability.aisle) return package1.data.availability.aisle - package2.data.availability.aisle
-   return package1.data.availability.shelf - package2.data.availability.shelf
- }
- 
- function sortByWeight(package1, package2){
-	 return package2.data.measurements.package.weight - package1.data.measurements.package.weight;
- }
+
+function sortBySurfaceArea(package1, package2) {
+  console.log(
+    "SORTING: ",
+    JSON.stringify(package1, null, 2),
+    "\n",
+    JSON.stringify(package2, null, 2)
+  );
+  return surfaceArea(package2) - surfaceArea(package1);
+}
+
+function sortByAisle(package1, package2) {
+  if (package1.data.availability.aisle !== package2.data.availability.aisle)
+    return package1.data.availability.aisle - package2.data.availability.aisle;
+  return package1.data.availability.shelf - package2.data.availability.shelf;
+}
+
+function sortByWeight(package1, package2) {
+  var weight1 = package1.data.measurements.package.weight;
+  var weight2 = package2.data.measurements.package.weight;
+
+  if (package1.data.measurements.package.weight[0]) {
+    weight1 = 0;
+    package1.data.measurements.package.weight.forEach(weight => {
+      weight1 += weight;
+    });
+  }
+
+  if (package2.data.measurements.package.weight[0]) {
+    weight2 = 0;
+    package12.data.measurements.package.weight.forEach(weight => {
+      weight2 += weight;
+    });
+  }
+
+  return weight2 - weight1;
+}

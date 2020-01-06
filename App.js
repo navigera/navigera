@@ -16,6 +16,7 @@ import LandingPage from "./components/LandingPage";
 import WarehouseLocationPage from "./components/WarehouseLocationPage";
 import { GetProduct } from "./utilities";
 import AboutPage from "./components/AboutPage";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,11 +31,11 @@ export default class App extends React.Component {
       products: [],
       packages: [],
       chosenWarehouse: null,
-      chosenRoute: "default",
+      chosenRoute: "classic"
     };
   }
 
-  bindMethods(){
+  bindMethods() {
     this.addItemCallback = this.addItemCallback.bind(this);
     this.updatePackages = this.updatePackages.bind(this);
     this.removeItemCallback = this.removeItemCallback.bind(this);
@@ -68,6 +69,59 @@ export default class App extends React.Component {
       </SafeAreaView>
     );
   }
+
+  async saveStateToStorage(products, packages, chosenWarehouse, chosenRoute) {
+    console.log("save packages: " + packages);
+    if (products) {
+      console.log('saving products');
+      await AsyncStorage.setItem(
+        "products",
+        JSON.stringify(this.state.products)
+      );
+    }
+    if (packages) {
+      console.log('saving packages');
+      await AsyncStorage.setItem(
+        "packages",
+        JSON.stringify(this.state.packages)
+      );
+    }
+    if (chosenWarehouse) {
+      await AsyncStorage.setItem(
+        "chosenWarehouse",
+        JSON.stringify(this.state.chosenWarehouse)
+      );
+    }
+    if (chosenRoute) {
+      await AsyncStorage.setItem("chosenRoute", this.state.chosenRoute);
+    }
+  }
+
+  componentDidMount() {
+    this._retrieveData();
+  }
+
+  _retrieveData = async () => {
+    try {
+      const products = await AsyncStorage.getItem("products");
+      const packages = await AsyncStorage.getItem("packages");
+      const chosenWarehouse = await AsyncStorage.getItem("chosenWarehouse");
+      const chosenRoute = await AsyncStorage.getItem("chosenRoute");
+
+      this.setState({
+        products: products ? JSON.parse(products) : [],
+        packages: packages ? JSON.parse(packages) : [],
+        chosenWarehouse: JSON.parse(chosenWarehouse),
+        chosenRoute: chosenRoute ? chosenRoute : "classic"
+      });
+
+      console.log('storage pkgs: ' + packages);
+
+      this.updatePackages();
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
 
   setActiveCallback(id){
     var packages = this.state.packages;
@@ -117,7 +171,6 @@ export default class App extends React.Component {
           }
         });
       
-
       if (productList[i].amount > num) {
         productList[i].amount -= num;
         break;
@@ -131,6 +184,7 @@ export default class App extends React.Component {
     console.log("PACKAGES:", packageList);
 
     this.setState({ products: productList, packages: packageList });
+    this.saveStateToStorage({ products: productList, packages: packageList });
   }
 
   addItemCallback(item, num) {
@@ -177,10 +231,6 @@ export default class App extends React.Component {
         });
       }
     });
-
-    console.log("PRODUCTS:", productList);
-    console.log("PACKAGES:", packageList);
-  
     
     this.setState({ products: productList, packages: packageList });
     this.updatePackages();
@@ -206,6 +256,11 @@ export default class App extends React.Component {
       ],
       { cancelable: true }
     );
+
+    this.saveStateToStorage({
+      products: this.state.products,
+      packages: this.state.packages
+    });
   }
 
   updatePackages() {
@@ -221,19 +276,24 @@ export default class App extends React.Component {
     });
   }
 
-  handlePackageResults(packageList, results){
+  handlePackageResults(packageList, results) {
     results.forEach(result => {
       packageList.forEach(pkg => {
         this.comparePackageData(pkg, result);
       });
     });
-      
+
     this.setState({
       packages: packageList
     });
+
+    this.saveStateToStorage({
+      products: this.state.products,
+      packages: this.state.packages
+    });
   }
 
-  comparePackageData(pkg, result){
+  comparePackageData(pkg, result) {
     if (pkg.id == result.product_info.id) {
       pkg.data = result;
     }
@@ -241,12 +301,12 @@ export default class App extends React.Component {
 
   updateWarehouse(warehouse) {
     this.setState({ chosenWarehouse: warehouse });
+    this.saveStateToStorage({ chosenWarehouse: this.state.chosenWarehouse });
   }
 
   updateRoute(route) {
     this.setState({ chosenRoute: route });
-    console.log("chosen route method: " + route);
-    // Sortera this.state.packages
+    this.saveStateToStorage({ chosenRoute: this.state.chosenRoute });
   }
 }
 
@@ -313,10 +373,10 @@ const LandingTabNavigator = createMaterialTopTabNavigator(
         tabBarLabel: "LandingPage"
       }
     },
-    LocationPage: {
+    WarehouseLocationPage: {
       screen: WarehouseLocationPage,
       navigationOptions: {
-        tabBarLabel: "LocationPage"
+        tabBarLabel: "WarehouseLocationPage"
       }
     }
   },

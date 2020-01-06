@@ -62,8 +62,11 @@ export default class SetRoutePage extends Component {
             updateRoute(itemValue);
           }}
         >
-          <Picker.Item label="Entrance to exit" value="default" />
+          <Picker.Item label="Classic (entrance to exit)" value="classic" />
           <Picker.Item label="Quickest route" value="quickest" />
+          <Picker.Item label="Optimized for size" value="volume" />
+          <Picker.Item label="Optimized for weight" value="weight" />
+
         </Picker>
       </View>
     );

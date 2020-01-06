@@ -107,9 +107,7 @@ export default class SetWarehousePage extends Component {
   }
 
   unSelectMarker() {
-    for (var val in this.state.selectedMarker) {
-      this.state.selectedMarker[val] = null;
-    }
+   
   }
 
   renderMap() {
@@ -166,7 +164,7 @@ export default class SetWarehousePage extends Component {
         (this.state.selectedMarker &&
           this.state.selectedMarker.id != this.state.chosenWarehouse.id) ? (
           <PrimaryButton
-            text={"Select " + this.state.selectedMarker.name}
+            text={"Select " + ((this.state.selectedMarker) ? this.state.selectedMarker.name : this.state.chosenWarehouse.name)}
             onPress={this.updateWarehouse}
             color={this.state.ableToUpdate == true ? "#b8b8b6" : "#0058a3"}
             disabled={this.state.ableToUpdate}
